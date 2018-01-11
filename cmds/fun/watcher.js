@@ -9,9 +9,10 @@ exports.data = {
 	anywhere: true
 };
 
+const config = require('../../config.json');
+const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
+const Watcher = require(`${config.folders.models}/watcher`);
 const jetpack = require('fs-jetpack');
-const Watcher = require('../../lib/models/watcher');
-const log = require('../../lib/log')(exports.data.name);
 
 exports.func = async (msg, args, bot) => {
 	await Watcher.sync();
@@ -53,7 +54,7 @@ exports.func = async (msg, args, bot) => {
 				}
 			case 'enable':
 				{
-					if (watcher || jetpack.list('./watchers/').includes(`${args[1]}.js`)) {
+					if (watcher || jetpack.list(`${config.folders.watchers}`).includes(`${args[1]}.js`)) {
 						if (!watcher) {
 							watcher = await Watcher.create({
 								watcherName: args[1],

@@ -8,7 +8,8 @@ exports.data = {
 	permissions: 4
 };
 
-const log = require('../../lib/log.js')(exports.data.name);
+const config = require('../../config.json');
+const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 
 const clean = text => {
 	if (typeof text === 'string') {
@@ -18,6 +19,7 @@ const clean = text => {
 };
 
 exports.func = async (msg, args, bot) => {
+	if(msg.author.id !== config.ownerID) return;
 	log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has used eval in #${msg.channel.name} on ${msg.guild.name}.`);
 	const code = args.join(' ');
 	try {

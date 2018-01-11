@@ -9,8 +9,9 @@ exports.data = {
 	anywhere: false
 };
 
-const log = require('../../lib/log.js')(exports.data.name);
-const Commands = require('../../lib/commands');
+const config = require('../../config.json');
+const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
+const Commands = require(`${config.folders.lib}/commands.js`);
 
 exports.func = async (msg, args, bot) => {
 	try {
@@ -46,7 +47,7 @@ exports.func = async (msg, args, bot) => {
 						name: args[0],
 						enabled: true
 					});
-					log.info(`Created db entry for command ${command}.`);
+					log.info(`Created db entry for command ${args[0]}.`);
 				}
 			} else {
 				msg.reply('Specified command does not exist.');

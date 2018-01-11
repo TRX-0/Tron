@@ -1,41 +1,45 @@
 exports.data = {
 	name: 'Server Setup',
 	command: 'setup',
-	description: 'Setup specific server options.',
+	description: 'Setup specific server options. Without arguments will return role ids.',
 	group: 'system',
-	syntax: 'setup',
-	author: 'Matt C: matt@artemisbot.uk',
+	syntax: 'setup [perm3] [perm2] [perm1]',
+	author: 'Aris A.',
 	permissions: 4
 };
 
 const moment = require('moment');
-const log = require('../../lib/log.js')(exports.data.name);
-const Server = require('../../lib/models/server');
+const config = require('../../config.json');
+const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
+const Server = require(`${config.folders.models}/server.js`);
 
-exports.func = async msg => {
+exports.func = async (msg,args) => {
 	try {
-		/*
-		Log.verbose(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has started to setup a server in #${msg.channel.name} on ${msg.guild.name}.`);
-		const server = await Server.findOne({
-			where: {
-				guildId: msg.guild.id
+		if(args[0] && args[1] && args[2]){
+			const server = await Server.findOne({
+				where: {
+					guildId: msg.guild.id
+				}
+			});
+			log.verbose(`(${msg.author.username}#${msg.author.discriminator}) has started to setup a server in #${msg.channel.name} on ${msg.guild.name}.`);
+			if (server){
+				await server.update({
+					perm3: [args[0]],
+					perm2: [args[1]],
+					perm1: [args[2]]
+				});
+				msg.delete().catch(O_o=>{});
+				msg.reply('Server has been set up.');
+				log.verbose(`(${msg.author.username}#${msg.author.discriminator}) has finished setting up ${msg.guild.name}.`);
+			} else {
+				msg.reply('Something went wrong. Did not find server in db.');
 			}
-		});
-		await server.update({
-			permitChan: ['313439402762305536'],
-			perm3: ['131868177851351040', '206865957333893120', '211058344344027136'],
-			perm2: ['133690689144750080', '132603053906853888'],
-			perm1: ['131888041777168384', '211835000587288576'],
-			emotes: false,
-			quotes: false
-		});
-		msg.reply('Server has been set up.');
-		*/
-		let roleList = '';
-		msg.guild.roles.keyArray().forEach(key => roleList += `${msg.guild.roles.get(key).name}: ${key}\n`);
-		// Msg.reply(roleList);
-		const dm = await msg.author.createDM();
-		dm.send(`\`\`\`${roleList}\`\`\``);
+		} else {
+			let roleList = '';
+			msg.guild.roles.keyArray().forEach(key => roleList += `${msg.guild.roles.get(key).name}: ${key}\n`);
+			const dm = await msg.author.createDM();
+			dm.send(`\`\`\`${roleList}\`\`\``);
+		}
 	} catch (err) {
 		log.error(`Something went wrong: ${err}`);
 	}

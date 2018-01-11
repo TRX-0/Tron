@@ -9,8 +9,9 @@ exports.data = {
 	anywhere: false
 };
 
-const log = require('../../lib/log.js')(exports.data.name);
-const Commands = require('../../lib/commands');
+const config = require('../../config.json');
+const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
+const Commands = require(`${config.folders.lib}/commands.js`);
 
 exports.func = async (msg, args, bot) => {
 	try {

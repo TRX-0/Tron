@@ -10,11 +10,11 @@ exports.data = {
 	anywhere: true
 };
 
+const config = require('../../config.json');
+const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 const request = require('request-promise-native');
 const moment = require('moment');
 const humanize = require('humanize-duration');
-const config = require('../../config.json');
-const log = require('../../lib/log.js')(exports.data.name);
 
 exports.func = async (msg, args) => {
 	try {

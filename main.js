@@ -1,17 +1,18 @@
-var Discord = require('discord.js');
-const log = require('./lib/log')('Core');
-const jetpack = require('fs-jetpack');
-const chalk = require('chalk');
-const Watcher = require('./lib/models/watcher');
-
 // Initialize Discord Bot
+var Discord = require('discord.js');
 const bot = new Discord.Client();
 bot.config = require('./config.json');
 
+// Basic Function Modules
+const jetpack = require('fs-jetpack');
+const chalk = require('chalk');
+const log = require(`${bot.config.folders.lib}/log.js`)('Core');
+const Watcher = require(`${bot.config.folders.models}/watcher.js`);
+
 // Database modules
-const Database = require('./lib/db');
-const Server = require('./lib/models/server');
-const Commands = require('./lib/commands');
+const Database = require(`${bot.config.folders.lib}/db.js`);
+const Server = require(`${bot.config.folders.models}/server.js`);
+const Commands = require(`${bot.config.folders.lib}/commands.js`);
 
 // ==== Initialisation ====
 bot.db = Database.start(); // Start the database and connect
@@ -23,12 +24,12 @@ bot.loadCmds = () => {
 			const cmds = new Discord.Collection();
 			const loadedList = [];
 
-			const folderList = jetpack.list('./cmds/'); // List contents of the cmds folder
+			const folderList = jetpack.list(`${bot.config.folders.commands}`); // List contents of the cmds folder
 			folderList.forEach(folder => { // Loop through the folders
 				try {
-					const cmdList = jetpack.list(`./cmds/${folder}`); // Loop through the commands
+					const cmdList = jetpack.list(`${bot.config.folders.commands}/${folder}`); // Loop through the commands
 					cmdList.forEach(file => {
-						const props = require(`./cmds/${folder}/${file}`); // Load the command
+						const props = require(`${bot.config.folders.commands}/${folder}/${file}`); // Load the command
 						log.verbose(`Loading Command: ${props.data.name}. 👌`);
 						loadedList.push(props.data.name);
 						cmds.set(props.data.command, props); // Store the command prototype in the cmds collection
@@ -51,14 +52,14 @@ bot.loadWatchers = bot => {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const watchers = new Discord.Collection();
-			const watcherList = jetpack.list('./watchers/'); // List contents of the watchers folder
+			const watcherList = jetpack.list(`${bot.config.folders.watchers}`); // List contents of the watchers folder
 			const loadedList = [];
 			const skippedList = [];
 			await Watcher.sync(); // Create the watchers table if it does not exist
 			await Promise.all(watcherList.map(f => { // Load watchers in parallel
 				return new Promise(async (resolve, reject) => {
 					try {
-						const props = require(`./watchers/${f}`); // Load watcher module
+						const props = require(`${bot.config.folders.watchers}/${f}`); // Load watcher module
 						let watcher = await Watcher.findOne({where: {watcherName: props.data.command}}); // Search for loaded watcher in the watchers table
 						if (!watcher) { // If it doesn't exist, create it, assuming it is enabled and disabled in no guilds
 							watcher = await Watcher.create({
@@ -107,9 +108,7 @@ bot.on('ready', async () => {
 					guildId: id
 				}
 			});
-			if (server) { // If server is known
-				
-			} else {
+			if (!server) { // If server is not known
 				const server = await Server.create({ // Create a server object (this is required for basic bot operation)
 					guildId: id,
 					name: guild.name,
@@ -258,14 +257,14 @@ bot.login(bot.config.token);
 bot.reload = command => {
 	return new Promise((resolve, reject) => {
 		try {
-			const folderList = jetpack.list('./cmds/'); // List contents of the cmds folder
+			const folderList = jetpack.list(`${bot.config.folders.commands}`); // List contents of the cmds folder
 			folderList.forEach(folder => { // Loop through the folders
 				try {
-					const cmdList = jetpack.list(`./cmds/${folder}/`); // Loop through the files
+					const cmdList = jetpack.list(`${bot.config.folders.commands}/${folder}/`); // Loop through the files
 					cmdList.forEach(file => {
 						if (`${file}` == `${command}.js`){
-							delete require.cache[require.resolve(`./cmds/${folder}/${command}.js`)]; // Delete command from cache
-							const cmd = require(`./cmds/${folder}/${command}.js`); // Load command
+							delete require.cache[require.resolve(`${bot.config.folders.commands}/${folder}/${command}.js`)]; // Delete command from cache
+							const cmd = require(`${bot.config.folders.commands}/${folder}/${command}.js`); // Load command
 							bot.commands.delete(command);
 							bot.commands.set(command, cmd); // Re-add to the bot's collection of commands
 							resolve();
@@ -291,7 +290,7 @@ bot.reload = command => {
 bot.watcherEnable = (watcher, watcherData) => {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const watchProps = require(`./watchers/${watcher}.js`); // Loads watcher
+			const watchProps = require(`${bot.config.folders.watchers}/${watcher}.js`); // Loads watcher
 			bot.watchers.set(watcher, watchProps); // Add to bot's collection of watchers
 			bot.watchers.get(watcher).watcher(bot); // Initialise watcher
 			await watcherData.update({globalEnable: true}); // Set watcher to enabled in database
@@ -314,7 +313,7 @@ bot.watcherDisable = (watcher, watcherData) => {
 		try {
 			bot.watchers.get(watcher).disable(); // Disable watcher's function
 			await watcherData.update({globalEnable: false}); // Set watcher to disabled in database
-			delete require.cache[require.resolve(`./watchers/${watcher}.js`)]; // Delete watcher from cache
+			delete require.cache[require.resolve(`${bot.config.folders.watchers}/${watcher}.js`)]; // Delete watcher from cache
 			bot.watchers.delete(watcher); // Delete from bot's collection of watchers
 			resolve();
 		} catch (err) {
@@ -333,9 +332,9 @@ bot.watcherReload = watcher => {
 	return new Promise((resolve, reject) => {
 		try {
 			bot.watchers.get(watcher).disable(); // Disable watcher's function
-			delete require.cache[require.resolve(`./watchers/${watcher}.js`)]; // Delete watcher from cache
+			delete require.cache[require.resolve(`${bot.config.folders.watchers}/${watcher}.js`)]; // Delete watcher from cache
 			bot.watchers.delete(watcher); // Delete from bot's collection of watchers
-			const watchProps = require(`./watchers/${watcher}.js`); // Loads watcher
+			const watchProps = require(`${bot.config.folders.watchers}/${watcher}.js`); // Loads watcher
 			bot.watchers.set(watcher, watchProps); // Add to bot's collection of watchers
 			bot.watchers.get(watcher).watcher(bot); // Initialise watcher
 			resolve();

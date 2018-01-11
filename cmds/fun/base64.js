@@ -7,9 +7,9 @@ exports.data = {
 	author: 'Aris A.',
 	permissions: 3
 };
-
+const config = require('../../config.json');
+const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 const moment = require('moment');
-const log = require('../../lib/log.js')(exports.data.name);
 const atob = require('atob');
 const btoa = require('btoa');
 exports.func = async (msg, args, bot) => {

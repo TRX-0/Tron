@@ -16,9 +16,9 @@ const moment = require('moment');
 const snek = require('snekfetch');
 const strftime = require('strftime');
 
-const log = require('../lib/log.js')(exports.data.name);
 const config = require('../config.json');
-const Watcher = require('../lib/models/watcher');
+const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
+const Watcher = require(`${config.folders.models}/watcher`);
 
 // Makes repeats global
 

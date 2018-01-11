@@ -8,9 +8,10 @@ exports.data = {
 const MailListener = require('mail-listener2');
 const Discord = require('discord.js');
 
-const MailWatch = require('../lib/models/mailwatch');
-const log = require('../lib/log.js')(exports.data.name);
 const config = require('../config.json');
+const MailWatch = require(`${config.folders.models}/mailwatch`);
+const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
+
 const moment = require('moment');
 
 const ml = new MailListener({

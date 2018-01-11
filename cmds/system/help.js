@@ -10,9 +10,9 @@ exports.data = {
 };
 
 const Discord = require('discord.js');
-const log = require('../../lib/log.js')(exports.data.name);
 const config = require('../../config.json');
-const Server = require('../../lib/models/server');
+const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
+const Server = require(`${config.folders.models}/server.js`);
 
 exports.func = async (msg, args, bot) => {
 	const server = await Server.findOne({where: {guildId: msg.guild.id}});
