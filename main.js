@@ -11,13 +11,14 @@ bot.config = require('./config.json');
 // Database modules
 const Database = require('./lib/db');
 const Server = require('./lib/models/server');
+const Commands = require('./lib/commands');
 
 // ==== Initialisation ====
 bot.db = Database.start(); // Start the database and connect
 
 // Function to load commands into bot
 bot.loadCmds = () => {
-	return new Promise((resolve, reject) => {
+	return new Promise(async (resolve, reject) => {
 		try {
 			const cmds = new Discord.Collection();
 			const loadedList = [];
@@ -31,6 +32,7 @@ bot.loadCmds = () => {
 						log.verbose(`Loading Command: ${props.data.name}. 👌`);
 						loadedList.push(props.data.name);
 						cmds.set(props.data.command, props); // Store the command prototype in the cmds collection
+						log.verbose(`Created db entry for: ${file}. 👌`);
 					});
 				} catch (err) {
 					reject(err); // If there's an error, stop loading commands
@@ -128,11 +130,12 @@ bot.on('ready', async () => {
 // When message is received
 bot.on('message', async msg => {
 	try {
-		if (msg.author.bot || !msg.guild) { // Reject message if the message author is a bot or the message is not in a guild (eg. DMs)
+		// Reject message if the message author is a bot or the message is not in a guild (eg. DMs)
+		if (msg.author.bot || !msg.guild) { 
 			return;
 		}
-
-		msg.server = await Server.findOne({ // Find message's guild in the database
+		// Find message's guild in the database
+		msg.server = await Server.findOne({ 
 			where: {
 				guildId: msg.guild.id
 			}
@@ -152,22 +155,51 @@ bot.on('message', async msg => {
 			}
 			return true;
 		});
-		if (notCommand) { // If it's not a command, reject it
+		// If it's not a command, reject it.
+		if (notCommand) { 
 			return;
 		}
 
 		let cmd;
-		if (!msg.member) { // Sometimes a message doesn't have a member object attached (idk either like wtf)
-			msg.member = await msg.guild.fetchMember(msg);
-		}
-
-		msg.elevation = await bot.elevation(msg); // Get user's permission level
-
-		if (bot.commands.has(command)) { // Check whether command exists
-			cmd = bot.commands.get(command); // Fetch the command's prototype
+		// Check whether command exists as a file. (loaded in the commands collection)
+		if (bot.commands.has(command)) { 
+			// Fetch the command's prototype
+			cmd = bot.commands.get(command); 
 		} else {
 			msg.reply('Command does not exist.');
 		}
+		//Check if command is registered in the database.
+		const cmdExists = await Commands.findOne({where: {
+			guildId: msg.guild.id,
+			name: command
+		}});
+
+		//If it exists check if it is enabled in this guild.
+		if (cmdExists){
+			const isEnabled = (await Commands.findOne({where: {
+				guildId: msg.guild.id,
+				name: command
+			}})).enabled;
+			//If it is disabled return.
+			if (!isEnabled){
+				msg.reply(`Command is disabled in ${msg.guild.name}.`);
+				return;
+			}
+		} else {
+			//If command does not exist in db, create it.
+			const createCommand = await Commands.create({
+				guildId: msg.guild.id,
+				name: command,
+				enabled: true
+			});
+			log.info(`Created db entry for command ${command}.`);
+		}
+
+		if (!msg.member) { // Sometimes a message doesn't have a member object attached (idk either like wtf)
+		msg.member = await msg.guild.fetchMember(msg);
+		}
+		// Get user's permission level
+		msg.elevation = await bot.elevation(msg); 
 		if (cmd && (cmd.data.anywhere || msg.elevation >= 3 || msg.server.permitChan.includes(msg.channel.id))) { // Command is flagged to be used anywhere/user has 3+ elevation level/is in a permitted channel
 			if (msg.elevation >= cmd.data.permissions) { // Check that the user exceeds the command's required elevation
 				cmd.func(msg, args, bot); // Run the command's function
@@ -215,10 +247,6 @@ process.on('unhandledRejection', err => { // If I've forgotten to catch a promis
 // Officially start the bot
 bot.login(bot.config.token);
 
-
-
-
-
 // ==== Global Helper Functions ====
 
 /**
@@ -240,7 +268,6 @@ bot.reload = command => {
 							const cmd = require(`./cmds/${folder}/${command}.js`); // Load command
 							bot.commands.delete(command);
 							bot.commands.set(command, cmd); // Re-add to the bot's collection of commands
-							reloaded = true;
 							resolve();
 						}
 					});	
@@ -253,67 +280,6 @@ bot.reload = command => {
 		}
 	});
 };	
-
-/**
- * Enables a specified command
- *
- * @param {string} command - Name of the command to be enabled
- * @returns {Promise} Resolves with nothing, rejects with Error object
- */
-bot.enable = command => {
-	return new Promise((resolve, reject) => {
-		try {
-			const folderList = jetpack.list('./cmds/'); // List contents of the cmds folder
-			folderList.forEach(folder => { // Loop through the folders
-				try {
-					const cmdList = jetpack.list(`./cmds/${folder}/`); // Loop through the commands
-					cmdList.forEach(file => {
-						if (`${file}` == `${command}.js`){
-							const cmd = require(`./cmds/${folder}/${command}.js`); // Load command
-							bot.commands.set(command, cmd); // Add to bot's collection of commands
-							resolve();
-						}
-					});	
-				} catch (err) {
-					reject(err);
-				}
-			});
-		} catch (err) {
-			reject(err);
-		}
-	});
-};
-
-/**
- * Disables a specified command
- *
- * @param {string} command - Name of the command to be disabled
- * @returns {Promise} Resolves with nothing, rejects with Error object
- */
-bot.disable = command => {
-	return new Promise((resolve, reject) => {
-		try {
-			const folderList = jetpack.list('./cmds/'); // List contents of the cmds folder
-			folderList.forEach(folder => { // Loop through the folders
-				try {
-					const cmdList = jetpack.list(`./cmds/${folder}/`); // Loop through the commands
-					cmdList.forEach(file => {
-						if (`${file}` == `${command}.js`){
-							delete require.cache[require.resolve(`./cmds/${folder}/${command}.js`)]; // Delete command from cache
-							bot.commands.delete(command); // Delete from bot's collection of commands
-							resolve();
-						}
-					});	
-				} catch (err) {
-					reject(err);
-				}
-			});
-		} catch (err) {
-			reject(err);
-		}
-	});
-};
-
 
 /**
  * Enables a specified watcher
