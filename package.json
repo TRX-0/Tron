@@ -1,0 +1,94 @@
+{
+    "name": "tron",
+    "version": "0.0.1",
+    "description": "I fight for the users!",
+    "main": "main.js",
+    "author": "Aris",
+    "dependencies": {
+        "atob": "^2.0.3",
+        "btoa": "^1.1.2",
+        "chalk": "^2.3.0",
+        "child-process-promise": "^2.2.1",
+        "css-select": "^1.3.0-rc0",
+        "discord.js": "^11.2.1",
+        "fs-jetpack": "^0.10.5",
+        "googleapis": "^20.2.0",
+        "htmlparser2": "^3.9.2",
+        "humanize-duration": "^3.12.1",
+        "mail-listener2": "^0.3.1",
+        "mime": "^1.3.6",
+        "moment": "^2.20.1",
+        "npm-check": "^5.5.2",
+        "pg": "^7.4.1",
+        "ping": "^0.2.2",
+        "pm2": "^2.9.1",
+        "request": "^2.83.0",
+        "request-promise-native": "^1.0.4",
+        "sequelize": "^4.29.2",
+        "snekfetch": "^3.6.1",
+        "strftime": "^0.10.0",
+        "winston": "^2.4.0",
+        "winston-daily-rotate-file": "^1.7.2"
+    },
+    "devDependencies": {
+        "eslint-plugin-ava": "^4.4.0",
+        "eslint-plugin-import": "^2.8.0",
+        "eslint-plugin-no-use-extend-native": "^0.3.12",
+        "eslint-plugin-promise": "^3.6.0",
+        "eslint-plugin-unicorn": "^3.0.1",
+        "xo": "^0.18.2"
+    },
+    "scripts": {
+        "test": "xo"
+    },
+    "xo": {
+        "rules": {
+            "no-unused-expressions": [
+                "error",
+                {
+                    "allowTernary": true,
+                    "allowShortCircuit": true
+                }
+            ],
+            "camelcase": [
+                "error",
+                {
+                    "properties": "never"
+                }
+            ],
+            "no-unassigned-import": [
+                "off",
+                {}
+            ],
+            "new-cap": [
+                "error",
+                {
+                    "capIsNew": false
+                }
+            ],
+            "no-return-assign": [
+                "off",
+                {}
+            ],
+            "complexity": [
+                "error",
+                50
+            ],
+            "no-await-in-loop": [
+                "off",
+                {}
+            ],
+            "max-depth": [
+                "error",
+                {
+                    "max": 7
+                }
+            ]
+        }
+    },
+    "keywords": [
+        "discord",
+        "discord.js"
+    ],
+    "license": "ISC"
+}
