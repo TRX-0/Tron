@@ -16,7 +16,7 @@ exports.func = async (msg,args) => {
     try{
         //Get the delete count, as an actual number.
         const deleteCount = parseInt(args[0], 10);
-        if(!deleteCount || deleteCount < 2 || deleteCount > 1000){
+        if(!deleteCount || deleteCount < 2 || deleteCount > 100){
             return msg.reply("Please provide a number between 2 and 100");
         }
         // So we get our messages, and delete them. Simple enough, right?

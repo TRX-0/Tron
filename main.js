@@ -13,6 +13,7 @@ const Watcher = require(`${bot.config.folders.models}/watcher.js`);
 const Database = require(`${bot.config.folders.lib}/db.js`);
 const Server = require(`${bot.config.folders.models}/server.js`);
 const Commands = require(`${bot.config.folders.lib}/commands.js`);
+const Profiles = require(`${bot.config.folders.models}/profiles.js`);
 
 // ==== Initialisation ====
 bot.db = Database.start(); // Start the database and connect
@@ -130,9 +131,7 @@ bot.on('ready', async () => {
 bot.on('message', async msg => {
 	try {
 		// Reject message if the message author is a bot or the message is not in a guild (eg. DMs)
-		if (msg.author.bot || !msg.guild) { 
-			return;
-		}
+		if (msg.author.bot || !msg.guild) return;
 		// Find message's guild in the database
 		msg.server = await Server.findOne({ 
 			where: {
@@ -154,8 +153,34 @@ bot.on('message', async msg => {
 			}
 			return true;
 		});
+
 		// If it's not a command, reject it.
-		if (notCommand) { 
+		if (notCommand) {
+			//Check if user exists in db
+			const userExists = await Profiles.findOne({
+				where: {
+					guildId: msg.guild.id,
+					username: msg.author.username
+				}
+			});
+			//If user exists
+			if (userExists){
+				//Get message count
+				var getUserCount = userExists.msgcount + 1;
+				//Add one more message
+				await userExists.update({
+					msgcount: getUserCount
+				});
+			} else {
+				//Else create user entry in db
+				const profile = await Profiles.create({
+					guildId: msg.guild.id,
+					username: msg.author.username,
+					msgcount: 1,
+					discordid: msg.author.id
+				});
+				log.info(`Created db entry for user ${msg.author.username}.`);
+			}
 			return;
 		}
 
@@ -279,6 +304,18 @@ bot.reload = command => {
 		}
 	});
 };	
+
+//Function that stops bot
+bot.stop = command => {
+	return new Promise((resolve, reject) => {
+		try {
+			bot.destroy();
+			process.exit();
+		} catch (err) {
+			reject(err);
+		}
+	});
+};
 
 /**
  * Enables a specified watcher

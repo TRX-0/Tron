@@ -5898,3 +5898,181 @@
 [1m[35m[2018-01-11 23:12:29][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
 [1m[35m[2018-01-11 23:12:58][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
 [1m[35m[2018-01-11 23:12:58][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Info | Database | Connection to database has been established successfully.
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Database | Synchronising database...
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Info | Database | Done Synchronising database!
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Info | Core | [32mConnected to Discord gateway & 1 guilds.[39m
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Base64. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: base64.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Eval Command. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: eval.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: FlipCoin. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: flipcoin.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Hug. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: hug.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Joke. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: joke.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Rotate 13. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: rot13.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Say. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: say.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Steam Embeds. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: steam.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Watchers. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: watcher.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Waking Titan Terminal Commands. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: wterminal.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Ban. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: ban.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Kick. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: kick.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Purge. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: purge.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Disable Command. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: disable.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Enable Command. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: enable.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Help. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: help.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Ping. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: ping.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Reload Command. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: reload.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Server Setup. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: setup.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Loading Command: Whois. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Verbose | Core | Created db entry for: whois.js. 👌
+[1m[35m[2018-01-11 23:41:11][39m[22m - | Info | Core | [32mLoaded 20 command(s) (Base64, Eval Command, FlipCoin, Hug, Joke, Rotate 13, Say, Steam Embeds, Watchers, Waking Titan Terminal Commands, Ban, Kick, Purge, Disable Command, Enable Command, Help, Ping, Reload Command, Server Setup, Whois).[39m
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Verbose | Core | Loading Watcher: Mail Listener. 👌
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Verbose | Core | Loading Watcher: Waking Titan Terminal Watcher. 👌
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Verbose | Waking Titan Terminal Watcher | Waking Titan Terminal Watcher has initialised successfully.
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Verbose | Core | Loading Watcher: Waking Titan Sites & Glyphs. 👌
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Verbose | Waking Titan Sites & Glyphs | [32mWaking Titan Sites & Glyphs has initialised successfully.[39m
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Info | Core | [32mLoaded 3 watcher(s) (Mail Listener, Waking Titan Terminal Watcher, Waking Titan Sites & Glyphs) and skipped 0 ().[39m
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | [connection] Connected to host
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | <= '* OK [CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE AUTH=PLAIN AUTH=LOGIN] Dovecot ready.'
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | => 'A0 CAPABILITY'
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | <= '* CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE AUTH=PLAIN AUTH=LOGIN'
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | <= 'A0 OK Pre-login capabilities listed, post-login capabilities have more.'
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | => 'A1 LOGIN "tron@artemisbot.uk" "4aztll94"'
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | <= '* CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE SORT SORT=DISPLAY THREAD=REFERENCES THREAD=REFS THREAD=ORDEREDSUBJECT MULTIAPPEND URL-PARTIAL CATENATE UNSELECT CHILDREN NAMESPACE UIDPLUS LIST-EXTENDED I18NLEVEL=1 CONDSTORE QRESYNC ESEARCH ESORT SEARCHRES WITHIN CONTEXT=SEARCH LIST-STATUS BINARY MOVE COMPRESS=DEFLATE QUOTA ACL RIGHTS=texk'
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | <= 'A1 OK Logged in'
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | => 'A2 NAMESPACE'
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | <= '* NAMESPACE (("" "/")) (("Shared/" "/")) NIL'
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | <= 'A2 OK Namespace completed (0.001 + 0.000 secs).'
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | => 'A3 LIST "" ""'
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | <= '* LIST (\\Noselect) "/" ""'
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | <= 'A3 OK List completed (0.001 + 0.000 secs).'
+[1m[35m[2018-01-11 23:41:12][39m[22m - | Debug | Mail Listener | => 'A4 SELECT "INBOX" (CONDSTORE)'
+[1m[35m[2018-01-11 23:41:13][39m[22m - | Debug | Mail Listener | <= '* FLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft)'
+[1m[35m[2018-01-11 23:41:13][39m[22m - | Debug | Mail Listener | <= '* OK [PERMANENTFLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft \\*)] Flags permitted.'
+[1m[35m[2018-01-11 23:41:13][39m[22m - | Debug | Mail Listener | <= '* 6 EXISTS'
+[1m[35m[2018-01-11 23:41:13][39m[22m - | Debug | Mail Listener | <= '* 0 RECENT'
+[1m[35m[2018-01-11 23:41:13][39m[22m - | Debug | Mail Listener | <= '* OK [UNSEEN 6] First unseen.'
+[1m[35m[2018-01-11 23:41:13][39m[22m - | Debug | Mail Listener | <= '* OK [UIDVALIDITY 1515419977] UIDs valid'
+[1m[35m[2018-01-11 23:41:13][39m[22m - | Debug | Mail Listener | <= '* OK [UIDNEXT 7] Predicted next UID'
+[1m[35m[2018-01-11 23:41:13][39m[22m - | Debug | Mail Listener | <= '* OK [HIGHESTMODSEQ 15] Highest'
+[1m[35m[2018-01-11 23:41:13][39m[22m - | Debug | Mail Listener | <= 'A4 OK [READ-WRITE] Select completed (0.001 + 0.000 secs).'
+[1m[35m[2018-01-11 23:41:13][39m[22m - | Verbose | Mail Listener | Mail Listener has initialised successfully and connected to the IMAP server.
+[1m[35m[2018-01-11 23:41:13][39m[22m - | Debug | Mail Listener | => 'IDLE IDLE'
+[1m[35m[2018-01-11 23:41:13][39m[22m - | Debug | Mail Listener | <= '+ idling'
+[1m[35m[2018-01-11 23:41:16][39m[22m - | Info | Core | Created db entry for command whois.
+[1m[35m[2018-01-11 23:41:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:41:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:41:47][39m[22m - | Debug | Mail Listener | <= '* OK Still here'
+[1m[35m[2018-01-11 23:42:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:42:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:42:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:42:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:43:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:43:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:43:22][39m[22m - | Info | Reload Command | Aris (pamehabai6#5480) has reloaded whois in #bot-commands on The Grid.
+[1m[35m[2018-01-11 23:43:26][39m[22m - | Error | Whois | [1m[31mSorry <@210800611522904074>, could not find user info: ReferenceError: isBot is not defined[39m[22m
+[1m[35m[2018-01-11 23:43:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:43:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:43:47][39m[22m - | Debug | Mail Listener | <= '* OK Still here'
+[1m[35m[2018-01-11 23:44:02][39m[22m - | Info | Reload Command | Aris (pamehabai6#5480) has reloaded whois in #bot-commands on The Grid.
+[1m[35m[2018-01-11 23:44:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:44:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:44:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:44:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:45:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:45:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:45:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:45:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:45:47][39m[22m - | Debug | Mail Listener | <= '* OK Still here'
+[1m[35m[2018-01-11 23:46:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:46:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:46:23][39m[22m - | Debug | Mail Listener | => DONE
+[1m[35m[2018-01-11 23:46:23][39m[22m - | Debug | Mail Listener | <= 'IDLE OK Idle completed (310.017 + 310.015 + 310.016 secs).'
+[1m[35m[2018-01-11 23:46:23][39m[22m - | Debug | Mail Listener | => 'IDLE IDLE'
+[1m[35m[2018-01-11 23:46:23][39m[22m - | Debug | Mail Listener | <= '+ idling'
+[1m[35m[2018-01-11 23:46:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:46:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:47:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:47:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:47:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:47:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:47:47][39m[22m - | Debug | Mail Listener | <= '* OK Still here'
+[1m[35m[2018-01-11 23:48:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:48:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:48:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:48:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:49:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:49:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:49:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:49:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:49:47][39m[22m - | Debug | Mail Listener | <= '* OK Still here'
+[1m[35m[2018-01-11 23:50:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:50:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:50:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:50:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:51:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:51:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:51:33][39m[22m - | Debug | Mail Listener | => DONE
+[1m[35m[2018-01-11 23:51:33][39m[22m - | Debug | Mail Listener | <= 'IDLE OK Idle completed (310.027 + 310.025 + 310.026 secs).'
+[1m[35m[2018-01-11 23:51:33][39m[22m - | Debug | Mail Listener | => 'IDLE IDLE'
+[1m[35m[2018-01-11 23:51:33][39m[22m - | Debug | Mail Listener | <= '+ idling'
+[1m[35m[2018-01-11 23:51:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:51:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:51:47][39m[22m - | Debug | Mail Listener | <= '* OK Still here'
+[1m[35m[2018-01-11 23:52:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:52:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:52:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:52:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:53:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:53:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:53:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:53:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:53:47][39m[22m - | Debug | Mail Listener | <= '* OK Still here'
+[1m[35m[2018-01-11 23:54:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:54:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:54:37][39m[22m - | Debug | Mail Listener | <= '* BYE Server shutting down.'
+[1m[35m[2018-01-11 23:54:37][39m[22m - | Debug | Mail Listener | [connection] Ended
+[1m[35m[2018-01-11 23:54:37][39m[22m - | Debug | Mail Listener | [connection] Closed
+[1m[35m[2018-01-11 23:54:37][39m[22m - | Error | Mail Listener | [1m[31mBot has disconnected from IMAP server.[39m[22m
+[1m[35m[2018-01-11 23:54:38][39m[22m - | Debug | Mail Listener | [connection] Error: Error: connect ECONNREFUSED 91.134.242.161:993
+[1m[35m[2018-01-11 23:54:38][39m[22m - | Error | Mail Listener | [1m[31mIssue with IMAP: Error: connect ECONNREFUSED 91.134.242.161:993[39m[22m
+[1m[35m[2018-01-11 23:54:38][39m[22m - | Debug | Mail Listener | [connection] Closed
+[1m[35m[2018-01-11 23:54:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:54:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:55:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:55:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:55:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:55:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:56:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:56:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:56:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:56:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:57:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:57:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:57:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:57:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:58:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:58:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:58:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:58:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:59:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:59:12][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
+[1m[35m[2018-01-11 23:59:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `whois` has not changed.
+[1m[35m[2018-01-11 23:59:42][39m[22m - | Debug | Waking Titan Terminal Watcher | Command `calibration` has not changed.
