@@ -25,6 +25,6 @@ exports.func = async (msg,args) => {
         }
     } catch (err) {
         msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.username}#${msg.author.discriminator}, i could not hug due to ${err}`);
+		log.error(`Sorry ${msg.author.tag}, i could not hug due to: ${err}`);
     }
 };

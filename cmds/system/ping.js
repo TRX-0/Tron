@@ -4,8 +4,8 @@ exports.data = {
 	description: 'Ping check.',
 	group: 'system',
 	syntax: 'ping',
-	author: 'Matt C: matt@artemisbot.uk',
-	permissions: 3
+	author: 'Aris A.',
+	permissions: 2
 };
 const ping = require('ping');
 const moment = require('moment');

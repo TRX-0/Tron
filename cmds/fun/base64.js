@@ -5,7 +5,7 @@ exports.data = {
 	group: 'fun',
 	syntax: 'base64 [encrypt/decrypt] [text]',
 	author: 'Aris A.',
-	permissions: 3
+	permissions: 2
 };
 const config = require('../../config.json');
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
@@ -49,6 +49,6 @@ exports.func = async (msg, args, bot) => {
 		}
 	} catch (err){
 		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.username}#${msg.author.discriminator} unable to base64 due to ${err}`);
+		log.error(`Sorry ${msg.author.tag} unable to base64 due to ${err}`);
 	}
 };

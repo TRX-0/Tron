@@ -4,6 +4,7 @@ const bot = new Discord.Client();
 bot.config = require('./config.json');
 
 // Basic Function Modules
+const fs = require('fs');
 const jetpack = require('fs-jetpack');
 const chalk = require('chalk');
 const log = require(`${bot.config.folders.lib}/log.js`)('Core');
@@ -14,7 +15,9 @@ const Database = require(`${bot.config.folders.lib}/db.js`);
 const Server = require(`${bot.config.folders.models}/server.js`);
 const Commands = require(`${bot.config.folders.lib}/commands.js`);
 const Profiles = require(`${bot.config.folders.models}/profiles.js`);
+const WordGame = require(`${bot.config.folders.models}/wordgame.js`);
 
+const wordlist = "/home/ubuntu/Tron/lib/wordlist.txt";
 // ==== Initialisation ====
 bot.db = Database.start(); // Start the database and connect
 
@@ -37,12 +40,14 @@ bot.loadCmds = () => {
 						log.verbose(`Created db entry for: ${file}. 👌`);
 					});
 				} catch (err) {
+					log.error(`Error in loadCmds: ${err}`);
 					reject(err); // If there's an error, stop loading commands
 				}
 			});
 			log.info(chalk.green(`Loaded ${loadedList.length} command(s) (${loadedList.join(', ')}).`));
 			resolve(cmds); // Return the cmds collection
 		} catch (err) {
+			log.error(`Error in loadCmds: ${err}`);
 			reject(err); // If there's an error, stop loading commands
 		}
 	});
@@ -88,6 +93,7 @@ bot.loadWatchers = bot => {
 			log.info(chalk.green(`Loaded ${loadedList.length} watcher(s) (${loadedList.join(', ')}) and skipped ${skippedList.length} (${skippedList.join(', ')}).`));
 			resolve(watchers); // Return the watchers collection
 		} catch (err) {
+			log.error(`Error in loadWatchers: ${err}`);
 			reject(err); // If there's an error, stop loading commands
 		}
 	});
@@ -98,7 +104,7 @@ bot.loadWatchers = bot => {
 
 // On bot connection to Discord
 bot.on('ready', async () => {
-	try {
+//	try {
 		log.info(chalk.green(`Connected to Discord gateway & ${bot.guilds.size} guilds.`));
 		[bot.commands, bot.watchers] = await Promise.all([bot.loadCmds(bot), bot.loadWatchers(bot)]); // Load commands and watchers in parallel
 		bot.guilds.keyArray().forEach(async id => { // Loop through connected guilds
@@ -122,9 +128,9 @@ bot.on('ready', async () => {
 				log.warn(`${server.name} has not been set up properly. Make sure it is set up correctly to enable all functionality.`);
 			}
 });
-	} catch (err) {
-		log.error(`Error in bot initialisation: ${err}`);
-	}
+//	} catch (err) {
+//		log.error(`Error in bot initialisation: ${err}`);
+//	}
 });
 
 // When message is received
@@ -154,7 +160,7 @@ bot.on('message', async msg => {
 			return true;
 		});
 
-		// If it's not a command, reject it.
+		// If it's not a command add 1 in the profiles database
 		if (notCommand) {
 			//Check if user exists in db
 			const userExists = await Profiles.findOne({
@@ -165,21 +171,48 @@ bot.on('message', async msg => {
 			});
 			//If user exists
 			if (userExists){
-				//Get message count
-				var getUserCount = userExists.msgcount + 1;
-				//Add one more message
+				//Get message count and add one more
+				var UserCount = userExists.msgcount + 1;
 				await userExists.update({
-					msgcount: getUserCount
+					msgcount: UserCount
 				});
 			} else {
 				//Else create user entry in db
-				const profile = await Profiles.create({
+				const userExists = await Profiles.create({
 					guildId: msg.guild.id,
 					username: msg.author.username,
-					msgcount: 1,
 					discordid: msg.author.id
 				});
 				log.info(`Created db entry for user ${msg.author.username}.`);
+			}
+			//Check if game is being played in specific guild
+			const gameExists = await WordGame.findOne({
+				where:{
+					guildID: msg.guild.id
+				}
+			});
+			if (gameExists){
+				if(gameExists.playing == true){
+					const words = msg.content.trim().split(' ');
+					words.forEach(async word => {
+						if (word.toLowerCase() == gameExists.currentWord){
+							var userSolved = userExists.wordsSolved + 1;
+							await userExists.update({
+								wordsSolved: userSolved
+							});
+							var guildSolved = gameExists.wordsSolved + 1;
+							var date = new Date();
+							await gameExists.update({
+								wordsSolved: guildSolved,
+								prevWord: gameExists.currentWord,
+								lastSolvedBy: msg.author.username,
+								prevWordSolvedTime: date,
+								currentWord: bot.getWord()
+							});
+							log.info(`${msg.author.username} Found a random game word in ${msg.guild.name}.`);
+						}
+					});
+				}
 			}
 			return;
 		}
@@ -238,25 +271,27 @@ bot.on('message', async msg => {
 
 // On the bot joining a server
 bot.on('guildCreate', async guild => {
-	log.info(`Joined ${guild.name}.`);
-	const server = await Server.findOne({ // Attempt to find server with ID
-		where: {
-			guildId: guild.id
-		}
-	});
-	if (server) { // If server is known
-
-	} else {
-		const server = await Server.create({ // Create a server object (this is required for basic bot operation)
-			guildId: guild.id,
-			name: guild.name,
-			permitChan: [],
-			perm3: [],
-			perm2: [],
-			perm1: []
+	try{
+		log.info(`Joined ${guild.name}.`);
+		const server = await Server.findOne({ // Attempt to find server with ID
+			where: {
+				guildId: guild.id
+			}
 		});
-		// Emit a warning
-		log.warn(`${server.name} has not been set up properly. Make sure it is set up correctly to enable all functionality.`);
+		if (!server) { // If server is not known
+			const server = await Server.create({ // Create a server object (this is required for basic bot operation)
+				guildId: guild.id,
+				name: guild.name,
+				permitChan: [],
+				perm3: [],
+				perm2: [],
+				perm1: []
+			});
+			// Emit a warning
+			log.warn(`${server.name} has not been set up properly. Make sure it is set up correctly to enable all functionality.`);
+		}
+	} catch (err) {
+		log.error(`Error on joining a new server: ${err}`);
 	}
 });
 
@@ -296,14 +331,47 @@ bot.reload = command => {
 						}
 					});	
 				} catch (err) {
+					log.error(`Error on command reload inner: ${err}`);
 					reject(err);
 				}
 			});
 		} catch (err) {
+			log.error(`Error on command reload outer: ${err}`);
 			reject(err);
 		}
 	});
 };	
+
+bot.load = command => {
+	return new Promise((resolve, reject) => {
+		try {
+			const folderList = jetpack.list(`${bot.config.folders.commands}`); // List contents of the cmds folder
+			folderList.forEach(folder => { // Loop through the folders
+				try {
+					const cmdList = jetpack.list(`${bot.config.folders.commands}/${folder}/`); // Loop through the files
+					cmdList.forEach(file => {
+						if (`${file}` == `${command}.js`){
+							const cmd = require(`${bot.config.folders.commands}/${folder}/${command}.js`); // Load command
+							bot.commands.set(command, cmd); // Re-add to the bot's collection of commands
+							resolve();
+						}
+					});	
+				} catch (err) {
+					log.error(`Error on command loading inner: ${err}`);
+					reject(err);
+				}
+			});
+		} catch (err) {
+			log.error(`Error on command loading outer: ${err}`);
+			reject(err);
+		}
+	});
+};	
+
+bot.getWord = command => {
+	var word = fs.readFileSync(wordlist, 'utf8').split('\n');
+    return word[parseInt(Math.random()*word.length+1)];
+};
 
 //Function that stops bot
 bot.stop = command => {
@@ -312,6 +380,7 @@ bot.stop = command => {
 			bot.destroy();
 			process.exit();
 		} catch (err) {
+			log.error(`Error on bot quit: ${err}`);
 			reject(err);
 		}
 	});
@@ -333,6 +402,7 @@ bot.watcherEnable = (watcher, watcherData) => {
 			await watcherData.update({globalEnable: true}); // Set watcher to enabled in database
 			resolve();
 		} catch (err) {
+			log.error(`Error when enabling a watcher: ${err}`);
 			reject(err);
 		}
 	});
@@ -354,6 +424,7 @@ bot.watcherDisable = (watcher, watcherData) => {
 			bot.watchers.delete(watcher); // Delete from bot's collection of watchers
 			resolve();
 		} catch (err) {
+			log.error(`Error when disabling a watcher: ${err}`);
 			reject(err);
 		}
 	});
@@ -376,6 +447,7 @@ bot.watcherReload = watcher => {
 			bot.watchers.get(watcher).watcher(bot); // Initialise watcher
 			resolve();
 		} catch (err) {
+			log.error(`Error when reloading a watcher: ${err}`);
 			reject(err);
 		}
 	});
@@ -421,6 +493,7 @@ bot.elevation = (msg, user) => {
 			});
 			resolve(0); // Otherwise nothing
 		} catch (err) {
+			log.error(`Error on message evelvation: ${err}`);
 			reject(err);
 		}
 	});

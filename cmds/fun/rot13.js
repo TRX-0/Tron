@@ -5,7 +5,7 @@ exports.data = {
 	group: 'fun',
 	syntax: 'rot13 [text]',
 	author: 'Aris A.',
-	permissions: 3
+	permissions: 2
 };
 
 const config = require('../../config.json');
@@ -31,6 +31,6 @@ exports.func = async (msg, args, bot) => {
 		}
 	} catch (err){
 		msg.reply('Something went wrong.');
-		log.error(`Something went wrong: ${err}`);
+		log.error(`Error on rot13 function due to: ${err}`);
 	}
 };

@@ -21,7 +21,7 @@ exports.func = async (msg,args) => {
 					guildId: msg.guild.id
 				}
 			});
-			log.verbose(`(${msg.author.username}#${msg.author.discriminator}) has started to setup a server in #${msg.channel.name} on ${msg.guild.name}.`);
+			log.verbose(`(${msg.author.tag} has started to setup a server in #${msg.channel.name} on ${msg.guild.name}.`);
 			if (server){
 				await server.update({
 					perm3: [args[0]],
@@ -30,7 +30,7 @@ exports.func = async (msg,args) => {
 				});
 				msg.delete().catch(O_o=>{});
 				msg.reply('Server has been set up.');
-				log.verbose(`(${msg.author.username}#${msg.author.discriminator}) has finished setting up ${msg.guild.name}.`);
+				log.verbose(`(${msg.author.tag} has finished setting up ${msg.guild.name}.`);
 			} else {
 				msg.reply('Something went wrong. Did not find server in db.');
 			}

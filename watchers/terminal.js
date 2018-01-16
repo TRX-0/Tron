@@ -20,7 +20,7 @@ const checkCommands = async bot => {
 			const resp = await wterminal(commandArr[0], commandArr.slice(1));
 			const statMsg = resp.data.redirect ? `[${resp.data.message.join('\n')}](${resp.data.redirect})` : `${resp.data.message.join('\n')}`;
 			if (statMsg === watch.message) {
-				return log.debug(`Command \`${watch.command}\` has not changed.`);
+				return;
 			}
 			log.info(`Command \`${watch.command} has changed.`);
 			const embed = new Discord.RichEmbed({

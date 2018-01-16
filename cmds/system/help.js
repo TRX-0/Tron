@@ -25,20 +25,20 @@ exports.func = async (msg, args, bot) => {
 	let hiddenE = 0;
 	let hiddenS = 0;
 	let footer = '';
-	let cmdList = `*The prefix before each command can be exchanged with \`@${bot.user.username}#${bot.user.discriminator} [command]\`*\n`;
+	let cmdList = `*The prefix before each command can be exchanged with \`@${bot.user.tag} [command]\`*\n`;
 	let cmdData;
 	let prefix = `${config.prefix} `;
 	let dm;
 	if (server.altPrefix) {
 		prefix = server.altPrefix;
-		cmdList = `*The prefix before each command can be exchanged with \`@${bot.user.username}#${bot.user.discriminator} [command]\` or \`${config.prefix} [command]\`.*\n`;
+		cmdList = `*The prefix before each command can be exchanged with \`@${bot.user.tag} [command]\` or \`${config.prefix} [command]\`.*\n`;
 	}
 	try {
 		if (spec) {
 			if (!bot.commands.has(spec)) {
 				return msg.reply('The specified command does not exist.');
 			}
-			log.verbose(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has requested additional info on !${spec} in #${msg.channel.name} on ${msg.guild.name}.`);
+			log.verbose(`${msg.member.displayName} (${msg.author.tag}) has requested additional info on !${spec} in #${msg.channel.name} on ${msg.guild.name}.`);
 			cmdData = bot.commands.get(spec).data;
 			if (elevation < cmdData.permissions) {
 				return msg.reply('You do not have permissions to view this command.');
@@ -54,7 +54,7 @@ exports.func = async (msg, args, bot) => {
 			await msg.reply('', {embed: help});
 		} else {
 			help.setTitle(`__Commands in ${msg.guild.name}.__`);
-			log.verbose(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has listed the available commands in #${msg.channel.name} on ${msg.guild.name}.`);
+			log.verbose(`${msg.member.displayName} (${msg.author.tag}) has listed the available commands in #${msg.channel.name} on ${msg.guild.name}.`);
 			for (const command of commands) {
 				cmdData = bot.commands.get(command).data;
 				if (elevation >= cmdData.permissions &&
@@ -81,7 +81,7 @@ exports.func = async (msg, args, bot) => {
 			dm = await msg.author.createDM();
 			await dm.send('If you can\'t see any commands listed, make sure you have link previews enabled in **Settings** -> **Text & Images**.', {
 				embed: help
-			}).then(() => msg.reply('I have DMed you with the avaliable commands in this server.')).catch(err => {
+			}).then(() => msg.reply('I have DMed you with the available commands in this server.')).catch(err => {
 				log.error(`Could not DM user: ${err}.`);
 				msg.reply(`I could not DM you, please check your settings.`);
 			});

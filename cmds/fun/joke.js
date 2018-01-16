@@ -29,7 +29,7 @@ exports.func = async (msg,args) => {
 
             //Output Errors
             if (error) {
-                log.error(`Sorry ${msg.author.username}#${msg.author.discriminator} Could not find any jokes due to ${error}`);
+                log.error(`Sorry ${msg.author.tag} error on joke retrieval: ${error}`);
                 // consume response data to free up memory
                 res.resume();
                 return;
@@ -53,6 +53,6 @@ exports.func = async (msg,args) => {
         });
     } catch (err) {
         msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.username}#${msg.author.discriminator} i could not find any jokes due to ${err}`);
+		log.error(`Sorry ${msg.author.tag} i could not find any jokes due to ${err}`);
     }
 };

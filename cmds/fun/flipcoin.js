@@ -5,7 +5,7 @@ exports.data = {
 	command: 'flipcoin',
 	syntax: 'flipcoin',
 	author: 'Aris A.',
-	permissions: 2,
+	permissions: 1,
 	anywhere: false
 };
 
@@ -55,6 +55,6 @@ exports.func = async (msg,args) => {
         }
     } catch (err) {
         msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.username}#${msg.author.discriminator}, i could not flip a coin: ${err}`);
+		log.error(`Sorry ${msg.author.tag}, i could not flip a coin: ${err}`);
     }
 };

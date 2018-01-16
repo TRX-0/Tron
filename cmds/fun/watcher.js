@@ -167,6 +167,6 @@ break;
 		}
 	} catch (err) {
 		msg.reply('Something went wrong.');
-		log.error(`Something went wrong: ${err}`);
+		log.error(`Error in the watcher function: ${err}`);
 	}
 };

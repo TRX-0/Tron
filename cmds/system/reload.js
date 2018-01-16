@@ -4,8 +4,8 @@ exports.data = {
 	description: 'Reloads a command.',
 	group: 'system',
 	syntax: 'reload [command]',
-	author: 'Matt C: matt@artemisbot.uk',
-	permissions: 3,
+	author: 'Aris A.',
+	permissions: 4,
 	anywhere: true
 };
 
@@ -21,7 +21,7 @@ exports.func = async (msg, args, bot) => {
 				const m = await msg.channel.send(`Reloading: ${args[0]}`);
 				await bot.reload(args[0]);
 				await m.edit(`Successfully reloaded: ${args[0]}`);
-				log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has reloaded ${args[0]} in #${msg.channel.name} on ${msg.guild.name}.`);
+				log.info(`${msg.author.tag} has reloaded ${args[0]} on ${msg.guild.name}.`);
 			} else {
 				msg.reply('Specified command does not exist.');
 			}
