@@ -67,17 +67,17 @@ exports.func = async (msg, args, bot) => {
 				commandList.forEach(file => {
 					//cmdData = bot.commands.get(file).data;
 					//if (cmdData) {
-						const cmdExists = Commands.findOne({where: {
-							guildId: msg.guild.id,
-							name: args[0]
-						}});
-						if (cmdExists && (cmdExists.enabled == true)){
-							if (elevation >= cmdData.permissions) {
-								fieldValue = fieldValue + `${file.name}, `;
-							} else {
+					const cmdExists = Commands.findOne({where: {
+						guildId: msg.guild.id,
+						name: args[0]
+					}});
+					if (cmdExists && (cmdExists.enabled == true)){
+						if (elevation >= cmdData.permissions) {
+							fieldValue = fieldValue + `${file.name}, `;
+						} else {
 
-							}
 						}
+					}
 					//}
 				});
 				log.info(` ${fieldName} - ${fieldValue}`);

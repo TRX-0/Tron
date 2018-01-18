@@ -18,7 +18,7 @@ const Commands = require(`${bot.config.folders.lib}/commands.js`);
 const Profiles = require(`${bot.config.folders.models}/profiles.js`);
 const WordGame = require(`${bot.config.folders.models}/wordgame.js`);
 
-const wordlist = "/home/ubuntu/Tron/lib/wordlist.txt";
+const wordlist = '/home/ubuntu/Tron/lib/wordlist.txt';
 // ==== Initialisation ====
 bot.db = Database.start(); // Start the database and connect
 
@@ -106,29 +106,29 @@ bot.loadWatchers = bot => {
 // On bot connection to Discord
 bot.on('ready', async () => {
 //	try {
-		log.info(chalk.green(`Connected to Discord gateway & ${bot.guilds.size} guilds.`));
-		[bot.commands, bot.watchers] = await Promise.all([bot.loadCmds(bot), bot.loadWatchers(bot)]); // Load commands and watchers in parallel
-		bot.guilds.keyArray().forEach(async id => { // Loop through connected guilds
-			const guild = bot.guilds.get(id); // Get guild object
-			await Server.sync(); // Create server table if it does not exist
-			const server = await Server.findOne({ // Attempt to find server with ID
-				where: {
-					guildId: id
-				}
-			});
-			if (!server) { // If server is not known
-				const server = await Server.create({ // Create a server object (this is required for basic bot operation)
-					guildId: id,
-					name: guild.name,
-					permitChan: [],
-					perm3: [],
-					perm2: [],
-					perm1: []
-				});
-				// Emit a warning
-				log.warn(`${server.name} has not been set up properly. Make sure it is set up correctly to enable all functionality.`);
+	log.info(chalk.green(`Connected to Discord gateway & ${bot.guilds.size} guilds.`));
+	[bot.commands, bot.watchers] = await Promise.all([bot.loadCmds(bot), bot.loadWatchers(bot)]); // Load commands and watchers in parallel
+	bot.guilds.keyArray().forEach(async id => { // Loop through connected guilds
+		const guild = bot.guilds.get(id); // Get guild object
+		await Server.sync(); // Create server table if it does not exist
+		const server = await Server.findOne({ // Attempt to find server with ID
+			where: {
+				guildId: id
 			}
-});
+		});
+		if (!server) { // If server is not known
+			const server = await Server.create({ // Create a server object (this is required for basic bot operation)
+				guildId: id,
+				name: guild.name,
+				permitChan: [],
+				perm3: [],
+				perm2: [],
+				perm1: []
+			});
+				// Emit a warning
+			log.warn(`${server.name} has not been set up properly. Make sure it is set up correctly to enable all functionality.`);
+		}
+	});
 //	} catch (err) {
 //		log.error(`Error in bot initialisation: ${err}`);
 //	}
@@ -254,7 +254,7 @@ bot.on('message', async msg => {
 		}
 
 		if (!msg.member) { // Sometimes a message doesn't have a member object attached (idk either like wtf)
-		msg.member = await msg.guild.fetchMember(msg);
+			msg.member = await msg.guild.fetchMember(msg);
 		}
 		// Get user's permission level
 		msg.elevation = await bot.elevation(msg); 
@@ -370,7 +370,7 @@ bot.load = command => {
 
 bot.getWord = command => {
 	var word = fs.readFileSync(wordlist, 'utf8').split('\n');
-    return word[parseInt(Math.random()*word.length+1)];
+	return word[parseInt(Math.random()*word.length+1)];
 };
 
 //Function that stops bot

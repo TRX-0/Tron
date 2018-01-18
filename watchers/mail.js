@@ -39,7 +39,7 @@ exports.watcher = bot => {
 		log.verbose(`${exports.data.name} has initialised successfully and connected to the IMAP server.`);
 	});
 	ml.on('server:disconnected', () => {
-		log.error(`Bot has disconnected from IMAP server.`);
+		log.error('Bot has disconnected from IMAP server.');
 		ml.start();
 	});
 	ml.on('error', err => {

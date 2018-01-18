@@ -12,7 +12,7 @@ const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 
 exports.func = async (msg,args,bot) => {
 	try {
-		await msg.channel.send(`Stopping all processes and exiting!`);
+		await msg.channel.send('Stopping all processes and exiting!');
 		await bot.stop();
 	} catch (err){
 		msg.reply('Something went wrong.');
