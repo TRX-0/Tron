@@ -32,7 +32,8 @@
         "winston-daily-rotate-file": "^1.7.2"
     },
     "devDependencies": {
-        "eslint": "^4.15.0"
+        "eslint": "^4.15.0",
+        "eslint-plugin-json": "^1.2.0"
     },
     "scripts": {
         "test": "npx eslint **/*.js && npx eslint ./*.js"
