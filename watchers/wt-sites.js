@@ -255,7 +255,6 @@ exports.start = async (msg, bot, args) => {
 		sites: {},
 		glyphs: []
 	};
-	console.log(args);
 	if (args[0]) {
 		if (!args[1]) {
 			return msg.reply('You must supply an alias for this site.');

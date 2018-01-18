@@ -71,11 +71,15 @@ exports.func = async (msg, args, bot) => {
 							guildId: msg.guild.id,
 							name: args[0]
 						}});
-						if (cmdExists && (cmdExists.enabled == true)){
-							if (elevation >= cmdData.permissions) {
-								fieldValue = fieldValue + `${file.name}, `;
-							} else {
+						if (cmdExists && cmdExists.enabled == false){
 
+						} else {
+							var command = file.slice(0, -3).toString();
+							log.info(`${command}`);
+							log.info(`${bot.commands.has(spec)}`);
+							cmdData = bot.commands.get(command).data;
+							if (elevation >= cmdData.permissions) {
+								fieldValue = fieldValue + `${file.slice(0, -3)}, `;
 							}
 						}
 					//}
