@@ -105,7 +105,7 @@ bot.loadWatchers = bot => {
 
 // On bot connection to Discord
 bot.on('ready', async () => {
-//	try {
+	try {
 		log.info(chalk.green(`Connected to Discord gateway & ${bot.guilds.size} guilds.`));
 		[bot.commands, bot.watchers] = await Promise.all([bot.loadCmds(bot), bot.loadWatchers(bot)]); // Load commands and watchers in parallel
 		bot.guilds.keyArray().forEach(async id => { // Loop through connected guilds
@@ -128,10 +128,10 @@ bot.on('ready', async () => {
 				// Emit a warning
 				log.warn(`${server.name} has not been set up properly. Make sure it is set up correctly to enable all functionality.`);
 			}
-});
-//	} catch (err) {
-//		log.error(`Error in bot initialisation: ${err}`);
-//	}
+		});
+	} catch (err) {
+		log.error(`Error in bot initialisation: ${err}`);
+	}
 });
 
 // When message is received
@@ -148,8 +148,6 @@ bot.on('message', async msg => {
 
 		let command;
 		let args;
-		let emotes;
-		let quotelist;
 
 		// Loop through possible prefixes to check if message is a command - this is a bit confusing because if the message is a command, then it is set to false (this is just so I could use .every())
 		const notCommand = [msg.server.altPrefix, bot.config.prefix, `<@${bot.user.id}>`, `<@!${bot.user.id}>`].every(prefix => {
@@ -245,7 +243,7 @@ bot.on('message', async msg => {
 			}
 		} else {
 			//If command does not exist in db, create it.
-			const createCommand = await Commands.create({
+			await Commands.create({
 				guildId: msg.guild.id,
 				name: command,
 				enabled: true
