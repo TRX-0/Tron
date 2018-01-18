@@ -222,7 +222,7 @@ const querySites = async bot => {
 		}, 30 * 1000);
 	} catch (err) {
 		if (err.status) {
-			log.warn(`Failed to access a site. Will retry in 30 seconds.`);
+			log.warn('Failed to access a site. Will retry in 30 seconds.');
 			repeat = setTimeout(async () => {
 				querySites(bot);
 			}, 30 * 1000);

@@ -19,11 +19,11 @@ exports.func = async (msg,args,bot) => {
 				msg.channel.send(isAlive ? 'Host ' + args[0] + ' is alive' : 'Host ' + args[0] + ' is dead');
 			});
 			log.verbose(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has pinged $args[0] in #${msg.channel.name} on ${msg.guild.name}.`);
-			} else {
-				log.verbose(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has pinged the bot in #${msg.channel.name} on ${msg.guild.name}.`);
-				msg.channel.send(`Pls wait.`)
+		} else {
+			log.verbose(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has pinged the bot in #${msg.channel.name} on ${msg.guild.name}.`);
+			msg.channel.send('Pls wait.')
 				.then(m => m.edit(`🏓 Took ${moment().diff(m.createdAt)} ms.`));
-			}
+		}
 	} catch (err){
 		msg.reply('Something went wrong.');
 		log.error(`Something went wrong: ${err}`);

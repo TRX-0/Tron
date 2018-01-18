@@ -16,10 +16,10 @@ exports.func = async (msg, args, bot) => {
 		if (args[0]){
 			await msg.channel.send('', {embed: {
 				fields: [{
-					name: "Rotated Text",
+					name: 'Rotated Text',
 					value: (args.slice(0).join(' ').replace(/[A-Za-z]/g, function (c) {
-						return "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".charAt(
-							   "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm".indexOf(c)
+						return 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.charAt(
+							   'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'.indexOf(c)
 						);
 					  } ))
 				  }
