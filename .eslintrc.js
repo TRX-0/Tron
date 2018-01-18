@@ -3,6 +3,9 @@ module.exports = {
         "es6": true,
         "node": true
     },
+    "plugins": [
+        "json"
+    ],
     "extends": "eslint:recommended",
     "parserOptions": {
         "ecmaVersion": 8,
