@@ -2,7 +2,8 @@ node_modules
 start.json
 *.log
 package-lock.json
-
 auth.json
 config.json
 start.json
+
+lib/wordlist.txt
