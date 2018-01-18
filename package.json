@@ -35,7 +35,7 @@
         "eslint": "^4.15.0"
     },
     "scripts": {
-        "test": "npx eslint **/*"
+        "test": "npx eslint **/*.js && npx eslint ./*.js"
     },
     "keywords": [
         "discord",
