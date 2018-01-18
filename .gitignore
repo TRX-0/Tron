@@ -5,6 +5,4 @@ package-lock.json
 auth.json
 config.json
 start.json
-
-lib/wordlist.txt
 lib/wordlist.txt
