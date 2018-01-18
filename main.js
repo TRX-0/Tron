@@ -295,7 +295,6 @@ bot.on('guildCreate', async guild => {
 	}
 });
 
-
 bot.on('error', log.error); // If there's an error, emit an error to the logger
 bot.on('warn', log.warn); // If there's a warning, emit a warning to the logger
 
