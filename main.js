@@ -177,7 +177,7 @@ bot.on('message', async msg => {
 				});
 			} else {
 				//Else create user entry in db
-				const userExists = await Profiles.create({
+				await Profiles.create({
 					guildId: msg.guild.id,
 					username: msg.author.username,
 					discordid: msg.author.id
@@ -252,7 +252,7 @@ bot.on('message', async msg => {
 		}
 
 		if (!msg.member) { // Sometimes a message doesn't have a member object attached (idk either like wtf)
-		msg.member = await msg.guild.fetchMember(msg);
+			msg.member = await msg.guild.fetchMember(msg);
 		}
 		// Get user's permission level
 		msg.elevation = await bot.elevation(msg); 
@@ -366,13 +366,13 @@ bot.load = command => {
 	});
 };	
 
-bot.getWord = command => {
+bot.getWord = () => {
 	var word = fs.readFileSync(wordlist, 'utf8').split('\n');
-    return word[parseInt(Math.random()*word.length+1)];
+	return word[parseInt(Math.random()*word.length+1)];
 };
 
 //Function that stops bot
-bot.stop = command => {
+bot.stop = () => {
 	return new Promise((resolve, reject) => {
 		try {
 			bot.destroy();
