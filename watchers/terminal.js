@@ -7,7 +7,7 @@ const Discord = require('discord.js');
 const moment = require('moment');
 const config = require('../config.json');
 const TerminalWatch = require(`${config.folders.models}/terminalwatch`);
-const wterminal = require(`${config.folders.commands}/fun/wterminal.js`).runCommand;
+const wterminal = require(`${config.folders.commands}/Utilities/wterminal.js`).runCommand;
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 
 let repeat;
