@@ -12,7 +12,7 @@ exports.data = {
 const config = require('../../config.json');
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 
-exports.func = async (msg, args, bot) => {
+exports.func = async (msg, args) => {
 	try{
 		if (args[0]){          
 			let member = msg.mentions.members.first();
@@ -33,6 +33,6 @@ exports.func = async (msg, args, bot) => {
 		}
 	} catch (err) {
 		msg.reply('Something went wrong.');
-		log.error(`Sorry ${message.author} I couldn't ban because of : ${error}`);
+		log.error(`Sorry ${msg.author} I couldn't ban because of : ${err}`);
 	}
 };

@@ -25,7 +25,6 @@ exports.func = async (msg, args, bot) => {
 	const elevation = await bot.elevation(msg);
 	let cmdData;
 	let prefix = `${config.prefix} `;
-	let dm;
 	
 	try {
 		//If help is requested for a specific command
@@ -71,9 +70,7 @@ exports.func = async (msg, args, bot) => {
 							guildId: msg.guild.id,
 							name: args[0]
 						}});
-						if (cmdExists && cmdExists.enabled == false){
-
-						} else {
+						if (!cmdExists || cmdExists.enabled == true){
 							var command = file.slice(0, -3);
 							cmdData = bot.commands.get(command).data;
 							if (elevation >= cmdData.permissions) {
@@ -83,8 +80,8 @@ exports.func = async (msg, args, bot) => {
 					}
 				});
 				fieldValue.slice(0, -2);
-				await help.addField(fieldName,fieldValue);
-				log.info(`${fieldName} ${fieldValue}`)
+				help.addField(fieldName,fieldValue);
+				log.info(`${fieldName} ${fieldValue}`);
 				fieldName = '';
 				fieldValue = '';
 			}); 

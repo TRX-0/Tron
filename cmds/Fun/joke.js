@@ -13,9 +13,9 @@ const config = require('../../config.json');
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 const http = require ('http');
 
-exports.func = async (msg,args) => {
+exports.func = async (msg) => {
 	try{
-		var JsonJoke = http.get('http://api.icndb.com/jokes/random', (res) => {
+		http.get('http://api.icndb.com/jokes/random', (res) => {
 			const { statusCode } = res;
 			const contentType = res.headers['content-type'];
       

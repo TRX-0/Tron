@@ -100,7 +100,7 @@ const checkGlyphs = async bot => {
 				}
 				const resp = await snek.get(`http://wakingtitan.com${glyphs.sort()[i]}`);
 				jetpack.write(`watcherData/glyphs/glyph${glyphs.sort()[i].split('/').slice(-1)[0]}`, resp.body);
-				const uploadResult = await T.post('media/upload', {
+				await T.post('media/upload', {
 					media_data: resp.body.toString('base64')
 				});
 				await delay(30 * 1000);

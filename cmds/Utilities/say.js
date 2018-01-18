@@ -17,7 +17,7 @@ exports.func = async (msg,args) => {
 		if (args[0]){
 			const sayMessage = args.join(' ');
 			//We delete the command message (sneaky, right?).
-			msg.delete().catch(O_o=>{}); 
+			msg.delete(); 
 			// And we get the bot to say the thing: 
 			msg.channel.send(sayMessage);
 			log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) made Tron talk. `);

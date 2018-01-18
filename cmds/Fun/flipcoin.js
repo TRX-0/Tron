@@ -12,7 +12,7 @@ exports.data = {
 const config = require('../../config.json');
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 
-exports.func = async (msg,args) => {
+exports.func = async (msg) => {
 	try{
 		const random = Math.random();
 		switch (true) {

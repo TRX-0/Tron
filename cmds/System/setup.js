@@ -8,7 +8,6 @@ exports.data = {
 	permissions: 4
 };
 
-const moment = require('moment');
 const config = require('../../config.json');
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 const Server = require(`${config.folders.models}/server.js`);
@@ -28,7 +27,7 @@ exports.func = async (msg,args) => {
 					perm2: [args[1]],
 					perm1: [args[2]]
 				});
-				msg.delete().catch(O_o=>{});
+				msg.delete();
 				msg.reply('Server has been set up.');
 				log.verbose(`(${msg.author.tag} has finished setting up ${msg.guild.name}.`);
 			} else {

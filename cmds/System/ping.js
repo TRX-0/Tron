@@ -12,7 +12,7 @@ const moment = require('moment');
 const config = require('../../config.json');
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 
-exports.func = async (msg,args,bot) => {
+exports.func = async (msg,args) => {
 	try {
 		if (args[0]){
 			ping.sys.probe(args[0], function(isAlive){

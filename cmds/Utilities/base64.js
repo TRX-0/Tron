@@ -9,10 +9,9 @@ exports.data = {
 };
 const config = require('../../config.json');
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
-const moment = require('moment');
 const atob = require('atob');
 const btoa = require('btoa');
-exports.func = async (msg, args, bot) => {
+exports.func = async (msg, args) => {
 	try{
 		switch(args[0]) {
 		case 'encode': 
@@ -22,8 +21,7 @@ exports.func = async (msg, args, bot) => {
 				fields: [{
 					name: 'Encoded Text',
 					value: result
-					  }
-				],
+				}],
 				color: 0x0048C3
 			}});
 			break;
@@ -35,8 +33,7 @@ exports.func = async (msg, args, bot) => {
 				fields: [{
 					name: 'Decoded Text',
 					value: result
-					  }
-				],
+				}],
 				color: 0x0048C3
 			}});
 			break;

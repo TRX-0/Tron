@@ -19,7 +19,7 @@ const clean = text => {
 	return text;
 };
 
-exports.func = async (msg, args, bot) => {
+exports.func = async (msg, args) => {
 	if(msg.author.id !== auth.ownerID) return;
 	log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has used eval in #${msg.channel.name} on ${msg.guild.name}.`);
 	const code = args.join(' ');

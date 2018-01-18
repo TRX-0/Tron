@@ -7,14 +7,12 @@ exports.data = {
 	permissions: 4
 };
 
-const moment = require('moment');
 const config = require('../../config.json');
 const auth = require('../../auth.json');
 const exec = require('util').promisify(require('child_process').exec);
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
-const Server = require(`${config.folders.lib}/db.js`);
 
-exports.func = async (msg,args,bot) => {
+exports.func = async (msg) => {
 	try {
 		const sent = await msg.channel.send('Updating code...');
 		const responsed = await exec(`git pull https://${auth.Github.Username}:${auth.Github.Password}@github.com/pamehabai6/Tron.git`);

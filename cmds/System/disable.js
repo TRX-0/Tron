@@ -42,7 +42,7 @@ exports.func = async (msg, args, bot) => {
 					}
 				} else {
 					//If command does not exist in db, create it.
-					const createCommand = await Commands.create({
+					await Commands.create({
 						guildId: msg.guild.id,
 						name: args[0],
 						enabled: true

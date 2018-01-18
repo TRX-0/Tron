@@ -70,9 +70,6 @@ exports.watcher = bot => {
 					},
 					timestamp: mail.date
 				});
-				if (mail.from[0].address === 'info@wakingtitan.com') {
-					
-				}
 				mailWatchers.forEach(async watch => {
 					// Send embed to watching discord channels
 					bot.channels.get(watch.channelID).send('', {
