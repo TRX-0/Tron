@@ -9,7 +9,6 @@ exports.data = {
 const chalk = require('chalk');
 const CSSselect = require('css-select');
 const Discord = require('discord.js');
-const exec = require('child-process-promise').exec;
 const htmlparser = require('htmlparser2');
 const jetpack = require('fs-jetpack');
 const moment = require('moment');
@@ -100,9 +99,6 @@ const checkGlyphs = async bot => {
 				}
 				const resp = await snek.get(`http://wakingtitan.com${glyphs.sort()[i]}`);
 				jetpack.write(`watcherData/glyphs/glyph${glyphs.sort()[i].split('/').slice(-1)[0]}`, resp.body);
-				await T.post('media/upload', {
-					media_data: resp.body.toString('base64')
-				});
 				await delay(30 * 1000);
 				change = true;
 			}
@@ -166,18 +162,6 @@ const checkSite = async (site, bot) => {
 				}
 			});
 			jetpack.write(`./watcherData/${data.sites[site]}-temp.html`, req.body.toString());
-			const res = await exec(`~/.nvm/versions/node/v9.3.0/lib/node_modules/diffchecker/dist/diffchecker.js ./watcherData/${data.sites[site]}-latest.html ./watcherData/${data.sites[site]}-temp.html`, {
-				cwd: '/home/matt/OcelBot'
-			});
-			let status;
-			if (res.stderr.length > 0) {
-				log.error(`Could not generate diff: ${res.stderr.slice(0, -1)}`);
-				embed.setDescription('The diff could not be generated.');
-				status = `${site} has updated! #WakingTitan`;
-			} else {
-				embed.setDescription(`View the change [here](${res.stdout.split(' ').pop().slice(0, -1)}).`);
-				status = `${site} has updated! See what's changed here: ${res.stdout.split(' ').pop().slice(0, -1)} #WakingTitan`;
-			}
 			if (site === 'https://wakingtitan.com') {
 				checkGlyphs(bot);
 			}
