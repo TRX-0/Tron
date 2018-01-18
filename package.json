@@ -32,60 +32,10 @@
         "winston-daily-rotate-file": "^1.7.2"
     },
     "devDependencies": {
-        "eslint-plugin-ava": "^4.4.0",
-        "eslint-plugin-import": "^2.8.0",
-        "eslint-plugin-no-use-extend-native": "^0.3.12",
-        "eslint-plugin-promise": "^3.6.0",
-        "eslint-plugin-unicorn": "^3.0.1",
-        "xo": "^0.18.2"
+        "eslint": "^4.15.0"
     },
     "scripts": {
-        "test": "xo"
-    },
-    "xo": {
-        "rules": {
-            "no-unused-expressions": [
-                "error",
-                {
-                    "allowTernary": true,
-                    "allowShortCircuit": true
-                }
-            ],
-            "camelcase": [
-                "error",
-                {
-                    "properties": "never"
-                }
-            ],
-            "no-unassigned-import": [
-                "off",
-                {}
-            ],
-            "new-cap": [
-                "error",
-                {
-                    "capIsNew": false
-                }
-            ],
-            "no-return-assign": [
-                "off",
-                {}
-            ],
-            "complexity": [
-                "error",
-                50
-            ],
-            "no-await-in-loop": [
-                "off",
-                {}
-            ],
-            "max-depth": [
-                "error",
-                {
-                    "max": 7
-                }
-            ]
-        }
+        "test": "npx eslint **/*"
     },
     "keywords": [
         "discord",
