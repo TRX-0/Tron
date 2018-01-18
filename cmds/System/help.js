@@ -33,7 +33,7 @@ exports.func = async (msg, args, bot) => {
 			if (!bot.commands.has(spec)) {
 				return msg.reply('The specified command does not exist.');
 			}
-			
+			log.info(`${spec}`);
 			cmdData = bot.commands.get(spec).data;
 			if (elevation < cmdData.permissions) {
 				return msg.reply('You do not have permissions to view this command.');
@@ -65,8 +65,8 @@ exports.func = async (msg, args, bot) => {
 				counter++;
 				const commandList = jetpack.list(`${config.folders.commands}/${folder}`); // Loop through the commands
 				commandList.forEach(file => {
-					//cmdData = bot.commands.get(file).data;
-					//if (cmdData) {
+					cmdData = bot.commands.get(file.slice(0, -3)).data;
+					if (cmdData) {
 						const cmdExists = Commands.findOne({where: {
 							guildId: msg.guild.id,
 							name: args[0]
@@ -74,18 +74,17 @@ exports.func = async (msg, args, bot) => {
 						if (cmdExists && cmdExists.enabled == false){
 
 						} else {
-							var command = file.slice(0, -3).toString();
-							log.info(`${command}`);
-							log.info(`${bot.commands.has(spec)}`);
+							var command = file.slice(0, -3);
 							cmdData = bot.commands.get(command).data;
 							if (elevation >= cmdData.permissions) {
 								fieldValue = fieldValue + `${file.slice(0, -3)}, `;
 							}
 						}
-					//}
+					}
 				});
-				log.info(` ${fieldName} - ${fieldValue}`);
-				//help.addField(fieldName,fieldValue);
+				fieldValue.slice(0, -2);
+				await help.addField(fieldName,fieldValue);
+				log.info(`${fieldName} ${fieldValue}`)
 				fieldName = '';
 				fieldValue = '';
 			}); 
