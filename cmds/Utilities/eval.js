@@ -9,6 +9,7 @@ exports.data = {
 };
 
 const config = require('../../config.json');
+const auth = require('../../auth.json');
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 
 const clean = text => {
@@ -19,7 +20,7 @@ const clean = text => {
 };
 
 exports.func = async (msg, args, bot) => {
-	if(msg.author.id !== config.ownerID) return;
+	if(msg.author.id !== auth.ownerID) return;
 	log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has used eval in #${msg.channel.name} on ${msg.guild.name}.`);
 	const code = args.join(' ');
 	try {

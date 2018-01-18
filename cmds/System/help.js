@@ -13,7 +13,7 @@ const Discord = require('discord.js');
 const config = require('../../config.json');
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 const Server = require(`${config.folders.models}/server.js`);
-const Commands = require(`${config.folders.lib}/commands.js`);
+const Commands = require(`${config.folders.models}/commands.js`);
 const jetpack = require('fs-jetpack');
 
 exports.func = async (msg, args, bot) => {

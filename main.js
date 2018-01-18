@@ -13,12 +13,12 @@ const Watcher = require(`${bot.config.folders.models}/watcher.js`);
 
 // Database modules
 const Database = require(`${bot.config.folders.lib}/db.js`);
+const Commands = require(`${bot.config.folders.models}/commands.js`);
 const Server = require(`${bot.config.folders.models}/server.js`);
-const Commands = require(`${bot.config.folders.lib}/commands.js`);
 const Profiles = require(`${bot.config.folders.models}/profiles.js`);
 const WordGame = require(`${bot.config.folders.models}/wordgame.js`);
 
-const wordlist = "/home/ubuntu/Tron/lib/wordlist.txt";
+const wordlist = bot.config.folders.wordlist;
 // ==== Initialisation ====
 bot.db = Database.start(); // Start the database and connect
 
@@ -465,7 +465,7 @@ bot.elevation = (msg, user) => {
 		try {
 			const impUser = user || msg.author; // If there is a user object, this is the user we care about, otherwise, just message author
 			const impMember = user ? await msg.guild.fetchMember(user.id) : msg.member; // If we care about the user object, we have no member object - fetch it
-			if (impUser.id === bot.config.ownerID) { // If the author's ID is the same as the bot owner's then give them top perms
+			if (impUser.id === bot.auth.ownerID) { // If the author's ID is the same as the bot owner's then give them top perms
 				resolve(4);
 			}
 			const server = await Server.findOne({ // Fetch server object

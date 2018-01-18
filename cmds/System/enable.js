@@ -11,7 +11,7 @@ exports.data = {
 
 const config = require('../../config.json');
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
-const Commands = require(`${config.folders.lib}/commands.js`);
+const Commands = require(`${config.folders.models}/commands.js`);
 
 exports.func = async (msg, args, bot) => {
 	try {
