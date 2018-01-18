@@ -65,7 +65,6 @@ exports.func = async (msg, args, bot) => {
 				counter++;
 				const commandList = jetpack.list(`${config.folders.commands}/${folder}`); // Loop through the commands
 				commandList.forEach(file => {
-<<<<<<< HEAD
 					cmdData = bot.commands.get(file.slice(0, -3)).data;
 					if (cmdData) {
 						const cmdExists = Commands.findOne({where: {
@@ -82,26 +81,6 @@ exports.func = async (msg, args, bot) => {
 							}
 						}
 					}
-=======
-					//cmdData = bot.commands.get(file).data;
-					//if (cmdData) {
-					const cmdExists = Commands.findOne({where: {
-						guildId: msg.guild.id,
-						name: args[0]
-					}});
-					if (cmdExists && cmdExists.enabled == false){
-
-					} else {
-						var command = file.slice(0, -3).toString();
-						log.info(`${command}`);
-						log.info(`${bot.commands.has(spec)}`);
-						cmdData = bot.commands.get(command).data;
-						if (elevation >= cmdData.permissions) {
-							fieldValue = fieldValue + `${file.slice(0, -3)}, `;
-						}
-					}
-					//}
->>>>>>> 7c906b6afa369816e6ef0a1a1484310ef744269c
 				});
 				fieldValue.slice(0, -2);
 				await help.addField(fieldName,fieldValue);
