@@ -9,15 +9,16 @@ const MailListener = require('mail-listener2');
 const Discord = require('discord.js');
 
 const config = require('../config.json');
+const auth = require('../auth.json');
 const MailWatch = require(`${config.folders.models}/mailwatch`);
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 
 const moment = require('moment');
 
 const ml = new MailListener({
-	username: config.mailUsername,
-	password: config.mailPassword,
-	host: config.mailHost,
+	username: auth.Email.Username,
+	password: auth.Email.Password,
+	host: auth.Email.Host,
 	port: 993, // Imap port
 	tls: true,
 	debug: log.debug, // Or your custom function with only one incoming argument. Default: null

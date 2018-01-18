@@ -2,6 +2,7 @@
 var Discord = require('discord.js');
 const bot = new Discord.Client();
 bot.config = require('./config.json');
+bot.auth = require('./auth.json');
 
 // Basic Function Modules
 const fs = require('fs');
@@ -303,7 +304,7 @@ process.on('unhandledRejection', err => { // If I've forgotten to catch a promis
 });
 
 // Officially start the bot
-bot.login(bot.config.token);
+bot.login(bot.auth.token);
 
 // ==== Global Helper Functions ====
 

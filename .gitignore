@@ -1,5 +1,7 @@
 node_modules
-config.json
 start.json
 *.log
 package-lock.json
+
+auth.json
+config.json
