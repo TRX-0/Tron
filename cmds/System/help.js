@@ -4,7 +4,7 @@ exports.data = {
 	group: 'system',
 	command: 'help',
 	syntax: 'help [optional:command]',
-	author: 'Matt C: matt@artemisbot.uk',
+	author: 'Aris A.',
 	permissions: 0,
 	anywhere: false
 };
@@ -63,25 +63,28 @@ exports.func = async (msg, args, bot) => {
 				fieldName = `**${counter}.${folder}**`;
 				counter++;
 				const commandList = jetpack.list(`${config.folders.commands}/${folder}`); // Loop through the commands
-				commandList.forEach(file => {
-					cmdData = bot.commands.get(file.slice(0, -3)).data;
-					if (cmdData) {
-						const cmdExists = Commands.findOne({where: {
-							guildId: msg.guild.id,
-							name: args[0]
-						}});
-						if (!cmdExists || cmdExists.enabled == true){
-							var command = file.slice(0, -3);
-							cmdData = bot.commands.get(command).data;
-							if (elevation >= cmdData.permissions) {
-								fieldValue = fieldValue + `${file.slice(0, -3)}, `;
+				commandList.forEach(async file => {
+					//Check if command is loaded
+					if (bot.commands.has(file.slice(0, -3))){
+						//Get command data
+						cmdData = await bot.commands.get(file.slice(0, -3)).data;
+						//Check if command is enabled
+						const cmdExists = await Commands.findOne({
+							where: {
+								guildId: msg.guild.id,
+								name: file.slice(0, -3)
 							}
+						});
+						const isEnabled = cmdExists.enabled;
+						log.info(cmdExists);
+						if (isEnabled && (elevation >= cmdData.permissions)){
+							fieldValue = fieldValue + `${file.slice(0, -3)}, `;
 						}
 					}
 				});
 				fieldValue.slice(0, -2);
-				help.addField(fieldName,fieldValue);
 				log.info(`${fieldName} ${fieldValue}`);
+				//help.addField(fieldName,fieldValue);
 				fieldName = '';
 				fieldValue = '';
 			}); 

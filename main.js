@@ -35,10 +35,9 @@ bot.loadCmds = () => {
 					const cmdList = jetpack.list(`${bot.config.folders.commands}/${folder}`); // Loop through the commands
 					cmdList.forEach(file => {
 						const props = require(`${bot.config.folders.commands}/${folder}/${file}`); // Load the command
-						log.verbose(`Loading Command: ${props.data.name}. 👌`);
 						loadedList.push(props.data.name);
 						cmds.set(props.data.command, props); // Store the command prototype in the cmds collection
-						log.verbose(`Created db entry for: ${file}. 👌`);
+						log.verbose(`Loaded Command: ${props.data.name}. 👌`);
 					});
 				} catch (err) {
 					log.error(`Error in loadCmds: ${err}`);
@@ -101,7 +100,7 @@ bot.loadWatchers = bot => {
 };
 
 
-// ==== Event Handlers ====
+// ==== Event Handlers ==== //
 
 // On bot connection to Discord
 bot.on('ready', async () => {
@@ -128,6 +127,7 @@ bot.on('ready', async () => {
 				// Emit a warning
 				log.warn(`${server.name} has not been set up properly. Make sure it is set up correctly to enable all functionality.`);
 			}
+			await bot.createCommands(guild, id);
 		});
 	} catch (err) {
 		log.error(`Error in bot initialisation: ${err}`);
@@ -145,10 +145,8 @@ bot.on('message', async msg => {
 				guildId: msg.guild.id
 			}
 		});
-
 		let command;
 		let args;
-
 		// Loop through possible prefixes to check if message is a command - this is a bit confusing because if the message is a command, then it is set to false (this is just so I could use .every())
 		const notCommand = [msg.server.altPrefix, bot.config.prefix, `<@${bot.user.id}>`, `<@!${bot.user.id}>`].every(prefix => {
 			if (msg.content.toLowerCase().startsWith(prefix)) { // Check if message starts with prefix
@@ -159,7 +157,6 @@ bot.on('message', async msg => {
 			return true;
 		});
 
-		// If it's not a command add 1 in the profiles database
 		if (notCommand) {
 			//Check if user exists in db
 			const userExists = await Profiles.findOne({
@@ -229,29 +226,13 @@ bot.on('message', async msg => {
 			guildId: msg.guild.id,
 			name: command
 		}});
-
-		//If it exists check if it is enabled in this guild.
-		if (cmdExists){
-			const isEnabled = (await Commands.findOne({where: {
-				guildId: msg.guild.id,
-				name: command
-			}})).enabled;
-			//If it is disabled return.
-			if (!isEnabled){
-				msg.reply(`Command is disabled in ${msg.guild.name}.`);
-				return;
-			}
-		} else {
-			//If command does not exist in db, create it.
-			await Commands.create({
-				guildId: msg.guild.id,
-				name: command,
-				enabled: true
-			});
-			log.info(`Created db entry for command ${command}.`);
+		//If it is disabled return.
+		if (cmdExists && cmdExists.enabled == false){
+			msg.reply(`Command is disabled in ${msg.guild.name}.`);
+			return;
 		}
-
-		if (!msg.member) { // Sometimes a message doesn't have a member object attached (idk either like wtf)
+		// Sometimes a message doesn't have a member object attached (idk either like wtf)
+		if (!msg.member) { 
 			msg.member = await msg.guild.fetchMember(msg);
 		}
 		// Get user's permission level
@@ -288,11 +269,15 @@ bot.on('guildCreate', async guild => {
 			});
 			// Emit a warning
 			log.warn(`${server.name} has not been set up properly. Make sure it is set up correctly to enable all functionality.`);
+			await bot.createCommands(guild, guild.id);
 		}
 	} catch (err) {
 		log.error(`Error on joining a new server: ${err}`);
 	}
 });
+
+// Officially start the bot
+bot.login(bot.auth.token);
 
 bot.on('error', log.error); // If there's an error, emit an error to the logger
 bot.on('warn', log.warn); // If there's a warning, emit a warning to the logger
@@ -301,71 +286,29 @@ process.on('unhandledRejection', err => { // If I've forgotten to catch a promis
 	log.error(`Uncaught Promise Error: \n${err.stack}`);
 });
 
-// Officially start the bot
-bot.login(bot.auth.token);
-
 // ==== Global Helper Functions ====
 
-/**
- * Reloads a specified command
- *
- * @param {string} command - Name of the command to be reloaded
- * @returns {Promise} Resolves with nothing, rejects with Error object
- */
-bot.reload = command => {
-	return new Promise((resolve, reject) => {
-		try {
-			const folderList = jetpack.list(`${bot.config.folders.commands}`); // List contents of the cmds folder
-			folderList.forEach(folder => { // Loop through the folders
-				try {
-					const cmdList = jetpack.list(`${bot.config.folders.commands}/${folder}/`); // Loop through the files
-					cmdList.forEach(file => {
-						if (`${file}` == `${command}.js`){
-							delete require.cache[require.resolve(`${bot.config.folders.commands}/${folder}/${command}.js`)]; // Delete command from cache
-							const cmd = require(`${bot.config.folders.commands}/${folder}/${command}.js`); // Load command
-							bot.commands.delete(command);
-							bot.commands.set(command, cmd); // Re-add to the bot's collection of commands
-							resolve();
-						}
-					});	
-				} catch (err) {
-					log.error(`Error on command reload inner: ${err}`);
-					reject(err);
-				}
+//Function that creates commands in the db.
+bot.createCommands = (guild, id) => {
+	bot.commands.forEach(async command => {
+		const cmdExists = await Commands.findOne({
+			where:{
+				guildId: id,
+				name: command.data.command
+			}
+		});
+		if (!cmdExists){
+			await Commands.create({
+				guildId: id,
+				name: command.data.command,
+				enabled: true
 			});
-		} catch (err) {
-			log.error(`Error on command reload outer: ${err}`);
-			reject(err);
+			log.info(`Created db command entry for: ${command.data.command} in ${guild.name}`);
 		}
 	});
-};	
+};
 
-bot.load = command => {
-	return new Promise((resolve, reject) => {
-		try {
-			const folderList = jetpack.list(`${bot.config.folders.commands}`); // List contents of the cmds folder
-			folderList.forEach(folder => { // Loop through the folders
-				try {
-					const cmdList = jetpack.list(`${bot.config.folders.commands}/${folder}/`); // Loop through the files
-					cmdList.forEach(file => {
-						if (`${file}` == `${command}.js`){
-							const cmd = require(`${bot.config.folders.commands}/${folder}/${command}.js`); // Load command
-							bot.commands.set(command, cmd); // Re-add to the bot's collection of commands
-							resolve();
-						}
-					});	
-				} catch (err) {
-					log.error(`Error on command loading inner: ${err}`);
-					reject(err);
-				}
-			});
-		} catch (err) {
-			log.error(`Error on command loading outer: ${err}`);
-			reject(err);
-		}
-	});
-};	
-
+//Random word function
 bot.getWord = () => {
 	var word = fs.readFileSync(wordlist, 'utf8').split('\n');
 	return word[parseInt(Math.random()*word.length+1)];

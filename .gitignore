@@ -6,3 +6,5 @@ auth.json
 config.json
 start.json
 lib/wordlist.txt
+
+.eslintrc
