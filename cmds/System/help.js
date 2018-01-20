@@ -78,12 +78,20 @@ exports.func = async (msg, args, bot) => {
 			await Object.keys(groups).forEach((group) => {
 				let fieldValue = '';
 				const fieldName = `**${group}**`;
-				fieldValue += groups[group].map((cmd) => {
+				/*fieldValue = groups[group].map((cmd) => {
 					if(EnabledCommands.includes(cmd.data.command) && (elevation >= cmd.data.permissions)){
 						return cmd.data.command;
 					}
-				}).join(', ');
-				log.info(`${fieldValue}`);
+				});
+				fieldValue.filter( (element) => element.length > 0);
+				fieldValue.join(', ');
+				log.info(`${fieldValue}`); */
+				fieldValue = groups[group].reduce((accumulator, cmd) => {
+					if (EnabledCommands.includes(cmd.data.command) && (elevation >= cmd.data.permissions)) {
+						accumulator.push(cmd.data.command);
+					}
+					return accumulator;
+				}, []).join(', ');
 				if(fieldValue != ''){
 					help.addField(`${fieldName}`,`\`${fieldValue}\``);
 				}
