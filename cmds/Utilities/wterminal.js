@@ -2,7 +2,7 @@ exports.data = {
 	name: 'Waking Titan Terminal Commands',
 	command: 'wterminal',
 	description: 'Checks value of a Waking Titan terminal commmand.',
-	group: 'fun',
+	group: 'Utilities',
 	syntax: 'wterminal [command]',
 	author: 'Matt C: matt@artemisbot.uk',
 	permissions: 0

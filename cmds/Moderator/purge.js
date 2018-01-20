@@ -1,7 +1,7 @@
 exports.data = {
 	name: 'Purge',
 	description: 'This command removes all messages from all users in the channel, up to 100.',
-	group: 'moderator',
+	group: 'Moderator',
 	command: 'purge',
 	syntax: 'purge [amount]',
 	author: 'Aris A.',

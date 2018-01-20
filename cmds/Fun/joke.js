@@ -1,7 +1,7 @@
 exports.data = {
 	name: 'Joke',
 	description: 'Tells you a joke.',
-	group: 'fun',
+	group: 'Fun',
 	command: 'joke',
 	syntax: 'joke',
 	author: 'Aris A.',

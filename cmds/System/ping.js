@@ -2,7 +2,7 @@ exports.data = {
 	name: 'Ping',
 	command: 'ping',
 	description: 'Ping check.',
-	group: 'system',
+	group: 'System',
 	syntax: 'ping',
 	author: 'Aris A.',
 	permissions: 2

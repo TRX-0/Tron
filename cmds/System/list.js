@@ -2,7 +2,7 @@ exports.data = {
 	name: 'List',
 	command: 'list',
 	description: 'List permissions and roles.',
-	group: 'system',
+	group: 'System',
 	syntax: 'list [perms/roles]',
 	author: 'Aris A,',
 	permissions: 3

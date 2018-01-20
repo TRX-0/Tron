@@ -1,9 +1,9 @@
 exports.data = {
 	name: 'Enable Command',
 	command: 'enable',
-	description: 'Enables a new/disabled command.',
+	description: 'Enables a command.',
 	syntax: 'enable [command]',
-	group: 'system',
+	group: 'System',
 	author: 'Aris A.',
 	permissions: 3,
 	anywhere: false

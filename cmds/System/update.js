@@ -2,7 +2,7 @@ exports.data = {
 	name: 'Update',
 	command: 'update',
 	description: 'Update tron code.',
-	group: 'system',
+	group: 'System',
 	syntax: 'update',
 	permissions: 4
 };

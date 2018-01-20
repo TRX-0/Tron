@@ -2,7 +2,7 @@ exports.data = {
 	name: 'Glyph',
 	command: 'glyph',
 	description: 'Translate glyphs from and to hex.',
-	group: 'fun',
+	group: 'Utilities',
 	syntax: 'glyph [encrypt/decrypt] [hex/glyph emojis]',
 	author: 'Aris A.',
 	permissions: 2

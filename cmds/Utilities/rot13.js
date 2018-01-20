@@ -2,7 +2,7 @@ exports.data = {
 	name: 'Rotate 13',
 	command: 'rot13',
 	description: 'Encrypt and Decrypt in rot13.',
-	group: 'fun',
+	group: 'Utilities',
 	syntax: 'rot13 [text]',
 	author: 'Aris A.',
 	permissions: 2

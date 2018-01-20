@@ -1,7 +1,7 @@
 exports.data = {
 	name: 'Ban',
 	description: 'Bans a specific user.',
-	group: 'moderator',
+	group: 'Moderator',
 	command: 'ban',
 	syntax: 'ban [name] [reason]',
 	author: 'Aris A.',

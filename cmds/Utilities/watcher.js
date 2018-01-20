@@ -2,7 +2,7 @@ exports.data = {
 	name: 'Watchers',
 	command: 'watcher',
 	description: 'Watcher functions',
-	group: 'fun',
+	group: 'Utilities',
 	syntax: 'watcher [start|stop|enable|disable|list] [watcherName] [params]',
 	author: 'Matt C: matt@artemisbot.uk',
 	permissions: 3,

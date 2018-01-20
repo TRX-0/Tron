@@ -2,7 +2,7 @@ exports.data = {
 	name: 'Base64',
 	command: 'base64',
 	description: 'Encrypt and Decrypt in Base64.',
-	group: 'fun',
+	group: 'Utilities',
 	syntax: 'base64 [encrypt/decrypt] [text]',
 	author: 'Aris A.',
 	permissions: 2

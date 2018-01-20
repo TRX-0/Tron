@@ -1,8 +1,8 @@
 exports.data = {
-	name: 'WordGame',
+	name: 'Wgame',
 	command: 'wgame',
 	description: 'Play a random word game.',
-	group: 'fun',
+	group: 'Fun',
 	syntax: 'wgame [start/stop/next/stats]',
 	author: 'Aris A,',
 	permissions: 3

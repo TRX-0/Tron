@@ -2,7 +2,7 @@ exports.data = {
 	name: 'Disable Command',
 	command: 'disable',
 	description: 'Disables a command.',
-	group: 'system',
+	group: 'System',
 	syntax: 'disable [command]',
 	author: 'Aris A,',
 	permissions: 3,

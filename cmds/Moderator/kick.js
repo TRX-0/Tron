@@ -1,7 +1,7 @@
 exports.data = {
 	name: 'Kick',
 	description: 'Kick a specific user.',
-	group: 'moderator',
+	group: 'Moderator',
 	command: 'kick',
 	syntax: 'kick [name] [reason]',
 	author: 'Aris A.',

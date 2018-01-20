@@ -2,7 +2,7 @@ exports.data = {
 	name: 'Stop',
 	command: 'stop',
 	description: 'Stops bot and exits.',
-	group: 'system',
+	group: 'System',
 	syntax: 'stop',
 	author: 'Aris A.',
 	permissions: 4

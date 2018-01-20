@@ -2,7 +2,7 @@ exports.data = {
 	name: 'Reload Command',
 	command: 'reload',
 	description: 'Reloads a command.',
-	group: 'system',
+	group: 'System',
 	syntax: 'reload [command]',
 	author: 'Aris A.',
 	permissions: 4,
@@ -28,7 +28,7 @@ exports.func = async (msg, args, bot) => {
 						//List files
 						const cmdList = jetpack.list(`${bot.config.folders.commands}/${folder}/`);
 						//Loop through the files
-						cmdList.forEach(async file => {
+						cmdList.forEach(file => {
 							if (`${file}` == `${args[0]}.js`){
 								//Delete command from cache
 								delete require.cache[require.resolve(`${bot.config.folders.commands}/${folder}/${args[0]}.js`)]; 

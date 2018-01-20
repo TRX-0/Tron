@@ -2,7 +2,7 @@ exports.data = {
 	name: 'Load',
 	command: 'load',
 	description: 'Loads a command.',
-	group: 'system',
+	group: 'System',
 	syntax: 'load [command]',
 	author: 'Aris A.',
 	permissions: 4,

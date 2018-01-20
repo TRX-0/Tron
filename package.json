@@ -6,6 +6,7 @@
     "author": "Aris",
     "repository": "https://github.com/pamehabai6/Tron",
     "dependencies": {
+        "async": "^2.6.0",
         "atob": "^2.0.3",
         "btoa": "^1.1.2",
         "chalk": "^2.3.0",

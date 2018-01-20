@@ -2,7 +2,7 @@ exports.data = {
 	name: 'Eval Command',
 	command: 'eval',
 	description: 'Sends an eval',
-	group: 'fun',
+	group: 'Utilities',
 	syntax: 'eval [script]',
 	author: 'Matt C: matt@artemisbot.uk',
 	permissions: 4

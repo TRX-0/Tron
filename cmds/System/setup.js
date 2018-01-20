@@ -2,7 +2,7 @@ exports.data = {
 	name: 'Server Setup',
 	command: 'setup',
 	description: 'Setup specific server options. Without arguments will return role ids.',
-	group: 'system',
+	group: 'System',
 	syntax: 'setup [perm3] [perm2] [perm1]',
 	author: 'Aris A.',
 	permissions: 4

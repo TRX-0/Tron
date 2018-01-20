@@ -1,7 +1,7 @@
 exports.data = {
 	name: 'Whois',
 	description: 'Gets information about a user.',
-	group: 'moderator',
+	group: 'Moderator',
 	command: 'whois',
 	syntax: 'whois [user mention]',
 	author: 'Aris A.',

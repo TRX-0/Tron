@@ -1,7 +1,7 @@
 exports.data = {
 	name: 'FlipCoin',
 	description: 'Flips a coin.',
-	group: 'fun',
+	group: 'Fun',
 	command: 'flipcoin',
 	syntax: 'flipcoin',
 	author: 'Aris A.',
@@ -12,7 +12,7 @@ exports.data = {
 const config = require('../../config.json');
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 
-exports.func = async (msg) => {
+exports.func = (msg) => {
 	try{
 		const random = Math.random();
 		switch (true) {

@@ -1,7 +1,7 @@
 exports.data = {
 	name: 'Hug',
 	description: 'Hugs specified user.',
-	group: 'fun',
+	group: 'Fun',
 	command: 'hug',
 	syntax: 'hug [@user]',
 	author: 'Aris A.',

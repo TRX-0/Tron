@@ -1,7 +1,7 @@
 exports.data = {
 	name: 'Say',
 	description: 'Makes Tron say something.',
-	group: 'fun',
+	group: 'Utilities',
 	command: 'say',
 	syntax: 'say [message]',
 	author: 'Aris A.',
