@@ -17,9 +17,9 @@ exports.func = async (msg) => {
 		const sent = await msg.channel.send('Updating code...');
 		const responsed = await exec(`git pull https://${auth.Github.Username}:${auth.Github.Password}@github.com/pamehabai6/Tron.git`);
 		if(responsed.stdout.toString('utf8').includes('Already up to date.')){
-			return sent.edit('The code is already up to date!');
+			return await sent.edit('The code is already up to date!');
 		} else {
-			sent.edit(`Code has been updated!\`\`\`\n${responsed.stdout}\n\`\`\``);
+			await sent.edit(`Code has been updated!\`\`\`\n${responsed.stdout}\n\`\`\``);
 		}
 		if(responsed.stdout.toString('utf8').includes('package.json')) {
 			const senttwo = await msg.channel.send('BUT WAIT, THERE IS MORE... package.json update detected! Launching NPM...');
