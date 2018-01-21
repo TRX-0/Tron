@@ -1,11 +1,11 @@
 exports.data = {
-	name: 'Base64',
-	command: 'base64',
-	description: 'Encrypt and Decrypt in Base64.',
+	name: 'Status',
+	command: 'status',
+	description: 'Change bot status or game.',
 	group: 'Utilities',
-	syntax: 'base64 [encrypt/decrypt] [text]',
+	syntax: 'status [online/invisible/dnd/idle/game] [optional:game]',
 	author: 'Aris A.',
-	permissions: 2
+	permissions: 3
 };
 const config = require('../../config.json');
 const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
