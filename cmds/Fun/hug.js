@@ -22,6 +22,8 @@ exports.func = async (msg,args) => {
 					url :'https://media.giphy.com/media/3M4NpbLCTxBqU/giphy.gif'
 				}
 			}});
+		} else {
+			msg.reply('You did not provide any arguments.');
 		}
 	} catch (err) {
 		msg.reply('Something went wrong.');
