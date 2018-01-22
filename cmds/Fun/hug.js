@@ -9,10 +9,8 @@ exports.data = {
 	anywhere: false
 };
 
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
-
 exports.func = async (msg,args) => {
+	const log = require(`${msg.client.config.folders.lib}/log.js`)('Hug');
 	try{
 		if (args[0]){
 			await msg.delete();

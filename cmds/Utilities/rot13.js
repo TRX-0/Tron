@@ -8,10 +8,8 @@ exports.data = {
 	permissions: 2
 };
 
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
-
 exports.func = async (msg, args) => {
+	const log = require(`${msg.client.config.folders.lib}/log.js`)('Rotate 13');
 	try{
 		if (args[0]){
 			await msg.channel.send('', {embed: {

@@ -1,5 +1,5 @@
 exports.data = {
-	name: 'Enable Command',
+	name: 'Enable',
 	command: 'enable',
 	description: 'Enables a command.',
 	syntax: 'enable [command]',
@@ -9,22 +9,19 @@ exports.data = {
 	anywhere: false
 };
 
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
-const Commands = require(`${config.folders.models}/commands.js`);
-
 exports.func = async (msg, args, bot) => {
+	const log = require(`${bot.config.folders.lib}/log.js`)('Enable');
 	try {
 		if (args[0]){ // Check that user has provided arguments
 			if (bot.commands.has(args[0])) { // Check if provided argument corresponds to an existing command
 				//Check if command is registered in the database.
-				const cmdExists = await Commands.findOne({where: {
+				const cmdExists = await bot.CMDModel.findOne({where: {
 					guildId: msg.guild.id,
 					name: args[0]
 				}});
 				//If it exists check if it is enabled in this guild.
 				if (cmdExists){
-					const isEnabled = (await Commands.findOne({where: {
+					const isEnabled = (await bot.CMDModel.findOne({where: {
 						guildId: msg.guild.id,
 						name: args[0]
 					}})).enabled;
@@ -42,7 +39,7 @@ exports.func = async (msg, args, bot) => {
 					}
 				} else {
 					//If command does not exist in db, create it.
-					await Commands.create({
+					await bot.CMDModel.create({
 						guildId: msg.guild.id,
 						name: args[0],
 						enabled: true

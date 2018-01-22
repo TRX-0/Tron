@@ -9,10 +9,10 @@ exports.data = {
 	anywhere: false
 };
 
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
+
 
 exports.func = (msg) => {
+	const log = require(`${msg.client.config.folders.lib}/log.js`)('FlipCoin');
 	try{
 		const random = Math.random();
 		switch (true) {

@@ -7,8 +7,6 @@ exports.data = {
 	author: 'Aris A.',
 	permissions: 2
 };
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 
 /*async function Validate(Hex){
 	var PortalCode = Hex[0];
@@ -24,6 +22,7 @@ const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 	}
 }*/
 exports.func = async (msg, args) => {
+	const log = require(`${msg.client.config.folders.lib}/log.js`)('Glyph');
 	try{
 		const ValidHex = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
 		var i=0;

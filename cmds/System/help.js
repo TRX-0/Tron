@@ -10,17 +10,14 @@ exports.data = {
 };
 
 const Discord = require('discord.js');
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
-const Server = require(`${config.folders.models}/server.js`);
-const Commands = require(`${config.folders.models}/commands.js`);
 
 exports.func = async (msg, args, bot) => {
+	const log = require(`${bot.config.folders.lib}/log.js`)('Help');
 	try{
-		const server = await Server.findOne({where: {guildId: msg.guild.id}});
+		const server = await bot.Server.findOne({where: {guildId: msg.guild.id}});
 		const elevation = await bot.elevation(msg);
 		//Get all enabled commands for specific server
-		const CommandsList = await Commands.findAll({
+		const CommandsList = await bot.CMDModel.findAll({
 			where: {
 				guildId: msg.guild.id,
 				enabled: true
@@ -51,7 +48,7 @@ exports.func = async (msg, args, bot) => {
 						help.setTitle(`__Command: **${CommandData.name}**__`);
 						help.addField('Description', CommandData.description, true);
 						help.addField('Group', `${CommandData.group}`, true);
-						help.addField('Syntax', `${config.prefix} ${CommandData.syntax}`);
+						help.addField('Syntax', `${bot.config.prefix} ${CommandData.syntax}`);
 						msg.channel.send('', {embed: help});
 						log.verbose(`${msg.member.displayName} (${msg.author.tag}) has requested additional info on !${specificCommand} in #${msg.channel.name} on ${msg.guild.name}.`);
 					} else {

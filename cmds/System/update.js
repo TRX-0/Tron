@@ -7,15 +7,13 @@ exports.data = {
 	permissions: 4
 };
 
-const config = require('../../config.json');
-const auth = require('../../auth.json');
 const exec = require('util').promisify(require('child_process').exec);
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 
 exports.func = async (msg) => {
+	const log = require(`${msg.client.config.folders.lib}/log.js`)('Update');
 	try {
 		const sent = await msg.channel.send('Updating code...');
-		const responsed = await exec(`git pull https://${auth.Github.Username}:${auth.Github.Password}@github.com/pamehabai6/Tron.git`);
+		const responsed = await exec(`git pull https://${msg.client.auth.Github.Username}:${msg.client.auth.Github.Password}@github.com/pamehabai6/Tron.git`);
 		if(responsed.stdout.toString('utf8').includes('Already up to date.')){
 			return await sent.edit('The code is already up to date!');
 		} else {

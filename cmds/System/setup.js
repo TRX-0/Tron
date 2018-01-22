@@ -1,5 +1,5 @@
 exports.data = {
-	name: 'Server Setup',
+	name: 'Setup',
 	command: 'setup',
 	description: 'Setup specific server options. Without arguments will return role ids.',
 	group: 'System',
@@ -8,14 +8,11 @@ exports.data = {
 	permissions: 4
 };
 
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
-const Server = require(`${config.folders.models}/server.js`);
-
 exports.func = async (msg,args) => {
+	const log = require(`${msg.client.config.folders.lib}/log.js`)('Setup');
 	try {
 		if(args[0] && args[1] && args[2]){
-			const server = await Server.findOne({
+			const server = await msg.client.Server.findOne({
 				where: {
 					guildId: msg.guild.id
 				}

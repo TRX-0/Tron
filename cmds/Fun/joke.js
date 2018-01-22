@@ -9,11 +9,10 @@ exports.data = {
 	anywhere: false
 };
 
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 const http = require ('http');
 
 exports.func = async (msg) => {
+	const log = require(`${msg.client.config.folders.lib}/log.js`)('Joke');
 	try{
 		http.get('http://api.icndb.com/jokes/random', (res) => {
 			const { statusCode } = res;

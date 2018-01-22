@@ -9,14 +9,13 @@ const fs = require('fs');
 const jetpack = require('fs-jetpack');
 const chalk = require('chalk');
 const log = require(`${bot.config.folders.lib}/log.js`)('Core');
-const Watcher = require(`${bot.config.folders.models}/watcher.js`);
+bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
 
 // Database modules
 const Database = require(`${bot.config.folders.lib}/db.js`);
-const Commands = require(`${bot.config.folders.models}/commands.js`);
-const Server = require(`${bot.config.folders.models}/server.js`);
+bot.Server = require(`${bot.config.folders.models}/server.js`);
+bot.CMDModel = require(`${bot.config.folders.models}/commands.js`);
 const Profiles = require(`${bot.config.folders.models}/profiles.js`);
-const WordGame = require(`${bot.config.folders.models}/wordgame.js`);
 
 const wordlist = bot.config.folders.wordlist;
 // ==== Initialisation ====
@@ -61,14 +60,14 @@ bot.loadWatchers = bot => {
 			const watcherList = jetpack.list(`${bot.config.folders.watchers}`); // List contents of the watchers folder
 			const loadedList = [];
 			const skippedList = [];
-			await Watcher.sync(); // Create the watchers table if it does not exist
+			await bot.Watcher.sync(); // Create the watchers table if it does not exist
 			await Promise.all(watcherList.map(f => { // Load watchers in parallel
 				return new Promise(async (resolve, reject) => {
 					try {
 						const props = require(`${bot.config.folders.watchers}/${f}`); // Load watcher module
-						let watcher = await Watcher.findOne({where: {watcherName: props.data.command}}); // Search for loaded watcher in the watchers table
+						let watcher = await bot.Watcher.findOne({where: {watcherName: props.data.command}}); // Search for loaded watcher in the watchers table
 						if (!watcher) { // If it doesn't exist, create it, assuming it is enabled and disabled in no guilds
-							watcher = await Watcher.create({
+							watcher = await bot.Watcher.create({
 								watcherName: props.data.command,
 								globalEnable: true,
 								disabledGuilds: []
@@ -109,14 +108,14 @@ bot.on('ready', async () => {
 		[bot.commands, bot.watchers] = await Promise.all([bot.loadCmds(bot), bot.loadWatchers(bot)]); // Load commands and watchers in parallel
 		bot.guilds.keyArray().forEach(async id => { // Loop through connected guilds
 			const guild = bot.guilds.get(id); // Get guild object
-			await Server.sync(); // Create server table if it does not exist
-			const server = await Server.findOne({ // Attempt to find server with ID
+			await bot.Server.sync(); // Create server table if it does not exist
+			const server = await bot.Server.findOne({ // Attempt to find server with ID
 				where: {
 					guildId: id
 				}
 			});
 			if (!server) { // If server is not known
-				const server = await Server.create({ // Create a server object (this is required for basic bot operation)
+				const server = await bot.Server.create({ // Create a server object (this is required for basic bot operation)
 					guildId: id,
 					name: guild.name,
 					permitChan: [],
@@ -140,7 +139,7 @@ bot.on('message', async msg => {
 		// Reject message if the message author is a bot or the message is not in a guild (eg. DMs)
 		if (msg.author.bot || !msg.guild) return;
 		// Find message's guild in the database
-		msg.server = await Server.findOne({ 
+		msg.server = await bot.Server.findOne({ 
 			where: {
 				guildId: msg.guild.id
 			}
@@ -181,35 +180,6 @@ bot.on('message', async msg => {
 				});
 				log.info(`Created db entry for user ${msg.author.username}.`);
 			}
-			//Check if game is being played in specific guild
-			const gameExists = await WordGame.findOne({
-				where:{
-					guildID: msg.guild.id
-				}
-			});
-			if (gameExists){
-				if(gameExists.playing == true){
-					const words = msg.content.trim().split(' ');
-					words.forEach(async word => {
-						if (word.toLowerCase() == gameExists.currentWord){
-							var userSolved = userExists.wordsSolved + 1;
-							await userExists.update({
-								wordsSolved: userSolved
-							});
-							var guildSolved = gameExists.wordsSolved + 1;
-							var date = new Date();
-							await gameExists.update({
-								wordsSolved: guildSolved,
-								prevWord: gameExists.currentWord,
-								lastSolvedBy: msg.author.username,
-								prevWordSolvedTime: date,
-								currentWord: bot.getWord()
-							});
-							log.info(`${msg.author.username} Found a random game word in ${msg.guild.name}.`);
-						}
-					});
-				}
-			}
 			return;
 		}
 
@@ -222,7 +192,7 @@ bot.on('message', async msg => {
 			msg.reply('Command does not exist.');
 		}
 		//Check if command is registered in the database.
-		const cmdExists = await Commands.findOne({where: {
+		const cmdExists = await bot.CMDModel.findOne({where: {
 			guildId: msg.guild.id,
 			name: command
 		}});
@@ -253,13 +223,13 @@ bot.on('message', async msg => {
 bot.on('guildCreate', async guild => {
 	try{
 		log.info(`Joined ${guild.name}.`);
-		const server = await Server.findOne({ // Attempt to find server with ID
+		const server = await bot.Server.findOne({ // Attempt to find server with ID
 			where: {
 				guildId: guild.id
 			}
 		});
 		if (!server) { // If server is not known
-			const server = await Server.create({ // Create a server object (this is required for basic bot operation)
+			const server = await bot.Server.create({ // Create a server object (this is required for basic bot operation)
 				guildId: guild.id,
 				name: guild.name,
 				permitChan: [],
@@ -291,14 +261,14 @@ process.on('unhandledRejection', err => { // If I've forgotten to catch a promis
 //Function that creates commands in the db.
 bot.createCommands = (guild, id) => {
 	bot.commands.forEach(async command => {
-		const cmdExists = await Commands.findOne({
+		const cmdExists = await bot.CMDModel.findOne({
 			where:{
 				guildId: id,
 				name: command.data.command
 			}
 		});
 		if (!cmdExists){
-			await Commands.create({
+			await bot.CMDModel.create({
 				guildId: id,
 				name: command.data.command,
 				enabled: true
@@ -409,7 +379,7 @@ bot.elevation = (msg, user) => {
 			if (impUser.id === bot.auth.ownerID) { // If the author's ID is the same as the bot owner's then give them top perms
 				resolve(4);
 			}
-			const server = await Server.findOne({ // Fetch server object
+			const server = await bot.Server.findOne({ // Fetch server object
 				where: {
 					guildId: msg.guild.id
 				}

@@ -7,9 +7,9 @@ exports.data = {
 	author: 'Aris A.',
 	permissions: 3
 };
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
+
 exports.func = async (msg, args, bot) => {
+	const log = require(`${msg.client.config.folders.lib}/log.js`)('Status');
 	try{
 		switch (args[0]) {
 		case 'game': {

@@ -9,14 +9,12 @@ exports.data = {
 	anywhere: true
 };
 
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
-const Watcher = require(`${config.folders.models}/watcher`);
 const jetpack = require('fs-jetpack');
 
 exports.func = async (msg, args, bot) => {
-	await Watcher.sync();
-	let watcher = await Watcher.findOne({
+	const log = require(`${bot.config.folders.lib}/log.js`)('FlipCoin');
+	await bot.Watcher.sync();
+	let watcher = await bot.Watcher.findOne({
 		where: {
 			watcherName: args[1]
 		}
@@ -54,9 +52,9 @@ exports.func = async (msg, args, bot) => {
 		}
 		case 'enable':
 		{
-			if (watcher || jetpack.list(`${config.folders.watchers}`).includes(`${args[1]}.js`)) {
+			if (watcher || jetpack.list(`${bot.config.folders.watchers}`).includes(`${args[1]}.js`)) {
 				if (!watcher) {
-					watcher = await Watcher.create({
+					watcher = await bot.Watcher.create({
 						watcherName: args[1],
 						globalEnable: true,
 						disabledGuilds: []
@@ -151,7 +149,7 @@ exports.func = async (msg, args, bot) => {
 			} else if (args[1]) {
 				msg.reply('Selected watcher does not exist.');
 			} else {
-				const watcherList = (await Watcher.all()).map(w => {
+				const watcherList = (await bot.Watcher.all()).map(w => {
 					return w.watcherName;
 				}).join(', ');
 				msg.reply(`Available watchers are \`${watcherList}\`.`);

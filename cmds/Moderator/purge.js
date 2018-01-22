@@ -9,10 +9,8 @@ exports.data = {
 	anywhere: false
 };
 
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
-
 exports.func = async (msg,args) => {
+	const log = require(`${msg.client.config.folders.lib}/log.js`)('Purge');
 	try{
 		//Get the delete count, as an actual number.
 		const deleteCount = parseInt(args[0], 10);

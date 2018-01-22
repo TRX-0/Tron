@@ -1,157 +1,156 @@
 exports.data = {
 	name: 'List',
 	command: 'list',
-	description: 'List permissions and roles.',
+	description: 'List bot permissions and roles.',
 	group: 'System',
 	syntax: 'list [perms/roles]',
 	author: 'Aris A,',
 	permissions: 3
 };
 
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
-
 exports.func = async (msg,args) => {
+	const log = require(`${msg.client.config.folders.lib}/log.js`)('List');
 	try {
 		if (args[0]){
 			switch (args[0]){
 			case 'perms':{
-				msg.channel.send({
+				msg.author.send({
 					embed: {
-						'fields': [
-							{
-								name: 'Create Insant Invite',
-								value: ('CREATE_INSTANT_INVITE'),
-								inline: true
-							},
-							{
-								name: 'Kick Members',
-								value: 'are inline fields',
-								inline: true
-							},
-							{
-								name: 'Ban Members',
-								value: '1',
-								inline: true
-							},
+						title: `__Bot Permissions in: ${msg.channel.guild}__`,
+						color: '10724865',
+						fields: [
 							{
 								name: 'Administrator',
-								value: 'are inline fields',
-								inline: true
-							},      
-							{
-								name: 'Manage Channels',
-								value: '1',
-								inline: true
-							},
-							{
-								name: 'Manage Guild',
-								value: 'are inline fields',
-								inline: true
-							},      
-							{
-								name: 'Add Reactions',
-								value: '1',
-								inline: true
-							},
-							{
-								name: 'Send TTS Messages',
-								value: 'are inline fields',
-								inline: true
-							},
-							{
-								name: 'Read Messages',
-								value: '1',
+								value: msg.guild.me.hasPermission('ADMINISTRATOR'),
 								inline: true
 							},
 							{
 								name: 'Send Messages',
-								value: 'are inline fields',
+								value: msg.guild.me.hasPermission('SEND_MESSAGES'),
 								inline: true
 							},
 							{
 								name: 'Manage Messages',
-								value: '1',
+								value: msg.guild.me.hasPermission('MANAGE_MESSAGES'),
+								inline: true
+							},
+							{
+								name: 'Send TTS Messages',
+								value: msg.guild.me.hasPermission('SEND_TTS_MESSAGES'),
 								inline: true
 							},
 							{
 								name: 'Embed Links',
-								value: 'are inline fields',
+								value: msg.guild.me.hasPermission('EMBED_LINKS'),
 								inline: true
 							},
 							{
 								name: 'Attach Files',
-								value: '1',
+								value: msg.guild.me.hasPermission('ATTACH_FILES'),
 								inline: true
 							},
 							{
 								name: 'Read Message History',
-								value: 'are inline fields',
+								value: msg.guild.me.hasPermission('READ_MESSAGE_HISTORY'),
 								inline: true
 							},
 							{
 								name: 'Mention Everyone',
-								value: '1',
+								value: msg.guild.me.hasPermission('MENTION_EVERYONE'),
 								inline: true
 							},
 							{
-								name: 'Manage Webhooks',
-								value: 'are inline fields',
-								inline: true
-							},
-							{
-								name: 'Connect',
-								value: '1',
-								inline: true
-							},
-							{
-								name: 'Speak',
-								value: 'are inline fields',
+								name: 'Create Insant Invite',
+								value: msg.guild.me.hasPermission('CREATE_INSTANT_INVITE'),
 								inline: true
 							},
 							{
 								name: 'Mute Members',
-								value: '1',
+								value: msg.guild.me.hasPermission('MUTE_MEMBERS'),
+								inline: true
+							},
+							{
+								name: 'Kick Members',
+								value: msg.guild.me.hasPermission('KICK_MEMBERS'),
+								inline: true
+							},
+							{
+								name: 'Ban Members',
+								value: msg.guild.me.hasPermission('BAN_MEMBERS'),
+								inline: true
+							},
+							{
+								name: 'Manage Channels',
+								value: msg.guild.me.hasPermission('MANAGE_CHANNELS'),
+								inline: true
+							},
+							{
+								name: 'Manage Guild',
+								value: msg.guild.me.hasPermission('MANAGE_GUILD'),
+								inline: true
+							},
+							{
+								name: 'Manage Webhooks',
+								value: msg.guild.me.hasPermission('MANAGE_WEBHOOKS'),
+								inline: true
+							}, 
+							{
+								name: 'Add Reactions',
+								value: msg.guild.me.hasPermission('ADD_REACTIONS'),
+								inline: true
+							},
+							{
+								name: 'Connect',
+								value: msg.guild.me.hasPermission('CONNECT'),
+								inline: true
+							},
+							{
+								name: 'Speak',
+								value: msg.guild.me.hasPermission('SPEAK'),
 								inline: true
 							},
 							{
 								name: 'Deafen Members',
-								value: 'are inline fields',
+								value: msg.guild.me.hasPermission('DEAFEN_MEMBERS'),
 								inline: true
 							},
 							{
 								name: 'Move Members',
-								value: '1',
+								value: msg.guild.me.hasPermission('MOVE_MEMBERS'),
 								inline: true
 							},
 							{
 								name: 'Use VAD',
-								value: 'are inline fields',
+								value: msg.guild.me.hasPermission('USE_VAD'),
 								inline: true
 							},
 							{
 								name: 'Change Nickname',
-								value: '1',
+								value: msg.guild.me.hasPermission('CHANGE_NICKNAME'),
 								inline: true
 							},
 							{
 								name: 'Manage Nicknames',
-								value: 'are inline fields',
+								value: msg.guild.me.hasPermission('MANAGE_NICKNAMES'),
 								inline: true
 							},
 							{
-								name: 'Manage Roles or Permissions',
-								value: '1',
+								name: 'Manage Roles',
+								value: msg.guild.me.hasPermission('MANAGE_ROLES'),
 								inline: true
 							}
 						]
 					}
 				});
+				msg.delete();
 				break;
 			}
 			case 'roles':{
 
 				break;
+			}
+			default: {
+				msg.reply('Wrong arguments.');
 			}
 			}
 		} else {

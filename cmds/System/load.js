@@ -10,22 +10,20 @@ exports.data = {
 };
 
 const jetpack = require('fs-jetpack');
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
-const Commands = require(`${config.folders.models}/commands.js`);
 
 exports.func = async (msg, args, bot) => {
+	const log = require(`${bot.config.folders.lib}/log.js`)('Load');
 	try {
 		//Check that user has provided arguments
 		if (args[0]){ 
 			let exists;
 			//List contents of the cmds folder
-			const folderList = jetpack.list(`${config.folders.commands}`); 
+			const folderList = jetpack.list(`${bot.config.folders.commands}`); 
 			//Loop through the folders
 			folderList.forEach(folder => {
 				try {
 					//List files
-					const cmdList = jetpack.list(`${config.folders.commands}/${folder}/`); 
+					const cmdList = jetpack.list(`${bot.config.folders.commands}/${folder}/`); 
 					//Loop through the files
 					cmdList.forEach(async file => {
 						//If file is found
@@ -35,20 +33,20 @@ exports.func = async (msg, args, bot) => {
 							if (!bot.commands.has(args[0])){
 								const m = await msg.channel.send(`Loading: ${args[0]}`);
 								// Load command
-								const cmd = require(`${bot.config.folders.commands}/${folder}/${args[0]}.js`)
+								const cmd = require(`${bot.config.folders.commands}/${folder}/${args[0]}.js`);
 								//Add to the bot's collection of commands; 
 								bot.commands.set(args[0], cmd); 
 								//Create db entries for all guilds
 								bot.guilds.keyArray().forEach(async id => {
 									const guild = bot.guilds.get(id); // Get guild object
-									const cmdExists = await Commands.findOne({
+									const cmdExists = await bot.CMDModel.findOne({
 										where:{
 											guildId: id,
 											name: args[0]
 										}
 									});
 									if (!cmdExists){
-										await Commands.create({
+										await bot.CMDModel.create({
 											guildId: id,
 											name: args[0],
 											enabled: true

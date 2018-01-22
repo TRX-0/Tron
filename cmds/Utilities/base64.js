@@ -7,11 +7,12 @@ exports.data = {
 	author: 'Aris A.',
 	permissions: 2
 };
-const config = require('../../config.json');
-const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
+
 const atob = require('atob');
 const btoa = require('btoa');
+
 exports.func = async (msg, args) => {
+	const log = require(`${msg.client.config.folders.lib}/log.js`)('Base64');
 	try{
 		switch(args[0]) {
 		case 'encode': 
