@@ -143,6 +143,7 @@ exports.func = async (msg,args) => {
 					}
 				});
 				msg.delete();
+				log.info(`${msg.author.tag} has listed permissions in ${msg.channel.guild}`);
 				break;
 			}
 			case 'roles':{
