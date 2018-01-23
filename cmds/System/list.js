@@ -8,7 +8,7 @@ exports.data = {
 	permissions: 3
 };
 
-exports.func = async (msg,args) => {
+exports.func = (msg,args) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('List');
 	try {
 		if (args[0]){
@@ -147,7 +147,11 @@ exports.func = async (msg,args) => {
 				break;
 			}
 			case 'roles':{
-
+				msg.author.send({embed:{
+					title: `__Roles in: ${msg.channel.guild}__`,
+					description: msg.guild.roles.map((m) => m.name).join(', '),
+					color: '10724865'
+				}});
 				break;
 			}
 			default: {
