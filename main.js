@@ -28,7 +28,7 @@ bot.db = Database.start(); // Start the database and connect
 bot.on('ready', async () => {
 	try {
 		log.info(chalk.green(`Connected to Discord gateway & ${bot.guilds.size} guilds.`));
-		[bot.commands, bot.watchers] = await Promise.all([loadCmds(Discord, bot, log), loadWatchers(Discord, bot, log)]); // Load commands and watchers in parallel
+		[bot.commands, bot.watchers] = await Promise.all([loadCmds.func(Discord, bot, log), loadWatchers.func(Discord, bot, log)]); // Load commands and watchers in parallel
 		bot.guilds.keyArray().forEach(async id => { // Loop through connected guilds
 			const guild = bot.guilds.get(id); // Get guild object
 			await bot.Server.sync(); // Create server table if it does not exist
