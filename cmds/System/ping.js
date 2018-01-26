@@ -19,9 +19,8 @@ exports.func = async (msg,args) => {
 			});
 			log.verbose(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has pinged $args[0] in #${msg.channel.name} on ${msg.guild.name}.`);
 		} else {
+			msg.channel.send('Pls wait.').then(m => m.edit(`🏓 Took ${moment().diff(m.createdAt)} ms.`));
 			log.verbose(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has pinged the bot in #${msg.channel.name} on ${msg.guild.name}.`);
-			msg.channel.send('Pls wait.')
-				.then(m => m.edit(`🏓 Took ${moment().diff(m.createdAt)} ms.`));
 		}
 	} catch (err){
 		msg.reply('Something went wrong.');

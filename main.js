@@ -6,10 +6,11 @@ bot.auth = require('./auth.json');
 
 // Basic Function Modules
 const fs = require('fs');
-const jetpack = require('fs-jetpack');
-const chalk = require('chalk');
 const log = require(`${bot.config.folders.lib}/log.js`)('Core');
 bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
+const chalk = require('chalk');
+const loadCmds = require(`${bot.config.folders.lib}/loadCommands.js`);
+const loadWatchers = require(`${bot.config.folders.lib}/loadWatchers.js`);
 
 // Database modules
 const Database = require(`${bot.config.folders.lib}/db.js`);
@@ -21,91 +22,13 @@ const wordlist = bot.config.folders.wordlist;
 // ==== Initialisation ====
 bot.db = Database.start(); // Start the database and connect
 
-// Function to load commands into bot
-bot.loadCmds = () => {
-	return new Promise(async (resolve, reject) => {
-		try {
-			const cmds = new Discord.Collection();
-			const loadedList = [];
-
-			const folderList = jetpack.list(`${bot.config.folders.commands}`); // List contents of the cmds folder
-			folderList.forEach(folder => { // Loop through the folders
-				try {
-					const cmdList = jetpack.list(`${bot.config.folders.commands}/${folder}`); // Loop through the commands
-					cmdList.forEach(file => {
-						const props = require(`${bot.config.folders.commands}/${folder}/${file}`); // Load the command
-						loadedList.push(props.data.name);
-						cmds.set(props.data.command, props); // Store the command prototype in the cmds collection
-						log.verbose(`Loaded Command: ${props.data.name}. 👌`);
-					});
-				} catch (err) {
-					log.error(`Error in loadCmds: ${err}`);
-					reject(err); // If there's an error, stop loading commands
-				}
-			});
-			log.info(chalk.green(`Loaded ${loadedList.length} command(s) (${loadedList.join(', ')}).`));
-			resolve(cmds); // Return the cmds collection
-		} catch (err) {
-			log.error(`Error in loadCmds: ${err}`);
-			reject(err); // If there's an error, stop loading commands
-		}
-	});
-};
-
-// Function to load watchers into bot
-bot.loadWatchers = bot => {
-	return new Promise(async (resolve, reject) => {
-		try {
-			const watchers = new Discord.Collection();
-			const watcherList = jetpack.list(`${bot.config.folders.watchers}`); // List contents of the watchers folder
-			const loadedList = [];
-			const skippedList = [];
-			await bot.Watcher.sync(); // Create the watchers table if it does not exist
-			await Promise.all(watcherList.map(f => { // Load watchers in parallel
-				return new Promise(async (resolve, reject) => {
-					try {
-						const props = require(`${bot.config.folders.watchers}/${f}`); // Load watcher module
-						let watcher = await bot.Watcher.findOne({where: {watcherName: props.data.command}}); // Search for loaded watcher in the watchers table
-						if (!watcher) { // If it doesn't exist, create it, assuming it is enabled and disabled in no guilds
-							watcher = await bot.Watcher.create({
-								watcherName: props.data.command,
-								globalEnable: true,
-								disabledGuilds: []
-							});
-						}
-						if (watcher.globalEnable) { // Load the watcher if it is globally enabled
-							log.verbose(`Loading Watcher: ${props.data.name}. 👌`);
-							loadedList.push(props.data.name);
-							watchers.set(props.data.command, props); // Store the command prototype in the watchers collection
-							props.watcher(bot); // Wait for setup of watcher
-							resolve(true); // Return true as the watcher has loaded successfully
-						} else {
-							log.verbose(`Skipped loading ${props.data.name} as it is disabled. ❌`);
-							skippedList.push(props.data.name);
-							resolve(false); // Return false as the watcher is disabled
-						}
-					} catch (err) {
-						reject(err); // Return the error (this will cause a rejection of the loading of all watchers)
-					}
-				});
-			}));
-			log.info(chalk.green(`Loaded ${loadedList.length} watcher(s) (${loadedList.join(', ')}) and skipped ${skippedList.length} (${skippedList.join(', ')}).`));
-			resolve(watchers); // Return the watchers collection
-		} catch (err) {
-			log.error(`Error in loadWatchers: ${err}`);
-			reject(err); // If there's an error, stop loading commands
-		}
-	});
-};
-
-
 // ==== Event Handlers ==== //
 
 // On bot connection to Discord
 bot.on('ready', async () => {
 	try {
 		log.info(chalk.green(`Connected to Discord gateway & ${bot.guilds.size} guilds.`));
-		[bot.commands, bot.watchers] = await Promise.all([bot.loadCmds(bot), bot.loadWatchers(bot)]); // Load commands and watchers in parallel
+		[bot.commands, bot.watchers] = await Promise.all([loadCmds(Discord, bot, log), loadWatchers(Discord, bot, log)]); // Load commands and watchers in parallel
 		bot.guilds.keyArray().forEach(async id => { // Loop through connected guilds
 			const guild = bot.guilds.get(id); // Get guild object
 			await bot.Server.sync(); // Create server table if it does not exist
@@ -255,6 +178,7 @@ bot.on('warn', log.warn); // If there's a warning, emit a warning to the logger
 process.on('unhandledRejection', err => { // If I've forgotten to catch a promise somewhere, emit an error
 	log.error(`Uncaught Promise Error: \n${err.stack}`);
 });
+
 
 // ==== Global Helper Functions ====
 
