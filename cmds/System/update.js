@@ -12,7 +12,7 @@ const exec = require('util').promisify(require('child_process').exec);
 exports.func = async (msg) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Update');
 	try {
-		const sent = msg.channel.send('Updating code...');
+		const sent = await msg.channel.send('Updating code...');
 		const response = await exec(`git pull https://${msg.client.auth.Github.Username}:${msg.client.auth.Github.Password}@github.com/pamehabai6/Tron.git`);
 		if(response.stdout.toString().includes('Already up to date.')){
 			await sent.edit('The code is already up to date!');
