@@ -25,7 +25,7 @@ exports.func = async (msg,args) => {
 					deleteCount++;
 				}
 			});
-			log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) deleted ${deleteCount} messages. `);
+			log.info(`${msg.author.tag} deleted ${deleteCount} messages. `);
 		} else {
 			//Get the delete count, as an actual number.
 			const deleteCount = parseInt(args[0], 10);
@@ -35,10 +35,10 @@ exports.func = async (msg,args) => {
 			// So we get our messages, and delete them. Simple enough, right?
 			const fetched = await msg.channel.fetchMessages({limit: deleteCount});
 			msg.channel.bulkDelete(fetched);
-			log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) deleted ${deleteCount} messages. `);
+			log.info(`${msg.author.tag} deleted ${deleteCount} messages. `);
 		}
 	} catch (err) {
 		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.username}#${msg.author.discriminator} Couldn't delete messages because of: ${err}`);
+		log.error(`Sorry ${msg.author.tag} Couldn't delete messages because of: ${err}`);
 	}
 };

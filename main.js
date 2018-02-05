@@ -17,6 +17,7 @@ const Database = require(`${bot.config.folders.lib}/db.js`);
 bot.Server = require(`${bot.config.folders.models}/server.js`);
 bot.CMDModel = require(`${bot.config.folders.models}/commands.js`);
 const Profiles = require(`${bot.config.folders.models}/profiles.js`);
+const OTS = require(`${bot.config.folders.models}/otsroles.js`);
 
 const wordlist = bot.config.folders.wordlist;
 // ==== Initialisation ====
@@ -48,6 +49,19 @@ bot.on('ready', async () => {
 				});
 				// Emit a warning
 				log.warn(`${server.name} has not been set up properly. Make sure it is set up correctly to enable all functionality.`);
+			}
+			const OTSroles = await OTS.findOne({
+				where: {
+					guildId: id
+				}
+			});
+			if (!OTSroles){
+				//Creates OTS entry
+				/*await OTS.create({
+					guildId: id,
+					roleId: []
+				});*/
+				log.warn(`${server.name} OTS roles have not been set up properly. Make sure to set them up to enable all functionality.`);
 			}
 			await bot.createCommands(guild, id);
 		});
@@ -162,6 +176,19 @@ bot.on('guildCreate', async guild => {
 			});
 			// Emit a warning
 			log.warn(`${server.name} has not been set up properly. Make sure it is set up correctly to enable all functionality.`);
+			const OTSroles = await OTS.findOne({
+				where: {
+					guildId: guild.id
+				}
+			});
+			if (!OTSroles){
+				//Creates OTS entry
+				/*await OTS.create({
+					guildId: id,
+					roleId: []
+				});*/
+				log.warn(`${server.name} OTS roles have not been set up properly. Make sure to set them up to enable all functionality.`);
+			}
 			await bot.createCommands(guild, guild.id);
 		}
 	} catch (err) {
