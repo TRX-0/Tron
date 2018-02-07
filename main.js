@@ -76,7 +76,8 @@ bot.on('message', msg => {
 		if (msg.author.bot || !msg.guild) return;
 		// Find message's guild in the database
 		getServer(bot,msg).then( (msgserver) => {
-			let command, args;
+			let command;
+			let args;
 			// Loop through possible prefixes to check if message is a command - this is a bit confusing because if the message is a command, then it is set to false (this is just so I could use .every())
 			const notCommand = [msgserver.altPrefix, bot.config.prefix, `<@${bot.user.id}>`, `<@!${bot.user.id}>`].every(prefix => {
 				if (msg.content.toLowerCase().startsWith(prefix)) { // Check if message starts with prefix
@@ -103,7 +104,7 @@ bot.on('message', msg => {
 				msg.reply('Command does not exist.');
 			}
 			//Check if command is registered in the database.
-			getCMDModel(bot,msg, command).then((cmdExists) => {
+			getCMDModel(bot,msg, command).then( (cmdExists) => {
 				//If it is disabled return.
 				if (cmdExists && cmdExists.enabled == false){
 					msg.reply(`Command is disabled in ${msg.guild.name}.`);
@@ -115,10 +116,12 @@ bot.on('message', msg => {
 				}
 				// Get user's permission level
 				bot.elevation(msg).then( (msgelevation) => {
-					if (msgelevation >= cmd.data.permissions) { // Check that the user exceeds the command's required elevation
-						cmd.func(msg, args, bot); // Run the command's function
-					} else {
-						msg.reply(':scream: You don\'t have permission to use this command.');
+					if (cmd) { // Command is flagged to be used anywhere/user has 3+ elevation level/is in a permitted channel
+						if (msgelevation >= cmd.data.permissions) { // Check that the user exceeds the command's required elevation
+							cmd.func(msg, args, bot); // Run the command's function
+						} else {
+							msg.reply(':newspaper2: You don\'t have permission to use this command.');
+						}
 					}
 				});
 			});
