@@ -17,10 +17,10 @@ exports.func = async (msg,args) => {
 			ping.sys.probe(args[0], function(isAlive){
 				msg.channel.send(isAlive ? 'Host ' + args[0] + ' is alive' : 'Host ' + args[0] + ' is dead');
 			});
-			log.verbose(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has pinged $args[0] in #${msg.channel.name} on ${msg.guild.name}.`);
+			log.verbose(`${msg.author.tag} has pinged $args[0] in #${msg.channel.name} on ${msg.guild.name}.`);
 		} else {
 			msg.channel.send('Pls wait.').then(m => m.edit(`🏓 Took ${moment().diff(m.createdAt)} ms.`));
-			log.verbose(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has pinged the bot in #${msg.channel.name} on ${msg.guild.name}.`);
+			log.verbose(`${msg.author.tag} has pinged the bot in #${msg.channel.name} on ${msg.guild.name}.`);
 		}
 	} catch (err){
 		msg.reply('Something went wrong.');
