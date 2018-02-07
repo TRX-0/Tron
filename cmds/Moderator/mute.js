@@ -9,28 +9,16 @@ exports.data = {
 	anywhere: false
 };
 
-//function ParseDate(givenTime){
-//	const Values = givenTime.match(/([1-9][smhdwMy])/g);
-	
-
-//}
-
 exports.func = async (msg, args) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Mute');
 	try{
 		if (args[0]){
-			if (msg.mentions.users.first().id){
-
-				//const time = '1s1m1h1d1w1M1y'; //this is date based
-				//const Values = ParseDate(time);
-				//log.info(`${Values}`);
-
-
+			if (msg.mentions.users.first()){
 				let member = msg.mentions.members.first();
 				let reason = args.slice(1).join(' ');
-				if(!reason){
+				/*if(!reason){
 					return msg.reply('Please indicate a reason for muting!');
-				}
+				}*/
 				await member.setMute(true, reason);
 				msg.reply(`${member.user.tag} has been muted by ${msg.author.tag} Reason: ${reason}`);
 			} else {
