@@ -32,9 +32,9 @@ exports.func = async (msg,args) => {
 			if (server){
 				log.verbose(`(${msg.author.tag} has started to setup a server in #${msg.channel.name} on ${msg.guild.name}.`);
 				await server.update({
-					perm3: [args[0]],
-					perm2: [args[1]],
-					perm1: [args[2]]
+					perm3: args[0].split(','),
+					perm2: args[1].split(','),
+					perm1: args[2].split(',')
 				});
 				msg.delete();
 				msg.reply('Server has been set up.');

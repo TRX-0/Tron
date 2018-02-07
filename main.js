@@ -143,7 +143,7 @@ bot.on('message', async msg => {
 			msg.member = await msg.guild.fetchMember(msg);
 		}
 		// Get user's permission level
-		msg.elevation = await bot.elevation(msg); 
+		msg.elevation = await bot.elevation(msg);
 		if (cmd && (cmd.data.anywhere || msg.elevation >= 3 || msg.server.permitChan.includes(msg.channel.id))) { // Command is flagged to be used anywhere/user has 3+ elevation level/is in a permitted channel
 			if (msg.elevation >= cmd.data.permissions) { // Check that the user exceeds the command's required elevation
 				cmd.func(msg, args, bot); // Run the command's function
@@ -335,9 +335,9 @@ bot.elevation = (msg, user) => {
 					guildId: msg.guild.id
 				}
 			});
-			if (impMember.hasPermission('ADMINISTRATOR')) { // If user is an admin in the server
+			/*if (impMember.hasPermission('ADMINISTRATOR')) { // If user is an admin in the server
 				resolve(3);
-			}
+			}*/
 			server.perm3.forEach(id => { // Loop through level 3 permissions for the server, check user against them
 				if (impMember.roles.has(id)) {
 					resolve(3);
