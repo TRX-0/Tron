@@ -144,7 +144,7 @@ bot.on('message', async msg => {
 		}
 		// Get user's permission level
 		msg.elevation = await bot.elevation(msg);
-		if (cmd && (cmd.data.anywhere || msg.elevation >= 3 || msg.server.permitChan.includes(msg.channel.id))) { // Command is flagged to be used anywhere/user has 3+ elevation level/is in a permitted channel
+		if (cmd) { // Command is flagged to be used anywhere/user has 3+ elevation level/is in a permitted channel
 			if (msg.elevation >= cmd.data.permissions) { // Check that the user exceeds the command's required elevation
 				cmd.func(msg, args, bot); // Run the command's function
 			} else {
