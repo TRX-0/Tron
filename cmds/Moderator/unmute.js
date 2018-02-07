@@ -1,9 +1,9 @@
 exports.data = {
 	name: 'Unmute',
-	description: 'Un-mutes the voice activity of a member.',
+	description: 'Un-mutes the voice activity of a user.',
 	group: 'Moderator',
 	command: 'unmute',
-	syntax: 'unmute [name]',
+	syntax: 'unmute [@name]',
 	author: 'Aris A.',
 	permissions: 3,
 };
@@ -12,7 +12,7 @@ exports.func = async (msg, args) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Mute');
 	try{		
 		if (args[0]){
-			if (msg.mentions.users.first().id != null){
+			if (msg.mentions.users.first()){
 				let member = msg.mentions.members.first();
 				await member.setMute(false);
 				msg.reply(`${member.user.tag} has been un-muted by ${msg.author.tag}`);

@@ -1,9 +1,9 @@
 exports.data = {
 	name: 'Mute',
-	description: 'Mutes a specific user.',
+	description: 'Mutes the voice activity of a user.',
 	group: 'Moderator',
 	command: 'mute',
-	syntax: 'mute [name] [optional:time] [reason]',
+	syntax: 'mute [@name] [optional:time] [optional:reason]',
 	author: 'Aris A.',
 	permissions: 3,
 	anywhere: false
