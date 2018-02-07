@@ -73,6 +73,7 @@ bot.on('ready', async () => {
 // When message is received
 bot.on('message', async msg => {
 	try {
+		var timer = process.hrtime();
 		// Reject message if the message author is a bot or the message is not in a guild (eg. DMs)
 		if (msg.author.bot || !msg.guild) return;
 		// Find message's guild in the database
@@ -151,6 +152,7 @@ bot.on('message', async msg => {
 				msg.reply(':newspaper2: You don\'t have permission to use this command.');
 			}
 		}
+		log.info(`${process.hrtime(timer)[0]}s, ${(process.hrtime(timer)[1] / 1000000).toFixed(3)}ms`);
 	} catch (err) {
 		log.error(`Something went wrong when handling a message: ${err}`);
 	}
