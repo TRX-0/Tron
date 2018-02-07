@@ -12,15 +12,30 @@ exports.data = {
 exports.func = async (msg,args) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Purge');
 	try{
+		var deleteCount = 0;
 		if(args[0].toLowerCase() == 'own'){
 			const searchCount = parseInt(args[1], 10);
 			if(!searchCount || searchCount < 2 || searchCount > 100){
 				return msg.reply('Please provide a number between 2 and 100');
 			}
-			var deleteCount = 0;
 			const fetched = await msg.channel.fetchMessages({limit: searchCount});
 			fetched.forEach(element => {
 				if(element.author.id == msg.client.user.id){
+					element.delete();
+					deleteCount++;
+				}
+			});
+			msg.delete();
+			log.info(`${msg.author.tag} deleted ${deleteCount} messages. `);
+		} else if (args[0].toLowerCase() == 'mine'){
+			const searchCount = parseInt(args[1], 10);
+			if(!searchCount || searchCount < 2 || searchCount > 100){
+				return msg.reply('Please provide a number between 2 and 100');
+			}
+			
+			const fetched = await msg.channel.fetchMessages({limit: searchCount});
+			fetched.forEach(element => {
+				if(element.author.id == msg.author.id){
 					element.delete();
 					deleteCount++;
 				}
