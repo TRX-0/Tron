@@ -30,7 +30,7 @@ exports.func = async (msg,args) => {
 				}
 			});
 			if (server){
-				log.verbose(`(${msg.author.tag} has started to setup a server in #${msg.channel.name} on ${msg.guild.name}.`);
+				log.verbose(`${msg.author.tag} has started to setup a server in #${msg.channel.name} on ${msg.guild.name}.`);
 				await server.update({
 					perm3: args[0].split(','),
 					perm2: args[1].split(','),
@@ -38,7 +38,7 @@ exports.func = async (msg,args) => {
 				});
 				msg.delete();
 				msg.reply('Server has been set up.');
-				log.verbose(`(${msg.author.tag} has finished setting up ${msg.guild.name}.`);
+				log.verbose(`${msg.author.tag} has finished setting up ${msg.guild.name}.`);
 			} else {
 				msg.reply('Could not find server in db.');
 			}

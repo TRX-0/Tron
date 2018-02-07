@@ -18,8 +18,8 @@ exports.data = {
 exports.func = async (msg, args) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Mute');
 	try{
-		if (args[0]){    
-			if (msg.mentions.users.first().id != null){
+		if (args[0]){
+			if (msg.mentions.users.first().id){
 
 				//const time = '1s1m1h1d1w1M1y'; //this is date based
 				//const Values = ParseDate(time);
