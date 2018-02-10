@@ -1,6 +1,6 @@
 exports.data = {
 	name: 'Unmute',
-	description: 'Un-mutes the voice activity of a user.',
+	description: 'Unmutes a specific user.',
 	group: 'Moderator',
 	command: 'unmute',
 	syntax: 'unmute [@name]',
@@ -9,13 +9,23 @@ exports.data = {
 };
 
 exports.func = async (msg, args) => {
+	const OTS = require(`${msg.client.config.folders.models}/otsroles.js`);
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Mute');
-	try{		
-		if (args[0]){
-			if (msg.mentions.users.first()){
+	try{
+		if (args[0]){    
+			if (msg.mentions.users.first().id != null){
 				let member = msg.mentions.members.first();
-				await member.setMute(false);
-				msg.reply(`${member.user.tag} has been un-muted by ${msg.author.tag}`);
+				const ID = await OTS.findOne({
+					where: {
+						guildId: msg.channel.guild.id
+					}
+				});
+				if (ID) {
+					await member.removeRole(ID.roleId);
+					msg.reply(`${member.user.tag} has been un-OTS'ed by ${msg.author.tag}`);
+				} else {
+					msg.reply(`OTS Role has not been set in ${msg.guild.name}.`);
+				}
 			} else {
 				return msg.reply('Please mention a valid member of this server.');
 			}
@@ -24,6 +34,6 @@ exports.func = async (msg, args) => {
 		}
 	} catch (err) {
 		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author} I could not un-mute because of : ${err}`);
+		log.error(`Sorry ${msg.author.tag} I could not remove the OTS because of : ${err}`);
 	}
 };
