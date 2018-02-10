@@ -28,7 +28,7 @@ exports.func = async (msg,args) => {
 				}
 			});
 			msg.channel.bulkDelete(msgArray);
-			msg.reply(`deleted ${deletedCount} messages. `);
+			msg.reply(`purged ${deletedCount} messages. `);
 			log.info(`${msg.author.tag} deleted ${deletedCount} messages. `);
 		} else if (args[0].toLowerCase() == 'mine'){
 			const searchAmount = parseInt(args[1], 10);
@@ -44,7 +44,7 @@ exports.func = async (msg,args) => {
 			});
 			msg.channel.bulkDelete(msgArray);
 			msg.reply(`deleted ${deletedCount} messages. `);
-			log.info(`${msg.author.tag} deleted ${deletedCount} messages. `);
+			log.info(`${msg.author.tag} purged ${deletedCount} messages. `);
 		} else {
 			//Get the delete count, as an actual number.
 			const deleteCount = parseInt(args[0], 10);
@@ -55,7 +55,7 @@ exports.func = async (msg,args) => {
 			const fetched = await msg.channel.fetchMessages({limit: deleteCount});
 			await msg.channel.bulkDelete(fetched);
 			msg.reply(`deleted ${deleteCount} messages. `);
-			log.info(`${msg.author.tag} deleted ${deleteCount} messages. `);
+			log.info(`${msg.author.tag} purged ${deleteCount} messages. `);
 		}
 	} catch (err) {
 		msg.reply('Something went wrong.');
