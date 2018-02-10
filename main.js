@@ -75,7 +75,11 @@ bot.on('message', msg => {
 		// Reject message if the message author is a bot or the message is not in a guild (eg. DMs)
 		if (msg.author.bot || !msg.guild) return;
 		// Find message's guild in the database
-		getServer(bot,msg).then( (msgserver) => {
+		bot.Server.findOne({ 
+			where: {
+				guildId: msg.guild.id
+			}
+		}).then( (msgserver) => {
 			let command, args;
 			// Loop through possible prefixes to check if message is a command - this is a bit confusing because if the message is a command, then it is set to false (this is just so I could use .every())
 			const notCommand = [msgserver.altPrefix, bot.config.prefix, `<@${bot.user.id}>`, `<@!${bot.user.id}>`].every(prefix => {
@@ -86,7 +90,6 @@ bot.on('message', msg => {
 				}
 				return true;
 			});
-	
 			if (notCommand) {
 				updateUser(msg).then( () => {
 					return;
@@ -100,10 +103,15 @@ bot.on('message', msg => {
 				// Fetch the command's prototype
 				cmd = bot.commands.get(command); 
 			} else {
-				msg.reply('Command does not exist.');
+				return msg.reply('Command does not exist.');
 			}
 			//Check if command is registered in the database.
-			getCMDModel(bot,msg, command).then((cmdExists) => {
+			bot.CMDModel.findOne({
+				where: {
+					guildId: msg.guild.id,
+					name: command
+				}
+			}).then((cmdExists) => {
 				//If it is disabled return.
 				if (cmdExists && cmdExists.enabled == false){
 					msg.reply(`Command is disabled in ${msg.guild.name}.`);
@@ -228,21 +236,6 @@ async function updateUser (msg){
 		log.info(`Created db entry for user ${msg.author.username}.`);
 	}
 	return;
-}
-
-async function getServer(bot,msg){
-	return await bot.Server.findOne({ 
-		where: {
-			guildId: msg.guild.id
-		}
-	});
-}
-
-async function getCMDModel(bot,msg, command){
-	return await bot.CMDModel.findOne({where: {
-		guildId: msg.guild.id,
-		name: command
-	}});
 }
 // =====================================================
 

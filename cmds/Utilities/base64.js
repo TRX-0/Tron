@@ -18,7 +18,7 @@ exports.func = async (msg, args) => {
 		case 'encode': 
 		{
 			const result = await btoa(args.slice(1).join(' '));
-			msg.channel.send('', {embed: {
+			msg.channel.send({embed: {
 				fields: [{
 					name: 'Encoded Text',
 					value: result
@@ -30,7 +30,7 @@ exports.func = async (msg, args) => {
 		case 'decode':
 		{
 			const result = await (atob(args[1]));
-			msg.channel.send('', {embed: {
+			msg.channel.send({embed: {
 				fields: [{
 					name: 'Decoded Text',
 					value: result
