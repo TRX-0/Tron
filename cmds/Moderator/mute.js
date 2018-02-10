@@ -30,7 +30,7 @@ exports.func = async (msg, args) => {
 				let member = msg.mentions.members.first();
 				let reason = args.slice(1).join(' ');
 				if(!reason){
-					return msg.reply('Please indicate a reason for OTS!');
+					return msg.reply('Please indicate a reason for Muting!');
 				}
 				const ID = await OTS.findOne({
 					where: {
@@ -39,9 +39,9 @@ exports.func = async (msg, args) => {
 				});
 				if (ID) {
 					await member.addRole(ID.roleId, reason);
-					msg.reply(`${member.user.tag} has been OTS'ed by ${msg.author.tag} Reason: ${reason}`);
+					msg.reply(`${member.user.tag} has been muted by ${msg.author.tag} Reason: ${reason}`);
 				} else {
-					msg.reply(`OTS Role has not been set in ${msg.guild.name}.`);
+					msg.reply(`Muted Role has not been set in ${msg.guild.name}.`);
 				}
 			} else {
 				return msg.reply('Please mention a valid member of this server.');
@@ -51,6 +51,6 @@ exports.func = async (msg, args) => {
 		}
 	} catch (err) {
 		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.tag} I could not OTS because of : ${err}`);
+		log.error(`Sorry ${msg.author.tag} I could not mute because of : ${err}`);
 	}
 };

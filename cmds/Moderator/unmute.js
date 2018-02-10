@@ -10,7 +10,7 @@ exports.data = {
 
 exports.func = async (msg, args) => {
 	const OTS = require(`${msg.client.config.folders.models}/otsroles.js`);
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Mute');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)('Unmute');
 	try{
 		if (args[0]){    
 			if (msg.mentions.users.first().id != null){
@@ -22,9 +22,9 @@ exports.func = async (msg, args) => {
 				});
 				if (ID) {
 					await member.removeRole(ID.roleId);
-					msg.reply(`${member.user.tag} has been un-OTS'ed by ${msg.author.tag}`);
+					msg.reply(`${member.user.tag} has been unmuted by ${msg.author.tag}`);
 				} else {
-					msg.reply(`OTS Role has not been set in ${msg.guild.name}.`);
+					msg.reply(`Muted Role has not been set in ${msg.guild.name}.`);
 				}
 			} else {
 				return msg.reply('Please mention a valid member of this server.');
@@ -34,6 +34,6 @@ exports.func = async (msg, args) => {
 		}
 	} catch (err) {
 		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.tag} I could not remove the OTS because of : ${err}`);
+		log.error(`Sorry ${msg.author.tag} I could not remove the mute because of : ${err}`);
 	}
 };

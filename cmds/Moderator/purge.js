@@ -28,6 +28,7 @@ exports.func = async (msg,args) => {
 				}
 			});
 			msg.channel.bulkDelete(msgArray);
+			msg.reply(`deleted ${deletedCount} messages. `);
 			log.info(`${msg.author.tag} deleted ${deletedCount} messages. `);
 		} else if (args[0].toLowerCase() == 'mine'){
 			const searchAmount = parseInt(args[1], 10);
@@ -42,6 +43,7 @@ exports.func = async (msg,args) => {
 				}
 			});
 			msg.channel.bulkDelete(msgArray);
+			msg.reply(`deleted ${deletedCount} messages. `);
 			log.info(`${msg.author.tag} deleted ${deletedCount} messages. `);
 		} else {
 			//Get the delete count, as an actual number.
@@ -52,6 +54,7 @@ exports.func = async (msg,args) => {
 			// So we get our messages, and delete them. Simple enough, right?
 			const fetched = await msg.channel.fetchMessages({limit: deleteCount});
 			await msg.channel.bulkDelete(fetched);
+			msg.reply(`deleted ${deleteCount} messages. `);
 			log.info(`${msg.author.tag} deleted ${deleteCount} messages. `);
 		}
 	} catch (err) {
