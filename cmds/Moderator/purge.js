@@ -16,7 +16,7 @@ exports.func = async (msg,args) => {
 		var msgArray = [];
 		if(args[0].toLowerCase() == 'own'){
 			const searchAmount = parseInt(args[1], 10);
-			msg.delete();
+			await msg.delete();
 			if(!searchAmount || searchAmount < 2 || searchAmount > 100){
 				return msg.reply('Please provide a number between 2 and 100');
 			}
@@ -32,6 +32,7 @@ exports.func = async (msg,args) => {
 			log.info(`${msg.author.tag} deleted ${deletedCount} messages. `);
 		} else if (args[0].toLowerCase() == 'mine'){
 			const searchAmount = parseInt(args[1], 10);
+			await msg.delete();
 			if(!searchAmount || searchAmount < 2 || searchAmount > 100){
 				return msg.reply('Please provide a number between 2 and 100');
 			}
@@ -48,6 +49,7 @@ exports.func = async (msg,args) => {
 		} else {
 			//Get the delete count, as an actual number.
 			const deleteCount = parseInt(args[0], 10);
+			await msg.delete();
 			if(!deleteCount || deleteCount < 2 || deleteCount > 100){
 				return msg.reply('Please provide a number between 2 and 100');
 			}
