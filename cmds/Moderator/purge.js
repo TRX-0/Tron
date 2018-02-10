@@ -50,8 +50,8 @@ exports.func = async (msg,args) => {
 				return msg.reply('Please provide a number between 2 and 100');
 			}
 			// So we get our messages, and delete them. Simple enough, right?
-			const fetched = msg.channel.fetchMessages({limit: deleteCount});
-			msg.channel.bulkDelete(fetched);
+			const fetched = await msg.channel.fetchMessages({limit: deleteCount});
+			await msg.channel.bulkDelete(fetched);
 			log.info(`${msg.author.tag} deleted ${deleteCount} messages. `);
 		}
 	} catch (err) {
