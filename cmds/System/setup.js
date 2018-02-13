@@ -68,6 +68,7 @@ exports.func = async (msg,args) => {
 					botspamChannelId: args[3]
 				});
 			}
+			msg.delete();
 			msg.reply('OTS role has been successfully setup');
 			log.info(`${msg.author.tag} has finished setting up OTS role in ${msg.guild.name}`);
 		} else if (!args[0]){
