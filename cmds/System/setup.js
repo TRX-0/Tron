@@ -3,16 +3,16 @@ exports.data = {
 	command: 'setup',
 	description: 'Setup specific server options. Without arguments will return role ids.',
 	group: 'System',
-	syntax: 'setup [optional:ots] [perm3] [perm2] [perm1] [optional: otsrole]',
+	syntax: 'setup (ots [Muted Role] [Mute Appeal Channel] [Botspam Channel]) || ([perm3] [perm2] [perm1])',
 	author: 'Aris A.',
 	permissions: 4
 };
 
 exports.func = async (msg,args) => {
-	const OTS = require(`${msg.client.config.folders.models}/otsroles.js`);
+	const OTS = require(`${msg.client.config.folders.models}/mute.js`);
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Setup');
 	try {
-		if(args[0] && args[1] && args[2] && !args[3]){
+		if(args.length == 3){
 			var Array = [];
 			args.forEach(arg => Array = Array.concat(arg.split(',')));
 			let Wrong = false;
@@ -42,23 +42,30 @@ exports.func = async (msg,args) => {
 			} else {
 				msg.reply('Could not find server in db.');
 			}
-		} else if (args[0] && args[1] && args[0] == 'ots') {
+		} else if (args.length == 4 && args[0] == 'ots') {
 			if (!msg.guild.roles.has(args[1])){
-				return msg.reply('The ID given is incorrect.');
+				return msg.reply('The role ID given is incorrect.');
 			}
-			const OTSRole = await OTS.findOne({
+			if (!msg.guild.channels.has(args[2]) || ! msg.guild.channels.has(args[3])){
+				return msg.reply('The channel IDs given are incorrect.');
+			}
+			const OTSdb = await OTS.findOne({
 				where: {
 					guildId: msg.guild.id
 				}
 			});
-			if (OTSRole){
-				await OTSRole.update({
-					roleId: args[1]
+			if (OTSdb){
+				await OTSdb.update({
+					roleId: args[1],
+					mutedChannelId: args[2],
+					botspamChannelId: args[3]
 				});
 			} else {
 				await OTS.create({
 					guildId: msg.guild.id,
-					roleId: args[1]
+					roleId: args[1],
+					mutedChannelId: args[2],
+					botspamChannelId: args[3]
 				});
 			}
 			msg.reply('OTS role has been successfully setup');

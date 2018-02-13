@@ -16,7 +16,7 @@ const Database = require(`${bot.config.folders.lib}/db.js`);
 bot.Server = require(`${bot.config.folders.models}/server.js`);
 bot.CMDModel = require(`${bot.config.folders.models}/commands.js`);
 const Profiles = require(`${bot.config.folders.models}/profiles.js`);
-const OTS = require(`${bot.config.folders.models}/otsroles.js`);
+const OTS = require(`${bot.config.folders.models}/mute.js`);
 
 // ==== Initialisation ====
 bot.db = Database.start(); // Start the database and connect

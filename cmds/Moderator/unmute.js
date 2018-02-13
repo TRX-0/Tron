@@ -9,11 +9,11 @@ exports.data = {
 };
 
 exports.func = async (msg, args) => {
-	const OTS = require(`${msg.client.config.folders.models}/otsroles.js`);
+	const OTS = require(`${msg.client.config.folders.models}/mute.js`);
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Unmute');
 	try{
 		if (args[0]){    
-			if (msg.mentions.users.first().id != null){
+			if (msg.mentions.users.first() != null){
 				let member = msg.mentions.members.first();
 				const ID = await OTS.findOne({
 					where: {
@@ -21,7 +21,9 @@ exports.func = async (msg, args) => {
 					}
 				});
 				if (ID) {
+					const botspam = msg.guild.channels.get(ID.botspamChannelId)
 					await member.removeRole(ID.roleId);
+					await botspam.send(`${member} You have been unmuted.`);
 					msg.reply(`${member.user.tag} has been unmuted by ${msg.author.tag}`);
 				} else {
 					msg.reply(`Muted Role has not been set in ${msg.guild.name}.`);

@@ -16,11 +16,11 @@ exports.data = {
 //}
 
 exports.func = async (msg, args) => {
-	const OTS = require(`${msg.client.config.folders.models}/otsroles.js`);
+	const OTS = require(`${msg.client.config.folders.models}/mute.js`);
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Mute');
 	try{
 		if (args[0]){    
-			if (msg.mentions.users.first().id != null){
+			if (msg.mentions.users.first() != null){
 
 				//const time = '1s1m1h1d1w1M1y'; //this is date based
 				//const Values = ParseDate(time);
@@ -38,7 +38,9 @@ exports.func = async (msg, args) => {
 					}
 				});
 				if (ID) {
+					const muteappeal = msg.guild.channels.get(ID.mutedChannelId);
 					await member.addRole(ID.roleId, reason);
+					await muteappeal.send(`${member} You have been muted. You can appeal the mute here.`);
 					msg.reply(`${member.user.tag} has been muted by ${msg.author.tag} Reason: ${reason}`);
 				} else {
 					msg.reply(`Muted Role has not been set in ${msg.guild.name}.`);
