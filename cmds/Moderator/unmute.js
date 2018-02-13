@@ -21,7 +21,7 @@ exports.func = async (msg, args) => {
 					}
 				});
 				if (ID) {
-					const botspam = msg.guild.channels.get(ID.botspamChannelId)
+					const botspam = msg.guild.channels.get(ID.botspamChannelId);
 					await member.removeRole(ID.roleId);
 					await botspam.send(`${member} You have been unmuted.`);
 					msg.reply(`${member.user.tag} has been unmuted by ${msg.author.tag}`);
