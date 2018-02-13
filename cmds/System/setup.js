@@ -71,6 +71,7 @@ exports.func = async (msg,args) => {
 			msg.reply('OTS role has been successfully setup');
 			log.info(`${msg.author.tag} has finished setting up OTS role in ${msg.guild.name}`);
 		} else if (!args[0]){
+			msg.delete();
 			let roleList = '';
 			msg.guild.roles.keyArray().forEach(key => roleList += `${msg.guild.roles.get(key).name}: ${key}\n`);
 			const dm = await msg.author.createDM();
