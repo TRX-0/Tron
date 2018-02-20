@@ -23,6 +23,7 @@ const hasUpdate = {
 	'https://montecrypto-game.github.io/': false,
 	'https://github.com/montecrypto-game/montecrypto-game.github.io/commits/master': false,
 	'https://github.com/montecrypto-game/montecrypto-game.github.io': false,
+	'https://twitter.com/montecryptogame': false
 };
 let repeat;
 
