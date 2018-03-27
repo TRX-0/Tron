@@ -270,6 +270,10 @@ exports.start = async (msg, bot, args) => {
 	}
 };
 
+exports.start = async (msg) => {
+	msg.channel.send('This has not been set-up yet. Contact Aris.');
+};
+
 exports.disable = () => {
 	clearTimeout(repeat);
 };
