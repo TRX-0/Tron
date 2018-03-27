@@ -270,7 +270,7 @@ exports.start = async (msg, bot, args) => {
 	}
 };
 
-exports.start = async (msg) => {
+exports.stop = async (msg) => {
 	msg.channel.send('This has not been set-up yet. Contact Aris.');
 };
 
