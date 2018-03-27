@@ -13,7 +13,7 @@ exports.func = async (msg) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Update');
 	try {
 		const sent = await msg.channel.send('Updating code...');
-		const response = await exec(`cd ~/Tron/ && git pull https://${msg.client.auth.Github.Username}:${msg.client.auth.Github.Password}@github.com/pamehabai6/Tron.git`);
+		const response = await exec(`cd ${msg.client.config.folders.home} && git pull https://${msg.client.auth.Github.Username}:${msg.client.auth.Github.Password}@github.com/pamehabai6/Tron.git`);
 		if(response.stdout.toString().includes('Already up-to-date.') || response.stdout.toString().includes('Already up to date.')){
 			await sent.edit('The code is already up to date!');
 			return;
