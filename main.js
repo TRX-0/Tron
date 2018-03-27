@@ -3,6 +3,7 @@ var Discord = require('discord.js');
 const bot = new Discord.Client();
 bot.config = require('./config.json');
 bot.auth = require('./auth.json');
+bot.watchers = new Discord.Collection();
 
 // Basic Function Modules
 const log = require(`${bot.config.folders.lib}/log.js`)('Core');
@@ -10,6 +11,7 @@ bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
 const chalk = require('chalk');
 const loadCmds = require(`${bot.config.folders.lib}/loadCommands.js`);
 const loadWatchers = require(`${bot.config.folders.lib}/loadWatchers.js`);
+
 
 // Database modules
 const Database = require(`${bot.config.folders.lib}/db.js`);
@@ -319,6 +321,15 @@ bot.watcherReload = watcher => {
 	});
 };
 
+bot.schedule = (msg, time) => {
+	var schedule = require('node-schedule');
+	schedule.scheduleJob(time, function(/*fireDate*/){
+		const time = new Discord.Collection();
+		//msg.channel.send('This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
+		time.set(msg);
+		time.edit(`Current time is: \`\`\`${new Date()}\`\`\` or \`\`\`${new Date().toLocaleString('en-US', {timeZone: 'America/New_York'})}\`\`\` `);
+	});
+};
 /**
  * Gets elevation of user from message
  *

@@ -4,7 +4,7 @@ exports.data = {
 	description: 'Watcher functions',
 	group: 'Utilities',
 	syntax: 'watcher [start|stop|enable|disable|list] [watcherName] [params]',
-	author: 'Matt C: matt@artemisbot.uk',
+	author: 'Matt C',
 	permissions: 3,
 	anywhere: true
 };
@@ -40,11 +40,7 @@ exports.func = async (msg, args, bot) => {
 		case 'stop':
 		{
 			if (watcher) {
-				if (watcher.disabledGuilds.includes(msg.guild.id)) {
-					msg.reply(`This watcher has been disabled in this guild. Re-enable it with \` watcher genable ${args[1]}\`.`);
-				} else {
-					bot.watchers.get(args[1]).stop(msg, bot, args.slice(2));
-				}
+				bot.watchers.get(args[1]).stop(msg, bot, args.slice(2));
 			} else {
 				msg.reply('Selected watcher does not exist.');
 			}
