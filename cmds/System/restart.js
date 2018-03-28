@@ -1,9 +1,9 @@
 exports.data = {
-	name: 'Stop',
-	command: 'stop',
-	description: 'Stops Bot.',
+	name: 'Restart',
+	command: 'restart',
+	description: 'Restarts Bot.',
 	group: 'System',
-	syntax: 'stop',
+	syntax: 'restart',
 	author: 'Aris A.',
 	permissions: 3
 };
