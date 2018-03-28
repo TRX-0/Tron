@@ -245,10 +245,10 @@ async function updateUser (msg){
 bot.stop = (msg) => {
 	return new Promise((resolve, reject) => {
 		try {
-			if(bot.config.pm2 == true){
+			if(bot.config.pm2 == 'true'){
 				msg.channel.send('Stopping all processes and exiting!');
 				exec('pm2 stop Tron');
-			} else if (bot.config.pm2 == false) {
+			} else if (bot.config.pm2 == 'false') {
 				msg.channel.send('Stopping all processes and exiting!');
 				bot.destroy();
 				process.exit();
@@ -266,10 +266,10 @@ bot.stop = (msg) => {
 bot.restart = (msg) => {
 	return new Promise((resolve, reject) => {
 		try {
-			if(bot.config.pm2 == true){
+			if(bot.config.pm2 == 'true'){
 				msg.channel.send('Restarting all processes!');
 				exec('pm2 restart Tron');
-			} else if (bot.config.pm2 == false) {
+			} else if (bot.config.pm2 == 'false') {
 				msg.channel.send('Restarting all processes!');
 				exec(`cd ${bot.config.folders.home} && node main.js`);
 				bot.destroy();
