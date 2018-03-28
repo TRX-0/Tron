@@ -246,12 +246,14 @@ bot.stop = (msg) => {
 	return new Promise((resolve, reject) => {
 		try {
 			if(bot.config.pm2 == true){
+				msg.channel.send('Stopping all processes and exiting!');
 				exec('pm2 stop Tron');
 			} else if (bot.config.pm2 == false) {
+				msg.channel.send('Stopping all processes and exiting!');
 				bot.destroy();
 				process.exit();
 			} else {
-				msg.channel.send('Incorect configuration. Value PM2 not set correctly!');
+				msg.reply('Incorect configuration. Value PM2 not set correctly!');
 			}
 		} catch (err) {
 			log.error(`Error on bot quit: ${err}`);
@@ -265,13 +267,15 @@ bot.restart = (msg) => {
 	return new Promise((resolve, reject) => {
 		try {
 			if(bot.config.pm2 == true){
+				msg.channel.send('Restarting all processes!');
 				exec('pm2 restart Tron');
 			} else if (bot.config.pm2 == false) {
+				msg.channel.send('Restarting all processes!');
 				exec(`cd ${bot.config.folders.home} && node main.js`);
 				bot.destroy();
 				process.exit();
 			} else {
-				msg.channel.send('Incorect configuration. Value PM2 not set correctly!');
+				msg.reply('Incorect configuration. Value PM2 not set correctly!');
 			}
 		} catch (err) {
 			log.error(`Error on bot quit: ${err}`);
