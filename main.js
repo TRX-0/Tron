@@ -11,7 +11,7 @@ bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
 const chalk = require('chalk');
 const loadCmds = require(`${bot.config.folders.lib}/loadCommands.js`);
 const loadWatchers = require(`${bot.config.folders.lib}/loadWatchers.js`);
-
+const exec = require('util').promisify(require('child_process').exec);
 
 // Database modules
 const Database = require(`${bot.config.folders.lib}/db.js`);
@@ -242,11 +242,17 @@ async function updateUser (msg){
 // =====================================================
 
 //Function that stops bot
-bot.stop = () => {
+bot.stop = (msg) => {
 	return new Promise((resolve, reject) => {
 		try {
-			bot.destroy();
-			process.exit();
+			if(bot.config.pm2 == true){
+				exec('pm2 stop Tron');
+			} else if (bot.config.pm2 == false) {
+				bot.destroy();
+				process.exit();
+			} else {
+				msg.channel.send('Incorect configuration. Value PM2 not set correctly!');
+			}
 		} catch (err) {
 			log.error(`Error on bot quit: ${err}`);
 			reject(err);
@@ -254,6 +260,25 @@ bot.stop = () => {
 	});
 };
 
+//Function that restarts bot
+bot.restart = (msg) => {
+	return new Promise((resolve, reject) => {
+		try {
+			if(bot.config.pm2 == true){
+				exec('pm2 restart Tron');
+			} else if (bot.config.pm2 == false) {
+				exec(`cd ${bot.config.folders.home} && node main.js`);
+				bot.destroy();
+				process.exit();
+			} else {
+				msg.channel.send('Incorect configuration. Value PM2 not set correctly!');
+			}
+		} catch (err) {
+			log.error(`Error on bot quit: ${err}`);
+			reject(err);
+		}
+	});
+};
 /**
  * Enables a specified watcher
  *

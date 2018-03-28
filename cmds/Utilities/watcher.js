@@ -138,7 +138,7 @@ exports.func = async (msg, args, bot) => {
 		{
 			if (watcher) {
 				if (watcher.disabledGuilds.includes(msg.guild.id)) {
-					msg.reply(`This watcher has been disabled in this guild. Re-enable it with \`ocel watcher genable ${args[1]}\`.`);
+					msg.reply(`This watcher has been disabled in this guild: ${args[1]}\`.`);
 				} else {
 					bot.watchers.get(args[1]).list(msg, bot, args.slice(2));
 				}
