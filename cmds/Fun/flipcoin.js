@@ -9,8 +9,6 @@ exports.data = {
 	anywhere: false
 };
 
-
-
 exports.func = (msg) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('FlipCoin');
 	try{
