@@ -15,6 +15,7 @@
         "discord.js": "^11.3.0",
         "fs-jetpack": "^0.10.5",
         "googleapis": "^20.2.0",
+        "he": "^1.1.1",
         "htmlparser2": "^3.9.2",
         "humanize-duration": "^3.12.1",
         "mail-listener2": "^0.3.1",
@@ -30,6 +31,7 @@
         "sequelize": "^4.31.2",
         "snekfetch": "^3.6.1",
         "strftime": "^0.10.0",
+        "twit": "^2.2.9",
         "winston": "^2.4.0",
         "winston-daily-rotate-file": "^1.7.2"
     },

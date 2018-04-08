@@ -30,7 +30,8 @@ const hasUpdate = {
 	'https://wakingtitan.com': false,
 	'http://csd.atlas-65.com': false,
 	'https://project-wt.com': false,
-	'https://www.nomanssky.com': false
+	'https://www.nomanssky.com': false,
+	'https://ware-tech.cloud': false
 };
 let repeat;
 
@@ -203,16 +204,15 @@ const querySites = async bot => {
 		await Promise.all(Object.keys(data.sites).map(site => checkSite(site, bot)));
 		repeat = setTimeout(async () => {
 			querySites(bot);
-		}, 30 * 1000);
+		}, 15 * 1000);
 	} catch (err) {
 		if (err.status) {
 			log.warn('Failed to access a site. Will retry in 30 seconds.');
 			repeat = setTimeout(async () => {
 				querySites(bot);
-			}, 30 * 1000);
+			}, 15 * 1000);
 		} else {
 			log.error(`Site query failed. ${exports.data.name} has been disabled for safety.`);
-			bot.channels.get('338712920466915329').send(`Site query failed, ${exports.data.name} disabled.`);
 		}
 	}
 };
