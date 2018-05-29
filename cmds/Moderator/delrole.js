@@ -39,17 +39,20 @@ exports.func = async (msg, args) => {
 						RoleName = RoleName + ' ' + args[i];
 					}
 				}
-				log.info(RoleName);
 				let Role = msg.guild.roles.find('name', RoleName);
 				if (Role) {
-					if (Member.roles.has(Role.id)) {
-						Member.removeRole(Role).catch(err => {
-							log.error(err);
-							msg.reply('You do not have enough permissions!');
-						});
-						msg.reply(`Removed role \`\`${RoleName}\`\` from \`\`${args[0]}\`\``);
+					if (Role.comparePositionTo(msg.member.roles.last()) < 0){
+						if (Member.roles.has(Role.id)) {
+							Member.removeRole(Role).catch(err => {
+								log.error(err);
+								msg.reply('You do not have enough permissions!');
+							});
+							msg.reply(`Removed role \`\`${RoleName}\`\` from \`\`${args[0]}\`\``);
+						} else {
+							msg.reply(`User does not have the ${Role.name} role.`);
+						}
 					} else {
-						msg.reply('User does not have this role.');
+						msg.reply(`Role ${Role.name} is higher than your ${msg.member.roles.last().name} role.`);
 					}
 				} else {
 					return msg.reply('Role does not exist!');

@@ -60,7 +60,7 @@ exports.func = async (msg,args) => {
 			log.info(`${msg.author.tag} purged ${deleteCount} messages. `);
 		}
 	} catch (err) {
-		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.tag} Couldn't delete messages because of: ${err}`);
+		msg.reply(`${err.toString()}`);
+		log.error(`${msg.author.tag} couldn't delete messages because of: ${err}`);
 	}
 };

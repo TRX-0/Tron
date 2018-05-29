@@ -39,11 +39,18 @@ exports.func = async (msg, args) => {
 						RoleName = RoleName + ' ' + args[i];
 					}
 				}
-				log.info(RoleName);
 				let Role = msg.guild.roles.find('name', RoleName);
 				if (Role) {
-					Member.addRole(Role);
-					msg.reply(`Added role \`\`${RoleName}\`\` to \`\`${args[0]}\`\``);
+					if (Role.comparePositionTo(msg.member.roles.last()) < 0){
+						if (!Member.roles.has(Role.id)) {
+							Member.addRole(Role);
+							msg.reply(`Added role \`\`${RoleName}\`\` to \`\`${args[0]}\`\``);
+						} else {
+							msg.reply(`User already has the ${Role.name} role!`);
+						}
+					} else {
+						msg.reply(`Role ${Role.name} is higher than your ${msg.member.roles.last().name} role.`);
+					}
 				} else {
 					return msg.reply('Role does not exist!');
 				}
