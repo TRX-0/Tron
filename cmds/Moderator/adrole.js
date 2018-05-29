@@ -44,7 +44,7 @@ exports.func = async (msg, args) => {
 					if (Role.comparePositionTo(msg.member.roles.last()) <= 0){
 						if (!Member.roles.has(Role.id)) {
 							Member.addRole(Role);
-							msg.reply(`Added role \`\`${RoleName}\`\` to \`\`${args[0]}\`\``);
+							msg.reply(`Added role \`\`${RoleName}\`\` to \`\`${args[0].name}\`\``);
 						} else {
 							msg.reply(`User already has the ${Role.name} role!`);
 						}

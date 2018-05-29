@@ -47,7 +47,7 @@ exports.func = async (msg, args) => {
 								log.error(err);
 								msg.reply('You do not have enough permissions!');
 							});
-							msg.reply(`Removed role \`\`${RoleName}\`\` from \`\`${args[0]}\`\``);
+							msg.reply(`Removed role \`\`${RoleName}\`\` from \`\`${args[0].name}\`\``);
 						} else {
 							msg.reply(`User does not have the ${Role.name} role.`);
 						}
