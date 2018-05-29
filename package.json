@@ -33,6 +33,7 @@
         "snekfetch": "^3.6.4",
         "strftime": "^0.10.0",
         "twit": "^2.2.9",
+        "webshot": "^0.18.0",
         "winston": "^2.4.2",
         "winston-daily-rotate-file": "^1.7.2"
     },

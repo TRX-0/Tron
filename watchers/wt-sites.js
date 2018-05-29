@@ -22,16 +22,6 @@ const Watcher = require(`${config.folders.models}/watcher`);
 // Makes repeats global
 
 const hasUpdate = {
-	'https://echo-64.com': false,
-	'https://atlas-65.com': false,
-	'https://superlumina-6c.com': false,
-	'https://myriad-70.com': false,
-	'https://multiverse-75.com': false,
-	'https://wakingtitan.com': false,
-	'http://csd.atlas-65.com': false,
-	'https://project-wt.com': false,
-	'https://www.nomanssky.com': false,
-	'https://ware-tech.cloud': false
 };
 let repeat;
 
@@ -75,7 +65,7 @@ const checkGlyphs = async bot => {
 		}
 		for (let i = 0; i < glyphs.length; i++) {
 			if (glyphs.sort()[i] !== data.glyphs[i]) {
-				log.info('New glyph at wakingtitan.com');
+				log.info(`New glyph (${data.glyphs[i]}) at wakingtitan.com`);
 				const embed = new Discord.RichEmbed({
 					color: 0x993E4D,
 					timestamp: moment().toISOString(),
@@ -93,11 +83,9 @@ const checkGlyphs = async bot => {
 						url: `http://wakingtitan.com${glyphs.sort()[i]}`
 					}
 				});
-				for (const channel of data.channels) {
-					await bot.channels.get(channel).send('', {
-						embed
-					});
-				}
+				await Promise.all(data.channels.map(channel =>
+					bot.channels.get(channel).send('', {embed})
+				));
 				const resp = await snek.get(`http://wakingtitan.com${glyphs.sort()[i]}`);
 				jetpack.write(`watcherData/glyphs/glyph${glyphs.sort()[i].split('/').slice(-1)[0]}`, resp.body);
 				await delay(30 * 1000);
@@ -116,32 +104,36 @@ const checkGlyphs = async bot => {
 const checkSite = async (site, bot) => {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const wtSites = await Watcher.findOne({
+			let wtSites = await Watcher.findOne({
 				where: {
 					watcherName: 'wt-sites'
 				}
 			});
-			const data = wtSites.data || {
+			let data = wtSites.data || {
 				channels: [],
 				sites: {},
-				glyphs: []
+				glyphs: [],
+				extranetMessages: {}
 			};
 			const reqOpts = {headers: {}};
 			if (site === 'https://wakingtitan.com') {
 				reqOpts.headers.Cookie = 'terminal=%5B%22atlas%22%2C%22csd%22%2C%222fee0b5b-6312-492a-8308-e7eec4287495%22%2C%2205190fed-b606-4321-a52e-c1d1b39f2861%22%2C%22f7c05c4f-18a5-47a7-bd8e-804347a15f42%22%5D; archive=%5B%229b169d05-6b0b-49ea-96f7-957577793bef%22%2C%2267e3b625-39c0-4d4c-9241-e8ec0256b546%22%2C%224e153ce4-0fec-406f-aa90-6ea62e579369%22%2C%227b9bca5c-43ba-4854-b6b7-9fffcf9e2b45%22%2C%222f99ac82-fe56-43ab-baa6-0182fd0ed020%22%2C%22b4631d12-c218-4872-b414-9ac31b6c744e%22%2C%227b34f00f-51c3-4b6c-b250-53dbfaa303ef%22%2C%2283a383e2-f4fc-4d8d-905a-920057a562e7%22%2C%227ed354ba-b03d-4c56-ade9-3655aff45179%22%5D';
+			} else if (site === 'https://extranet.ware-tech.cloud' || site === 'https://extranet.ware-tech.cloud/documents' || site === 'https://extranet.ware-tech.cloud/taskmanager' || site === 'https://extranet.ware-tech.cloud/supplyrequest') {
+				reqOpts.headers.Cookie = 'token=fd91b1c75a6857e7fd00caf61ffc0181c1492096';
 			}
 			const req = await snek.get(site, reqOpts); // Req.body is a buffer for unknown reasons
+			const timestamp = moment();
 			const pageCont = clean(req.body.toString());
 			const oldCont = clean(jetpack.read(`./watcherData/${data.sites[site]}-latest.html`));
 			if (pageCont.replace(/\s/g, '').replace(/>[\s]+</g, '><').replace(/"\s+\//g, '"/') === oldCont.replace(/\s/g, '').replace(/>[\s]+</g, '><').replace(/"\s+\//g, '"/')) {
-				log.debug(`No change on ${site}.`);
+				// Log.debug(`No change on ${site}.`);
 				return resolve(hasUpdate[site] = false);
 			}
 			log.verbose(`There's been a possible change on ${site}`);
 			if (hasUpdate[site]) {
 				return resolve(log.warn(`${site} only just had an update, there's probably a bug.`));
 			}
-			await delay(5000);
+			await delay(2000);
 			const req2 = await snek.get(site, reqOpts);
 			const pageCont2 = clean(req2.body.toString());
 			if (pageCont2 !== pageCont) {
@@ -149,9 +141,10 @@ const checkSite = async (site, bot) => {
 				return resolve(hasUpdate[site] = false);
 			}
 			log.info(`Confirmed change on ${site}`);
+			jetpack.write(`./watcherData/${data.sites[site]}-temp.html`, req.body.toString());
 			const embed = new Discord.RichEmbed({
 				color: 0x993E4D,
-				timestamp: moment().toISOString(),
+				timestamp: timestamp.toISOString(),
 				author: {
 					name: `${site.split('/').splice(2).join('/')} has updated`,
 					url: site,
@@ -162,20 +155,55 @@ const checkSite = async (site, bot) => {
 					text: 'Watching Titan'
 				}
 			});
-			jetpack.write(`./watcherData/${data.sites[site]}-temp.html`, req.body.toString());
+			let extranet = false;
 			if (site === 'https://wakingtitan.com') {
 				checkGlyphs(bot);
 			}
-			for (const channel of data.channels) {
-				await bot.channels.get(channel).send('', {
-					embed
-				});
-			}
-			await snek.get(`https://web.archive.org/save/${site}`);
+			wtSites = await Watcher.findOne({
+				where: {
+					watcherName: 'wt-sites'
+				}
+			});
+			data = wtSites.data || {
+				channels: [],
+				sites: {},
+				glyphs: [],
+				extranetMessages: {}
+			};
+			await wtSites.update({data});
 			jetpack.remove(`./watcherData/${data.sites[site]}-temp.html`);
 			jetpack.write(`./watcherData/${data.sites[site]}-latest.html`, req.body.toString());
 			jetpack.write(`./watcherData/${data.sites[site]}-logs/${strftime('%F - %H-%M-%S')}.html`, req.body.toString());
-			return resolve(hasUpdate[site] = true);
+			if (!extranet) {
+				const maxListeners = bot.getMaxListeners();
+				let doPost = true;
+				if (['https://www.nomanssky.com', 'https://extranet.ware-tech.cloud'].includes(site)) {
+					doPost = false;
+					bot.setMaxListeners(maxListeners);
+				}
+
+				if (!doPost) {
+					return resolve(hasUpdate[site] = false);
+				}
+
+				await Promise.all(data.channels.map(async channel => {
+					const m = await bot.channels.get(channel).send('', {embed});
+					try {
+						if (extranet) {
+							if (data.extranetMessages[channel]) {
+								log.verbose('Deleting previous update message!');
+								(await bot.channels.get(channel).fetchMessage(data.extranetMessages[channel])).delete();
+							}
+							data.extranetMessages[channel] = m.id;
+						}
+					} catch (err) {
+						log.warn(`Unable to delete old update message for extranet: ${err.stack}`);
+					}
+				}));
+				await snek.get(`https://web.archive.org/save/${site}`);
+				return resolve(hasUpdate[site] = true);
+			}
+			return resolve(hasUpdate[site] = false);
 		} catch (err) {
 			if (err.status) {
 				log.error(`Failed to check site ${site}. ${err.status}: ${err.statusText}`);
@@ -198,19 +226,24 @@ const querySites = async bot => {
 	const data = wtSites.data || {
 		channels: [],
 		sites: {},
-		glyphs: []
+		glyphs: [],
+		extranetMessages: {}
 	};
 	try {
-		await Promise.all(Object.keys(data.sites).map(site => checkSite(site, bot)));
+		log.debug(`Checking sites: ${Object.values(data.sites).join(', ')}`);
+		const result = await Promise.all(Object.keys(data.sites).map(site => checkSite(site, bot)));
+		if (!result.includes(true)) {
+			log.debug('No changes on any sites.');
+		}
 		repeat = setTimeout(async () => {
 			querySites(bot);
-		}, 15 * 1000);
+		}, 90 * 1000);
 	} catch (err) {
 		if (err.status) {
-			log.warn('Failed to access a site. Will retry in 30 seconds.');
+			log.warn('Failed to access a site. Will retry in 90 seconds.');
 			repeat = setTimeout(async () => {
 				querySites(bot);
-			}, 15 * 1000);
+			}, 90 * 1000);
 		} else {
 			log.error(`Site query failed. ${exports.data.name} has been disabled for safety.`);
 		}
@@ -250,13 +283,18 @@ exports.start = async (msg, bot, args) => {
 			return msg.reply('Already watching a site with this alias.');
 		}
 		try {
-			const body = await snek.get(args[0]);
-			jetpack.write(`./watcherData/${args[1]}-latest.html`, body);
-			jetpack.write(`./watcherData/${args[1]}-logs/${strftime('%F - %H-%M-%S')}.html`, body);
+			const site = await snek.get(args[0]);
+			log.debug('Fetched page.');
+			jetpack.write(`./watcherData/${args[1]}-latest.html`, site.body.toString());
+			jetpack.write(`./watcherData/${args[1]}-logs/${strftime('%F - %H-%M-%S')}.html`, site.body.toString());
+			log.debug('Saved page.');
 			data.sites[args[0]] = args[1];
+			log.debug('Cached address for future searches.');
 			wtSites.update({data});
+			log.debug(`Now globally watching ${args[1]} (${args[0]}).`);
 			return msg.reply('Now globally watching this site.');
 		} catch (err) {
+			log.error(`Failed to add new site: ${err}`);
 			return msg.reply('Failed to find specified site.');
 		}
 	} else {
@@ -268,10 +306,6 @@ exports.start = async (msg, bot, args) => {
 		log.info(`Now watching in #${msg.channel.name} on ${msg.guild.name}.`);
 		wtSites.update({data});
 	}
-};
-
-exports.stop = async (msg) => {
-	msg.channel.send('This has not been set-up yet. Contact Aris.');
 };
 
 exports.disable = () => {

@@ -12,42 +12,57 @@ const log = require(`${config.folders.lib}/log.js`)(exports.data.name);
 
 let repeat;
 
+
 const checkCommands = async bot => {
-	await TerminalWatch.sync();
-	(await TerminalWatch.findAll({attributes: ['command', 'message'], group: ['command', 'message']})).forEach(async watch => {
-		try {
-			const commandArr = watch.command.split(' ');
-			const resp = await wterminal(commandArr[0], commandArr.slice(1));
-			const statMsg = resp.data.redirect ? `[${resp.data.message.join('\n')}](${resp.data.redirect})` : `${resp.data.message.join('\n')}`;
-			if (statMsg === watch.message) {
-				return;
-			}
-			log.info(`Command \`${watch.command} has changed.`);
-			const embed = new Discord.RichEmbed({
-				author: {
-					name: `The value of the ${watch.command} command has updated.`,
-					icon_url: 'https://cdn.artemisbot.uk/img/hexagon.png',
-					url: 'http://wakingtitan.com'
-				},
-				title: `**> \`${watch.command}\`**`,
-				description: `\`${statMsg}\``,
-				color: resp.success ? 0x00FC5D : 0xF00404,
-				footer: {
-					text: 'Watching Titan',
-					icon_url: 'https://cdn.artemisbot.uk/img/watchingtitan.png'
-				},
-				timestamp: moment().toISOString()
+	try {
+		await TerminalWatch.sync();
+		const terminalCommands = await TerminalWatch.findAll({attributes: ['command', 'message'], group: ['command', 'message']});
+		log.debug(`Checking commands: ${terminalCommands.map(command => command.command).join(', ')}`);
+		const result = await Promise.all(terminalCommands.map(async watch => {
+			return new Promise(async (resolve, reject) => {
+				try {
+					const commandArr = watch.command.split(' ');
+					const resp = await wterminal(commandArr[0], commandArr.slice(1));
+					const statMsg = resp.data.redirect ? `[${resp.data.message.join('\n')}](${resp.data.redirect})` : `${resp.data.message.join('\n')}`;
+					if (statMsg === watch.message) {
+						// Log.debug(`Command \`${watch.command}\` has not changed.`);
+						return resolve(false);
+					}
+					log.info(`Command \`${watch.command} has changed.`);
+					const embed = new Discord.RichEmbed({
+						author: {
+							name: `The value of the ${watch.command} command has updated.`,
+							icon_url: 'https://cdn.artemisbot.uk/img/hexagon.png',
+							url: 'http://wakingtitan.com'
+						},
+						title: `**> \`${watch.command}\`**`,
+						description: `\`${statMsg}\``,
+						color: resp.success ? 0x00FC5D : 0xF00404,
+						footer: {
+							text: 'Watching Titan',
+							icon_url: 'https://cdn.artemisbot.uk/img/watchingtitan.png'
+						},
+						timestamp: moment().toISOString()
+					});
+					await Promise.all((await TerminalWatch.findAll({where: {command: watch.command}})).map(watcher =>
+						Promise.all([watcher.update({message: statMsg}), bot.channels.get(watcher.channelID).send('', {embed})])
+					));
+					resolve(true);
+				} catch (err) {
+					log.error(`Something went wrong: ${err}`);
+					reject(err);
+				}
 			});
-			(await TerminalWatch.findAll({where: {command: watch.command}})).forEach(async watcher => {
-				watcher.update({message: statMsg});
-				await bot.channels.get(watcher.channelID).send('', {
-					embed
-				});
-			});
-		} catch (err) {
-			log.error(`Something went wrong: ${err}`);
+		}));
+		if (!result.includes(true)) {
+			log.debug('No commands have changed.');
 		}
-	});
+	} catch (err) {
+		log.error('Failed to check all commands.');
+	}
+	repeat = setTimeout(async () => {
+		checkCommands(bot);
+	}, 15 * 1000);
 };
 
 exports.watcher = bot => {
