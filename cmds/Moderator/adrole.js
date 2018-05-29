@@ -2,8 +2,8 @@ exports.data = {
 	name: 'AddRole',
 	description: 'Adds a role to a specific User.',
 	group: 'Moderator',
-	command: 'addrole',
-	syntax: 'addrole [@name | name] [Role]',
+	command: 'adrole',
+	syntax: 'adrole [@name | name] [Role]',
 	author: 'Aris A.',
 	permissions: 3,
 };
@@ -41,7 +41,7 @@ exports.func = async (msg, args) => {
 				}
 				let Role = msg.guild.roles.find('name', RoleName);
 				if (Role) {
-					if (Role.comparePositionTo(msg.member.roles.last()) < 0){
+					if (Role.comparePositionTo(msg.member.roles.last()) <= 0){
 						if (!Member.roles.has(Role.id)) {
 							Member.addRole(Role);
 							msg.reply(`Added role \`\`${RoleName}\`\` to \`\`${args[0]}\`\``);

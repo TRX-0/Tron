@@ -2,8 +2,8 @@ exports.data = {
 	name: 'DeleteRole',
 	description: 'Removes a role from a specific User.',
 	group: 'Moderator',
-	command: 'delrole',
-	syntax: 'delrole [@name | name] [Role]',
+	command: 'derole',
+	syntax: 'derole [@name | name] [Role]',
 	author: 'Aris A.',
 	permissions: 3,
 };
