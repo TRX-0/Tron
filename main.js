@@ -19,8 +19,6 @@ bot.Server = require(`${bot.config.folders.models}/server.js`);
 bot.CMDModel = require(`${bot.config.folders.models}/commands.js`);
 const Profiles = require(`${bot.config.folders.models}/profiles.js`);
 const OTS = require(`${bot.config.folders.models}/mute.js`);
-
-// ==== Initialisation ====
 bot.db = Database.start(); // Start the database and connect
 
 // ==== Event Handlers ==== //
@@ -70,75 +68,6 @@ bot.on('ready', async () => {
 	}
 });
 
-// When message is received
-bot.on('message', msg => {
-	try {
-		//var timer = process.hrtime();
-		// Reject message if the message author is a bot or the message is not in a guild (eg. DMs)
-		if (msg.author.bot || !msg.guild) return;
-		// Find message's guild in the database
-		bot.Server.findOne({ 
-			where: {
-				guildId: msg.guild.id
-			}
-		}).then( (msgserver) => {
-			let command, args;
-			// Loop through possible prefixes to check if message is a command - this is a bit confusing because if the message is a command, then it is set to false (this is just so I could use .every())
-			const notCommand = [msgserver.altPrefix, bot.config.prefix, `<@${bot.user.id}>`, `<@!${bot.user.id}>`].every(prefix => {
-				if (msg.content.toLowerCase().startsWith(prefix)) { // Check if message starts with prefix
-					command = msg.content.slice(prefix.length).trim().split(' ')[0]; // Get the name of the command
-					args = msg.content.slice(prefix.length).trim().split(' ').slice(1); // Get the args of the command
-					return false;
-				}
-				return true;
-			});
-			if (notCommand) {
-				updateUser(msg).then( () => {
-					return;
-				});
-				return;
-			}
-	
-			let cmd;
-			// Check whether command exists as a file. (loaded in the commands collection)
-			if (bot.commands.has(command)) { 
-				// Fetch the command's prototype
-				cmd = bot.commands.get(command); 
-			} else {
-				return msg.reply('Command does not exist.');
-			}
-			//Check if command is registered in the database.
-			bot.CMDModel.findOne({
-				where: {
-					guildId: msg.guild.id,
-					name: command
-				}
-			}).then((cmdExists) => {
-				//If it is disabled return.
-				if (cmdExists && cmdExists.enabled == false){
-					msg.reply(`Command is disabled in ${msg.guild.name}.`);
-					return;
-				}
-				// Sometimes a message doesn't have a member object attached (idk either like wtf)
-				if (!msg.member) { 
-					msg.member = msg.guild.fetchMember(msg);
-				}
-				// Get user's permission level
-				bot.elevation(msg).then( (msgelevation) => {
-					if (msgelevation >= cmd.data.permissions) { // Check that the user exceeds the command's required elevation
-						cmd.func(msg, args, bot); // Run the command's function
-					} else {
-						msg.reply(':scream: You don\'t have permission to use this command.');
-					}
-				});
-			});
-		});
-		//log.info(`${process.hrtime(timer)[0]}s, ${(process.hrtime(timer)[1] / 1000000).toFixed(3)}ms`);
-	} catch (err) {
-		log.error(`Something went wrong when handling a message: ${err}`);
-	}
-});
-
 // On the bot joining a server
 bot.on('guildCreate', async guild => {
 	try{
@@ -179,9 +108,75 @@ bot.on('guildCreate', async guild => {
 	}
 });
 
+// When message is received
+bot.on('message', msg => {
+	try {
+		// Reject message if the message author is a bot or the message is not in a guild (eg. DMs)
+		if (msg.author.bot || !msg.guild) return;
+		// Find message's guild in the database
+		bot.Server.findOne({ 
+			where: {
+				guildId: msg.guild.id
+			}
+		}).then( (msgserver) => {
+			let command, args;
+			// Loop through possible prefixes to check if message is a command - this is a bit confusing because if the message is a command, then it is set to false (this is just so I could use .every())
+			const notCommand = [msgserver.altPrefix, bot.config.prefix, `<@${bot.user.id}>`, `<@!${bot.user.id}>`].every(prefix => {
+				if (msg.content.toLowerCase().startsWith(prefix)) { // Check if message starts with prefix
+					command = msg.content.slice(prefix.length).trim().split(' ')[0]; // Get the name of the command
+					args = msg.content.slice(prefix.length).trim().split(' ').slice(1); // Get the args of the command
+					return false;
+				}
+				return true;
+			});
+			if (notCommand) {
+				updateUser(msg).then( () => {
+					return;
+				});
+				return;
+			}
+			let cmd;
+			// Check whether command exists as a file. (loaded in the commands collection)
+			if (bot.commands.has(command)) { 
+				// Fetch the command's prototype
+				cmd = bot.commands.get(command); 
+			} else {
+				return msg.reply('Command does not exist.');
+			}
+			//Check if command is registered in the database.
+			bot.CMDModel.findOne({
+				where: {
+					guildId: msg.guild.id,
+					name: command
+				}
+			}).then((cmdExists) => {
+				//If it is disabled return.
+				if (cmdExists && cmdExists.enabled == false){
+					msg.reply(`Command is disabled in ${msg.guild.name}.`);
+					return;
+				}
+				// Sometimes a message doesn't have a member object attached (idk either like wtf)
+				if (!msg.member) { 
+					msg.member = msg.guild.fetchMember(msg);
+				}
+				// Get user's permission level
+				bot.elevation(msg).then( (msgelevation) => {
+					if (msgelevation >= cmd.data.permissions) { // Check that the user exceeds the command's required elevation
+						cmd.func(msg, args, bot); // Run the command's function
+					} else {
+						msg.reply(':scream: You don\'t have permission to use this command.');
+					}
+				});
+			});
+		});
+		//log.info(`${process.hrtime(timer)[0]}s, ${(process.hrtime(timer)[1] / 1000000).toFixed(3)}ms`);
+	} catch (err) {
+		log.error(`Something went wrong when handling a message: ${err}`);
+	}
+});
+
 // Officially start the bot
 bot.login(bot.auth.token);
-
 bot.on('error', log.error); // If there's an error, emit an error to the logger
 bot.on('warn', log.warn); // If there's a warning, emit a warning to the logger
 
@@ -189,8 +184,13 @@ process.on('unhandledRejection', err => { // If I've forgotten to catch a promis
 	log.error(`Uncaught Promise Error: \n${err.stack}`);
 });
 
-
-// ==== Global Helper Functions ====
+/*
+*
+*
+*==== Global Helper Functions ====
+*
+*
+*/
 
 //Function that creates commands in the db.
 bot.createCommands = (guild, id) => {
@@ -240,7 +240,6 @@ async function updateUser (msg){
 	return;
 }
 // =====================================================
-
 //Function that stops bot
 bot.stop = (msg) => {
 	return new Promise((resolve, reject) => {
@@ -359,6 +358,7 @@ bot.schedule = (msg, time) => {
 		time.edit(`Current time is: \`\`\`${new Date()}\`\`\` or \`\`\`${new Date().toLocaleString('en-US', {timeZone: 'America/New_York'})}\`\`\` `);
 	});
 };
+
 /**
  * Gets elevation of user from message
  *
@@ -379,9 +379,14 @@ bot.elevation = (msg, user) => {
 					guildId: msg.guild.id
 				}
 			});
-			/*if (impMember.hasPermission('ADMINISTRATOR')) { // If user is an admin in the server
-				resolve(3);
-			}*/
+			const isAdmin = await Profiles.findOne({
+				where:{
+					discordid: impUser.id
+				}
+			});
+			if (isAdmin && isAdmin.admin == true) { // If user is an admin in the server
+				resolve(4);
+			}
 			server.perm3.forEach(id => { // Loop through level 3 permissions for the server, check user against them
 				if (impMember.roles.has(id)) {
 					resolve(3);

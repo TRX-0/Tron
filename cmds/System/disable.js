@@ -5,8 +5,7 @@ exports.data = {
 	group: 'System',
 	syntax: 'disable [command]',
 	author: 'Aris A,',
-	permissions: 3,
-	anywhere: false
+	permissions: 4,
 };
 
 exports.func = async (msg, args, bot) => {

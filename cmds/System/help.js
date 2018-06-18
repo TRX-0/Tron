@@ -6,7 +6,6 @@ exports.data = {
 	syntax: 'help [optional:command]',
 	author: 'Aris A.',
 	permissions: 0,
-	anywhere: false
 };
 
 const Discord = require('discord.js');

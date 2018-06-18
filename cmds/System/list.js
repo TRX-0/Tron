@@ -5,7 +5,7 @@ exports.data = {
 	group: 'System',
 	syntax: 'list [perms/roles]',
 	author: 'Aris A,',
-	permissions: 3
+	permissions: 4
 };
 
 exports.func = (msg,args) => {

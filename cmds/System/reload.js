@@ -5,8 +5,7 @@ exports.data = {
 	group: 'System',
 	syntax: 'reload [command]',
 	author: 'Aris A.',
-	permissions: 4,
-	anywhere: true
+	permissions: 4
 };
 
 const jetpack = require('fs-jetpack');

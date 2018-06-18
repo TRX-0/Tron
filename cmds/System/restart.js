@@ -5,7 +5,7 @@ exports.data = {
 	group: 'System',
 	syntax: 'restart',
 	author: 'Aris A.',
-	permissions: 3
+	permissions: 4
 };
 
 exports.func = async (msg,args,bot) => {

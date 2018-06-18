@@ -5,10 +5,10 @@ exports.data = {
 	group: 'System',
 	syntax: 'stop',
 	author: 'Aris A.',
-	permissions: 3
+	permissions: 4
 };
 
-exports.func = async (msg,args,bot) => {
+exports.func = async (msg,bot) => {
 	const log = require(`${bot.config.folders.lib}/log.js`)('Stop');
 	try {
 		await bot.stop(msg);
