@@ -8,6 +8,8 @@ exports.data = {
 	permissions: 4
 };
 
+const snekfetch = require('snekfetch');
+
 const clean = text => {
 	if (typeof text === 'string') {
 		return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
@@ -25,7 +27,16 @@ exports.func = async (msg, args) => {
 		if (typeof evaled !== 'string') {
 			evaled = require('util').inspect(evaled);
 		}
-		await msg.channel.send('```xl\n' + clean(evaled) + '\n```').catch(err => log.error(err));
+		if(evaled.length >= 2000) {
+			snekfetch.post('https://hastebin.com/documents').send(evaled).then(body => {
+				if(!body.body.key) {
+					return msg.reply('Sorry, but I didn\'t receive a key from Hastebin.');
+				}
+				return msg.reply(`Sorry, but your request was so big that I had to upload it: https://hastebin.com/${body.body.key}`);
+			}).catch(() => msg.reply('Sorry, but an error happened with Hastebin!'));
+		} else {
+			await msg.channel.send('```xl\n' + clean(evaled) + '\n```',{split: {maxLength: 1950, char: 's'}}).catch(err => log.error(err));
+		}
 	} catch (err) {
 		await msg.channel.send('`ERROR` ```xl\n' + clean(err) + '\n```').catch(err => log.error(err));
 	}
