@@ -11,7 +11,9 @@ bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
 const chalk = require('chalk');
 const loadCmds = require(`${bot.config.folders.lib}/loadCommands.js`);
 const loadWatchers = require(`${bot.config.folders.lib}/loadWatchers.js`);
+bot.elevation = require(`${bot.config.folders.lib}/elevation.js`);
 const exec = require('util').promisify(require('child_process').exec);
+
 
 // Database modules
 const Database = require(`${bot.config.folders.lib}/db.js`);
@@ -160,7 +162,7 @@ bot.on('message', msg => {
 					msg.member = msg.guild.fetchMember(msg);
 				}
 				// Get user's permission level
-				bot.elevation(msg).then( (msgelevation) => {
+				bot.elevation.func(bot, msg).then( (msgelevation) => {
 					if (msgelevation >= cmd.data.permissions) { // Check that the user exceeds the command's required elevation
 						cmd.func(msg, args, bot); // Run the command's function
 					} else {
@@ -356,56 +358,5 @@ bot.schedule = (msg, time) => {
 		//msg.channel.send('This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
 		time.set(msg);
 		time.edit(`Current time is: \`\`\`${new Date()}\`\`\` or \`\`\`${new Date().toLocaleString('en-US', {timeZone: 'America/New_York'})}\`\`\` `);
-	});
-};
-
-/**
- * Gets elevation of user from message
- *
- * @param {Message} msg - Message object
- * @param {User} [user] - User object
- * @returns {Promise} Resolves with nothing, rejects with Error object
- */
-bot.elevation = (msg, user) => {
-	return new Promise(async (resolve, reject) => {
-		try {
-			const impUser = user || msg.author; // If there is a user object, this is the user we care about, otherwise, just message author
-			const impMember = user ? await msg.guild.fetchMember(user.id) : msg.member; // If we care about the user object, we have no member object - fetch it
-			if (impUser.id === bot.auth.ownerID) { // If the author's ID is the same as the bot owner's then give them top perms
-				resolve(4);
-			}
-			const server = await bot.Server.findOne({ // Fetch server object
-				where: {
-					guildId: msg.guild.id
-				}
-			});
-			const isAdmin = await Profiles.findOne({
-				where:{
-					discordid: impUser.id
-				}
-			});
-			if (isAdmin && isAdmin.admin == true) { // If user is an admin in the server
-				resolve(4);
-			}
-			server.perm3.forEach(id => { // Loop through level 3 permissions for the server, check user against them
-				if (impMember.roles.has(id)) {
-					resolve(3);
-				}
-			});
-			server.perm2.forEach(id => { // Loop through level 2 permissions for the server, check user against them
-				if (impMember.roles.has(id)) {
-					resolve(2);
-				}
-			});
-			server.perm1.forEach(id => { // Loop through level 1 permissions for the server, check user against them
-				if (impMember.roles.has(id)) {
-					resolve(1);
-				}
-			});
-			resolve(0); // Otherwise nothing
-		} catch (err) {
-			log.error(`Error on message evelvation: ${err}`);
-			reject(err);
-		}
 	});
 };
