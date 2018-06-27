@@ -3,7 +3,7 @@ exports.data = {
 	description: 'Mutes a specific user.',
 	group: 'Moderator',
 	command: 'mute',
-	syntax: 'mute [@name] [optional:time] [reason]',
+	syntax: 'mute [@name] [optional:reason]',
 	author: 'Aris A.',
 	permissions: 3,
 };
@@ -41,9 +41,6 @@ exports.func = async (msg, args) => {
 				}
 			}
 			let reason = args.slice(1).join(' ');
-			if(!reason){
-				return msg.reply('Please indicate a reason for Muting!');
-			}
 			const ID = await OTS.findOne({
 				where: {
 					guildId: msg.channel.guild.id
@@ -53,7 +50,7 @@ exports.func = async (msg, args) => {
 				const muteappeal = msg.guild.channels.get(ID.mutedChannelId);
 				await Member.addRole(ID.roleId, reason);
 				await muteappeal.send(`${Member} You have been muted. You can appeal the mute here.`);
-				msg.reply(`${Member.user.tag} has been muted by ${msg.author.tag} Reason: ${reason}`);
+				msg.reply(`${Member.user.tag} has been muted by ${msg.author.tag}`);
 			} else {
 				msg.reply(`Muted Role has not been set in ${msg.guild.name}.`);
 			}
