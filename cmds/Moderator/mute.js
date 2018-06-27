@@ -49,8 +49,8 @@ exports.func = async (msg, args) => {
 			if (ID) {
 				const muteappeal = msg.guild.channels.get(ID.mutedChannelId);
 				await Member.addRole(ID.roleId, reason);
-				await muteappeal.send(`${Member} You have been muted. You can appeal the mute here.`);
-				msg.reply(`${Member.user.tag} has been muted by ${msg.author.tag}`);
+				await muteappeal.send(`${Member} You have been muted by ${msg.author.tag}. You can appeal the mute here.`);
+				msg.reply(`${Member.user.tag} has been muted.`);
 			} else {
 				msg.reply(`Muted Role has not been set in ${msg.guild.name}.`);
 			}
