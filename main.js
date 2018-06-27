@@ -163,9 +163,7 @@ bot.on('message', msg => {
 				}
 				// Get user's permission level
 				bot.elevation.func(bot, msg).then( (msgelevation) => {
-					log.info(`${msgelevation}, ${cmd.data.elevation}`);
 					if (msgelevation >= cmd.data.permissions) { // Check that the user exceeds the command's required elevation
-						log.info('Got here');
 						cmd.func(msg, args, bot); // Run the command's function
 					} else {
 						msg.reply(':scream: You don\'t have permission to use this command.');

@@ -19,7 +19,6 @@ const clean = text => {
 
 exports.func = async (msg, args) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Eval');
-	if(msg.author.id !== msg.client.auth.ownerID) return;
 	log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has used eval in #${msg.channel.name} on ${msg.guild.name}.`);
 	const code = args.join(' ');
 	try {
