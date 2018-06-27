@@ -40,7 +40,7 @@ exports.func = async (msg, args) => {
 					}
 				}
 				let Role ;//= msg.guild.roles.find('name', RoleName);
-				msg.guild.roles.array.forEach(element => {
+				msg.guild.roles.forEach(element => {
 					if(element.name.toLowerCase() == RoleName.toLowerCase()){
 						Role = element;
 					}
