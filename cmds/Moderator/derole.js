@@ -55,7 +55,7 @@ exports.func = async (msg, args) => {
 								msg.reply(`Role ${Role} is higher than the Bots Role. Not enough permissions!`);
 							});
 							if(Error == false){
-								msg.reply(`Removed role \`\`${RoleName}\`\` from \`\`${Member}\`\``);
+								msg.reply(`Removed role \`\`${RoleName}\`\` from \`\`${Member.username}\`\``);
 							}
 						} else {
 							msg.reply(`User does not have the \`\`${Role.name}\`\` role.`);
