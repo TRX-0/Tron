@@ -55,7 +55,7 @@ exports.func = async (msg, args) => {
 								msg.reply(`Role \`\`${Role}\`\` is higher than the Bots Role. Not enough permissions!`);
 							});
 							if (Error == false){
-								msg.reply(`Added role \`\`${RoleName}\`\` to \`\`${Member.username}\`\``);
+								msg.reply(`Added role \`\`${RoleName}\`\` to \`\`${Member.user.username}\`\``);
 							}
 						} else {
 							msg.reply(`User already has the \`\`${Role.name}\`\` role!`);
