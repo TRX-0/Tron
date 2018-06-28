@@ -49,13 +49,13 @@ exports.func = async (msg, args) => {
 					if (Role.comparePositionTo(msg.member.highestRole) <= 0){
 						if (Member.roles.has(Role.id)) {
 							let Error = false;
-							Member.removeRole(Role).catch(err => {
+							await Member.removeRole(Role).catch(err => {
 								log.error(err);
 								Error = true;
 								msg.reply(`Role ${Role} is higher than the Bots Role. Not enough permissions!`);
 							});
 							if(Error == false){
-								msg.reply(`Removed role \`\`${RoleName}\`\` from \`\`${Member.tag}\`\``);
+								msg.reply(`Removed role \`\`${RoleName}\`\` from \`\`${Member}\`\``);
 							}
 						} else {
 							msg.reply(`User does not have the \`\`${Role.name}\`\` role.`);
