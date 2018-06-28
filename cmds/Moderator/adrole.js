@@ -52,16 +52,16 @@ exports.func = async (msg, args) => {
 							Member.addRole(Role).catch(err => {
 								log.error(err);
 								Error = true;
-								msg.reply(`Role ${Role} is higher than the Bots Role. Not enough permissions!`);
+								msg.reply(`Role \`\`${Role}\`\` is higher than the Bots Role. Not enough permissions!`);
 							});
 							if (Error == false){
-								msg.reply(`Added role \`\`${RoleName}\`\` to \`\`${args[0]}\`\``);
+								msg.reply(`Added role \`\`${RoleName}\`\` to \`\`${Member.tag}\`\``);
 							}
 						} else {
-							msg.reply(`User already has the ${Role.name} role!`);
+							msg.reply(`User already has the \`\`${Role.name}\`\` role!`);
 						}
 					} else {
-						msg.reply(`Role ${Role.name} is higher than your ${msg.member.roles.last().name} role.`);
+						msg.reply(`Role \`\`${Role.name}\`\` is higher than your \`\`${msg.member.highestRole.name}\`\` role.`);
 					}
 				} else {
 					return msg.reply('Role does not exist!');

@@ -55,13 +55,13 @@ exports.func = async (msg, args) => {
 								msg.reply(`Role ${Role} is higher than the Bots Role. Not enough permissions!`);
 							});
 							if(Error == false){
-								msg.reply(`Removed role \`\`${RoleName}\`\` from \`\`${args[0]}\`\``);
+								msg.reply(`Removed role \`\`${RoleName}\`\` from \`\`${Member.tag}\`\``);
 							}
 						} else {
-							msg.reply(`User does not have the ${Role.name} role.`);
+							msg.reply(`User does not have the \`\`${Role.name}\`\` role.`);
 						}
 					} else {
-						msg.reply(`Role ${Role.name} is higher than your ${msg.member.roles.last().name} role.`);
+						msg.reply(`Role \`\`${Role.name}\`\` is higher than your \`\`${msg.member.highestRole.name}\`\` role.`);
 					}
 				} else {
 					return msg.reply('Role does not exist!');
