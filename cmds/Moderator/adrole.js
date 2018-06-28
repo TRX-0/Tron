@@ -46,6 +46,9 @@ exports.func = async (msg, args) => {
 					}
 				});
 				if (Role) {
+					log.info(Role.name);
+					log.info(Role.comparePositionTo(msg.member.highestRole));
+					log.info(msg.member.highestRole.name);
 					if (Role.comparePositionTo(msg.member.highestRole) <= 0){
 						if (!Member.roles.has(Role.id)) {
 							Member.addRole(Role);

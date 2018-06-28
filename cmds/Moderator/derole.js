@@ -46,7 +46,10 @@ exports.func = async (msg, args) => {
 					}
 				});
 				if (Role) {
-					if (Role.comparePositionTo(msg.member.highestRole) < 0){
+					log.info(Role.name);
+					log.info(Role.comparePositionTo(msg.member.highestRole));
+					log.info(msg.member.highestRole.name);
+					if (Role.comparePositionTo(msg.member.highestRole) <= 0){
 						if (Member.roles.has(Role.id)) {
 							Member.removeRole(Role).catch(err => {
 								log.error(err);
