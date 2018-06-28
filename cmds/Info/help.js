@@ -1,7 +1,7 @@
 exports.data = {
 	name: 'Help',
 	description: 'Lists available commands.',
-	group: 'System',
+	group: 'Info',
 	command: 'help',
 	syntax: 'help [optional:command]',
 	author: 'Aris A.',
