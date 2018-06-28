@@ -51,8 +51,15 @@ exports.func = async (msg, args) => {
 					log.info(msg.member.highestRole.name);
 					if (Role.comparePositionTo(msg.member.highestRole) <= 0){
 						if (!Member.roles.has(Role.id)) {
-							Member.addRole(Role);
-							msg.reply(`Added role \`\`${RoleName}\`\` to \`\`${args[0]}\`\``);
+							let Error = false;
+							Member.addRole(Role).catch(err => {
+								log.error(err);
+								Error = true;
+								msg.reply(`Role ${Role} is higher than the Bots Role. Not enough permissions!`);
+							});
+							if (Error == false){
+								msg.reply(`Added role \`\`${RoleName}\`\` to \`\`${args[0]}\`\``);
+							}
 						} else {
 							msg.reply(`User already has the ${Role.name} role!`);
 						}
