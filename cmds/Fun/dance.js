@@ -1,9 +1,9 @@
 exports.data = {
-	name: 'Dogs',
-	description: 'Gets a random dog picture.',
+	name: 'Dance',
+	description: 'Does a little dance!',
 	group: 'Fun',
-	command: 'dogs',
-	syntax: 'dogs',
+	command: 'dance',
+	syntax: 'dance',
 	author: 'Aris A.',
 	permissions: 1,
 };
