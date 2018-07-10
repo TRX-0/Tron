@@ -6,7 +6,6 @@ exports.data = {
 	syntax: 'watcher [start|stop|enable|disable|list] [watcherName] [params]',
 	author: 'Matt C',
 	permissions: 3,
-	anywhere: true
 };
 
 const jetpack = require('fs-jetpack');
