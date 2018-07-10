@@ -63,7 +63,7 @@ exports.list = async (msg, bot, args) => {
 		msg.reply('', {embed: {
 			author: {
 				name: `Countdowns running in #${channel.name} on ${channel.guild.name}`,
-				icon_url: 'http://127.0.0.1/clock.png'
+				icon_url: 'https://drive.google.com/open?id=1OAS2YKQrD5NH-0OEPsYkvjItSm01vu8P'
 			},
 			fields,
 			color: 0x993E4D,
