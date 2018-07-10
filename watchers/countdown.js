@@ -7,7 +7,7 @@ exports.data = {
 const moment = require('moment');
 const humanizeDuration = require('humanize-duration');
 const chalk = require('chalk');
-const Countdown = require('../lib/models/countdown');
+const Countdown = require('../lib/models/countdown.js');
 const log = require('../lib/log.js')(exports.data.name);
 
 let countdown;
@@ -82,7 +82,7 @@ exports.stop = async (msg, bot, args) => {
 		const channelID = args[1] && bot.channels.has(args[1]) ? args[1] : msg.channel.id;
 		const channel = bot.channels.get(args[1]) || msg.channel;
 		if (args[0] ? args[0] <= 0 : false) {
-			return msg.reply('Please provide a valid countdown ID. Check `ocel watcher list countdown` for a list of countdowns and their IDs.');
+			return msg.reply('Please provide a valid countdown ID. Check `watcher list countdown` for a list of countdowns and their IDs.');
 		}
 		const countdowns = await Countdown.findAll({
 			where: {
@@ -91,7 +91,7 @@ exports.stop = async (msg, bot, args) => {
 			order: [['unixTime', 'ASC']]
 		});
 		if (!countdowns[args[0] - 1]) {
-			return msg.reply('Please provide a valid countdown ID. Check `ocel watcher list countdown` for a list of countdowns and their IDs.');
+			return msg.reply('Please provide a valid countdown ID. Check `watcher list countdown` for a list of countdowns and their IDs.');
 		}
 		const selectedCountdown = countdowns[args[0] - 1];
 		const countdownMessage = await channel.fetchMessage(selectedCountdown.messageID);

@@ -25,7 +25,7 @@ exports.func = async (msg, args) => {
 		if (Role == undefined) return msg.reply('Role does not exist!');
 		if (Role.comparePositionTo(msg.member.highestRole) > 0) return msg.reply(`Role \`\`${Role.name}\`\` is higher than your \`\`${msg.member.highestRole.name}\`\` role.`);
 		if (Member.roles.has(Role.id)) return msg.reply(`User already has the \`\`${Role.name}\`\` role!`);
-		await Member.addRole(Role).then(res => {
+		await Member.addRole(Role).then(() => {
 			return msg.reply(`Added role \`\`${RoleName}\`\` to \`\`${Member.user.username}\`\``);
 		}).catch(err => {
 			log.error(err);
