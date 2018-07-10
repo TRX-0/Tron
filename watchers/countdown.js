@@ -63,13 +63,13 @@ exports.list = async (msg, bot, args) => {
 		msg.reply('', {embed: {
 			author: {
 				name: `Countdowns running in #${channel.name} on ${channel.guild.name}`,
-				icon_url: 'https://cdn.artemisbot.uk/img/clock.png'
+				icon_url: 'http://127.0.0.1/clock.png'
 			},
 			fields,
 			color: 0x993E4D,
 			footer: {
-				icon_url: 'https://cdn.artemisbot.uk/img/ocel.jpg',
-				text: 'Ocel'
+				icon_url: 'http://127.0.0.1/A7v2.png',
+				text: 'Tron'
 			}
 		}});
 	} else {

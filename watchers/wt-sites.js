@@ -9,7 +9,6 @@ exports.data = {
 const chalk = require('chalk');
 const CSSselect = require('css-select');
 const Discord = require('discord.js');
-const exec = require('child-process-promise').exec;
 const htmlparser = require('htmlparser2');
 const jetpack = require('fs-jetpack');
 const moment = require('moment');
@@ -139,19 +138,8 @@ const checkSite = async (site, bot) => {
 			}
 			log.info(`Confirmed change on ${site}`);
 			jetpack.write(`./watcherData/${data.sites[site]}-temp.html`, req.body.toString());
-			const res = await exec(`~/.nvm/versions/node/v9.3.0/lib/node_modules/diffchecker/dist/diffchecker.js ./watcherData/${data.sites[site]}-latest.html ./watcherData/${data.sites[site]}-temp.html`, {
-				cwd: '/home/matt/OcelBot'
-			});
 			//let status;
 			let embedDescription;
-			if (res.stderr.length > 0) {
-				log.error(`Could not generate diff: ${res.stderr.slice(0, -1)}`);
-				embedDescription = 'The diff could not be generated.';
-				//status = `${site} has updated! #WakingTitan`;
-			} else {
-				embedDescription = `View the change [here](${res.stdout.split(' ').pop().slice(0, -1)}).`;
-				//status = `${site} has updated! See what's changed here: ${res.stdout.split(' ').pop().slice(0, -1)} #WakingTitan`;
-			}
 			const embed = new Discord.RichEmbed({
 				color: 0x993E4D,
 				description: embedDescription,
