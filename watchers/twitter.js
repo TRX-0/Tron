@@ -178,10 +178,6 @@ exports.list = async (msg, bot, args) => {
 			},
 			fields,
 			color: 0x993E4D,
-			footer: {
-				icon_url: 'http://127.0.0.1/A7v2.png',
-				text: 'Tron'
-			}
 		}});
 	} else {
 		msg.reply(`There are no twitter watchers in ${args[0] && bot.channels.has(args[0]) ? `#${channel.name} on ${channel.guild.name}` : 'this channel'}.`);
