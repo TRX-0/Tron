@@ -9,45 +9,32 @@ exports.data = {
 	anywhere: false
 };
 
+const Discord = require('discord.js');
+
 exports.func = (msg) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('FlipCoin');
 	try{
 		const random = Math.random();
 		switch (true) {
 		case (random > 0.5):{
-			msg.channel.send('', {embed: {
-				color: 835718,
-				fields: [
-					{
-						'name': 'Flip Result',
-						'value': 'Heads'
-					}
-				]
-			}});
+			const embed = new Discord.RichEmbed()
+				.setColor(835718)
+				.addField('Flip Result:', 'Heads');
+			msg.channel.send(embed);
 			break;
 		}
 		case (random < 0.5): {
-			msg.channel.send('', {embed: {
-				color: 835718,
-				fields: [
-					{
-						'name': 'Flip Result',
-						'value': 'Tails'
-					}
-				]
-			}});
+			const embed = new Discord.RichEmbed()
+				.setColor(835718)
+				.addField('Flip Result:', 'Tails');
+			msg.channel.send(embed);
 			break;
 		}
 		default: {
-			msg.channel.send('', {embed: {
-				color: 835718,
-				fields: [
-					{
-						'name': 'Flip Result',
-						'value': 'Your coin just landed straight up...'
-					}
-				]
-			}});
+			const embed = new Discord.RichEmbed()
+				.setColor(835718)
+				.addField('Flip Result:', 'Your coin just landed straight up...');
+			msg.channel.send(embed);
 			break;
 		}
 		}
