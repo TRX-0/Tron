@@ -195,6 +195,7 @@ process.on('unhandledRejection', err => { // If I've forgotten to catch a promis
 function emoji(msg){
 	if (msg.content == ':yerts:'){
 		msg.channel.send('Damn it Yerts...', {file:'https://i.imgur.com/1XpZHPe.gif'});
+		log.info(`${msg.author.tag} used the Yerts emoji!`);
 		msg.delete();
 	}
 	return;

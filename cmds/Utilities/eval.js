@@ -19,7 +19,7 @@ const clean = text => {
 
 exports.func = async (msg, args) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Eval');
-	log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has used eval in #${msg.channel.name} on ${msg.guild.name}.`);
+	log.info(`(${msg.author.tag}) has used eval in #${msg.channel.name} on ${msg.guild.name}.`);
 	const code = args.join(' ');
 	try {
 		let evaled = eval(code); // eslint-disable-line no-eval
