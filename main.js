@@ -132,6 +132,10 @@ bot.on('message', msg => {
 				return true;
 			});
 			if (notCommand) {
+				if(msg.content.toLowerCase().startsWith(':') && msg.content.toLowerCase().endsWith(':') /*&& (msg.content.indexOf(' ') == -1)*/){
+					emoji(msg);
+					return;
+				}
 				updateUser(msg).then( () => {
 					return;
 				});
@@ -186,33 +190,14 @@ process.on('unhandledRejection', err => { // If I've forgotten to catch a promis
 	log.error(`Uncaught Promise Error: \n${err.stack}`);
 });
 
-/*
-*
-*
-*==== Global Helper Functions ====
-*
-*
-*/
+//==== Global Helper Functions ====
 
-//Function that creates commands in the db.
-bot.createCommands = (guild, id) => {
-	bot.commands.forEach(async command => {
-		const cmdExists = await bot.CMDModel.findOne({
-			where:{
-				guildId: id,
-				name: command.data.command
-			}
-		});
-		if (!cmdExists){
-			await bot.CMDModel.create({
-				guildId: id,
-				name: command.data.command,
-				enabled: true
-			});
-			log.info(`Created db command entry for: ${command.data.command} in ${guild.name}`);
-		}
-	});
-};
+async function emoji(msg){
+	if (msg.content == ':yerts:'){
+		msg.channel.send('Damn it Yerts...', {file:'https://i.imgur.com/1XpZHPe.gif'});
+	}
+	return;
+}
 
 // ====On message event functions ====
 async function updateUser (msg){
@@ -259,6 +244,26 @@ bot.stop = (msg) => {
 		} catch (err) {
 			log.error(`Error on bot quit: ${err}`);
 			reject(err);
+		}
+	});
+};
+
+//Function that creates commands in the db.
+bot.createCommands = (guild, id) => {
+	bot.commands.forEach(async command => {
+		const cmdExists = await bot.CMDModel.findOne({
+			where:{
+				guildId: id,
+				name: command.data.command
+			}
+		});
+		if (!cmdExists){
+			await bot.CMDModel.create({
+				guildId: id,
+				name: command.data.command,
+				enabled: true
+			});
+			log.info(`Created db command entry for: ${command.data.command} in ${guild.name}`);
 		}
 	});
 };
