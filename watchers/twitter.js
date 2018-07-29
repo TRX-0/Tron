@@ -45,20 +45,28 @@ const startStream = async bot => {
 	});
 	botStream.on('tweet', async tweet => {
 		try {
-			const embed = new Discord.RichEmbed({
-				color: 0x00ACED,
-				author: {
-					name: `${tweet.user.name} - @${tweet.user.screen_name}`,
-					icon_url: tweet.user.profile_image_url,
-					url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
-				},
-				description: he.decode(tweet.text),
-				timestamp: (new Date(tweet.created_at)).toISOString(),
-				footer: {
-					text: '\u200B',
-					icon_url: 'https://cdn.artemisbot.uk/img/twitter.png'
+			var reg = new RegExp('https://t.co/[A-Za-z0-9]{10}', 'ig');
+			var images = [];
+			tweet.text = he.decode(tweet.text).split(' ').map((word) => {
+				if (reg.test(word)) {
+					images.push(word);
+					return '';
+				} else {
+					return word;
 				}
 			});
+			tweet.text = tweet.text.join(' ');
+			log.info(tweet.entities.media);
+			const embed = new Discord.RichEmbed()
+				.setColor(0x00ACED)
+				.setAuthor(`${tweet.user.name} - @${tweet.user.screen_name}`,tweet.user.profile_image_url, `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`)
+				.setDescription(tweet.text)
+				.setTimestamp((new Date(tweet.created_at)).toISOString())
+				.setFooter('\u200B','https://cdn.artemisbot.uk/img/twitter.png');
+			
+			if (tweet.entities.media){
+				embed.setImage(tweet.entities.media[0].media_url_https);
+			}
 			watchers = await TwitterWatch.findAll({where: {twitterID: tweet.user.id_str}});
 			if (watchers.length > 0) {
 				log.verbose(`User ${tweet.user.screen_name} has just tweeted at ${tweet.created_at}.`);
