@@ -192,9 +192,10 @@ process.on('unhandledRejection', err => { // If I've forgotten to catch a promis
 
 //==== Global Helper Functions ====
 
-async function emoji(msg){
+function emoji(msg){
 	if (msg.content == ':yerts:'){
 		msg.channel.send('Damn it Yerts...', {file:'https://i.imgur.com/1XpZHPe.gif'});
+		msg.delete;
 	}
 	return;
 }
