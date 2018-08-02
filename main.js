@@ -127,6 +127,9 @@ bot.on('message', msg => {
 				if (msg.content.toLowerCase().startsWith(prefix)) { // Check if message starts with prefix
 					command = msg.content.slice(prefix.length).trim().split(' ')[0]; // Get the name of the command
 					args = msg.content.slice(prefix.length).trim().split(' ').slice(1); // Get the args of the command
+					if (command == ''){
+						return true;
+					}
 					return false;
 				}
 				return true;
