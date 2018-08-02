@@ -3,7 +3,7 @@ exports.data = {
 	description: 'Mutes a specific user.',
 	group: 'Moderator',
 	command: 'mute',
-	syntax: 'mute [@name] [optional:reason]',
+	syntax: 'mute [@name/name] [optional:reason]',
 	author: 'Aris A.',
 	permissions: 3,
 };
@@ -41,16 +41,29 @@ exports.func = async (msg, args) => {
 				}
 			}
 			let reason = args.slice(1).join(' ');
-			const ID = await OTS.findOne({
+			const OTSSettings = await OTS.findOne({
 				where: {
 					guildId: msg.channel.guild.id
 				}
 			});
-			if (ID) {
-				const muteappeal = msg.guild.channels.get(ID.mutedChannelId);
-				await Member.addRole(ID.roleId, reason);
-				await muteappeal.send(`${Member} You have been muted by ${msg.author.tag}. You can appeal the mute here.`);
-				msg.reply(`${Member.user.tag} has been muted.`);
+			if (OTSSettings) {
+				if(!Member.roles.has(OTSSettings.roleId)){
+					const muteAppeal = msg.guild.channels.get(OTSSettings.mutedChannelId);
+					await Member.addRole(OTSSettings.roleId, reason);
+					await msg.guild.channels.forEach(channel => {
+						if(channel.id != muteAppeal.id){
+							if(channel.type == 'text'){
+								channel.overwritePermissions(Member.id, {
+									SEND_MESSAGES:false,
+								});
+							}
+						}
+					});
+					await muteAppeal.send(`${Member} You have been muted by ${msg.author.tag}. You can appeal the mute here.`);
+					msg.reply(`${Member.user.tag} has been muted.`);
+				} else {
+					msg.reply('User is already muted!');
+				}
 			} else {
 				msg.reply(`Muted Role has not been set in ${msg.guild.name}.`);
 			}

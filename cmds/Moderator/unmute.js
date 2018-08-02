@@ -29,15 +29,31 @@ exports.func = async (msg, args) => {
 					return msg.channel.send('User does not exist.');
 				}
 			}
-			const ID = await OTS.findOne({
+			const OTSSettings = await OTS.findOne({
 				where: {
 					guildId: msg.channel.guild.id
 				}
 			});
-			if (ID) {
-				const botspam = msg.guild.channels.get(ID.botspamChannelId);
-				await Member.removeRole(ID.roleId);
-				await botspam.send(`${Member} You have been unmuted by ${msg.author.tag}.`);
+			if (OTSSettings) {
+				if(Member.roles.has(OTSSettings.roleId)){
+					const muteAppeal = msg.guild.channels.get(OTSSettings.mutedChannelId);
+					await Member.removeRole(OTSSettings.roleId);
+					//Loop Channels
+					await msg.guild.channels.forEach(channel => {
+						if(channel.id != muteAppeal.id){
+							if(channel.type == 'text'){
+								let MemberOverwrite = channel.permissionOverwrites.get(Member.id);
+								if(MemberOverwrite){
+									channel.permissionOverwrites.get(Member.id).delete();
+								}
+							}
+						}
+					});
+					const botspam = msg.guild.channels.get(OTSSettings.botspamChannelId);
+					await botspam.send(`${Member} You have been unmuted by ${msg.author.tag}.`);
+				} else {
+					msg.reply('User is not muted.');
+				}
 			} else {
 				msg.reply(`Muted Role has not been set in ${msg.guild.name}.`);
 			}
