@@ -26,11 +26,7 @@ exports.func = async (msg, args, bot) => {
 		case 'start':
 		{
 			if (watcher) {
-				if (watcher.disabledGuilds.includes(msg.guild.id)) {
-					msg.reply(`This watcher has been disabled in this guild. Re-enable it with \` watcher genable ${args[1]}\`.`);
-				} else {
-					bot.watchers.get(args[1]).start(msg, bot, args.slice(2));
-				}
+				bot.watchers.get(args[1]).start(msg, bot, args.slice(2));
 			} else {
 				msg.reply('Selected watcher does not exist.');
 			}
@@ -82,42 +78,6 @@ exports.func = async (msg, args, bot) => {
 			}
 			break;
 		}
-		case 'genable':
-		{
-			if (watcher) {
-				if (watcher.disabledGuilds.includes(msg.guild.id)) {
-					watcher.disabledGuilds.splice(watcher.disabledGuilds.indexOf(msg.guild.id), 1);
-					await watcher.update({
-						disabledGuilds: watcher.disabledGuilds
-					});
-					msg.reply('Watcher enabled for this guild.');
-					log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has enabled ${watcher.watcherName} for ${msg.guild.name}.`);
-				} else {
-					msg.reply('Enable failed: watcher already enabled for this guild.');
-				}
-			} else {
-				msg.reply('Selected watcher does not exist.');
-			}
-			break;
-		}
-		case 'gdisable':
-		{
-			if (watcher) {
-				if (watcher.disabledGuilds.includes(msg.guild.id)) {
-					msg.reply('Disable failed: watcher already disabled for this guild.');
-				} else {
-					watcher.disabledGuilds.push(msg.guild.id);
-					await watcher.update({
-						disabledGuilds: watcher.disabledGuilds
-					});
-					msg.reply('Watcher disabled for this guild.');
-					log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has disabled ${watcher.watcherName} for ${msg.guild.name}.`);
-				}
-			} else {
-				msg.reply('Selected watcher does not exist.');
-			}
-			break;
-		}
 		case 'reload':
 		{
 			if (watcher) {
@@ -136,11 +96,7 @@ exports.func = async (msg, args, bot) => {
 		case 'list':
 		{
 			if (watcher) {
-				if (watcher.disabledGuilds.includes(msg.guild.id)) {
-					msg.reply(`This watcher has been disabled in this guild: ${args[1]}\`.`);
-				} else {
-					bot.watchers.get(args[1]).list(msg, bot, args.slice(2));
-				}
+				bot.watchers.get(args[1]).list(msg, bot, args.slice(2));
 			} else if (args[1]) {
 				msg.reply('Selected watcher does not exist.');
 			} else {
