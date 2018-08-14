@@ -104,7 +104,7 @@ exports.func = (msg, args) => {
 		} else if (args && (args.length == 3)){
 			if (args[0].length <= 3 && args[1].length <= 3 && args[2].length <= 3){
 				for (var rgb in args){
-					if (rgb.match('/[a-zA-Z]/')){
+					if (rgb.match('/[a-zA-Z.]/')){
 						return msg.reply('RGB value contains illegal characters.');
 					}
 				}
