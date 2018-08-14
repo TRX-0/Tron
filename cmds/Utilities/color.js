@@ -68,7 +68,7 @@ exports.func = (msg, args) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Color');
 	try{
 		if((args.length == 1) && args[0]){
-			if((args[0].match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/))|| (args[0].match(/([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/))){
+			if((args[0].match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/))|| (args[0].match(/^([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/))){
 				let HEX;
 				if (args[0].includes('#')){
 					HEX = args[0].replace('#','');
