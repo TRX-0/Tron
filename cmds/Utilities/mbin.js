@@ -5,10 +5,10 @@ exports.data = {
 	command: 'mbin',
 	syntax: 'mbin',
 	author: 'Aris A.',
-	permissions: 3,
+	permissions: 1,
 };
 
-exports.func = async (msg,args) => {
+exports.func = async (msg) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Say');
 	try{
 		msg.reply('Here is the latest Mbin Compiler: https://github.com/monkeyman192/MBINCompiler/releases');
