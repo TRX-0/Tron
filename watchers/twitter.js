@@ -56,7 +56,7 @@ const startStream = async bot => {
 				}
 			});
 			tweet.text = tweet.text.join(' ');
-			log.info(tweet.entities.media);
+			//log.info(`${tweet.entities.media}`);
 			const embed = new Discord.RichEmbed()
 				.setColor(0x00ACED)
 				.setAuthor(`${tweet.user.name} - @${tweet.user.screen_name}`,tweet.user.profile_image_url, `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`)
