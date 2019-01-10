@@ -8,7 +8,7 @@ exports.data = {
 	permissions: 3
 };
 
-exports.func = async (msg,bot) => {
+exports.func = async (msg,args,bot) => {
 	const log = require(`${bot.config.folders.lib}/log.js`)('Stop');
 	try {
 		await bot.stop(msg);
