@@ -5,7 +5,7 @@ exports.data = {
 	command: 'addrole',
 	syntax: 'addrole [@name | name] [Role]',
 	author: 'Aris A.',
-	revisiedBy: 'Sqbika',
+	revisedBy: 'Sqbika',
 	permissions: 3,
 };
 
@@ -15,7 +15,7 @@ exports.func = async (msg, args) => {
 		if (args[0] == undefined) return msg.reply('You did not provide a name.');
 		if (args[1] == undefined) return msg.reply('You did not provide a Role.');
 		let Member;
-		if (msg.mentions.users.first() != undefined) Member = msg.mentions.members.first();
+		if  (msg.mentions.users.first() != undefined) Member = msg.mentions.members.first();
 		else {
 			Member = msg.guild.members.find((user) => user.user.username.toLowerCase() == args[0].toLowerCase() || (user.nickname && (user.nickname.toLowerCase() == args[0].toLowerCase())));
 			if (Member == undefined) return msg.reply('User does not exist.');
