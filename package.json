@@ -6,43 +6,26 @@
     "author": "Aris",
     "repository": "https://github.com/pamehabai6/Tron",
     "dependencies": {
-        "async": "^2.6.2",
         "atob": "^2.1.2",
         "btoa": "^1.2.1",
         "chalk": "^2.4.2",
-        "child-process-promise": "^2.2.1",
-        "css-select": "^1.3.0-rc0",
         "discord.js": "^11.5.1",
-        "fs-jetpack": "^0.10.5",
-        "googleapis": "^20.2.0",
+        "fs-jetpack": "^2.2.2",
         "he": "^1.2.0",
-        "htmlparser2": "^3.10.1",
         "humanize-duration": "^3.18.0",
-        "mail-listener2": "^0.3.1",
-        "mime": "^1.6.0",
         "moment": "^2.24.0",
-        "node-html-parser": "^1.1.16",
         "node-schedule": "^1.3.2",
         "npm-check": "^5.9.0",
-        "pg": "^7.11.0",
         "ping": "^0.2.2",
         "pm2": "^2.10.4",
-        "request": "^2.88.0",
-        "request-promise-native": "^1.0.7",
         "sequelize": "^5.9.2",
-        "snekfetch": "^3.6.4",
+        "snekfetch": "^4.0.4",
         "strftime": "^0.10.0",
         "twit": "^2.2.11",
-        "webshot": "^0.18.0",
-        "winston": "^2.4.4",
-        "winston-daily-rotate-file": "^1.7.2"
+        "winston": "^3.2.1",
+        "winston-daily-rotate-file": "^3.9.0"
     },
-    "devDependencies": {
-        "eslint-plugin-json": "^1.4.0"
-    },
-    "scripts": {
-        "test": "npx eslint **/*.js && npx eslint *.js"
-    },
+    "devDependencies": {},
     "keywords": [
         "discord",
         "discord.js"
