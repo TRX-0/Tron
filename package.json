@@ -30,7 +30,7 @@
         "pm2": "^2.10.4",
         "request": "^2.88.0",
         "request-promise-native": "^1.0.7",
-        "sequelize": "^4.44.2",
+        "sequelize": "^5.3.0",
         "snekfetch": "^3.6.4",
         "strftime": "^0.10.0",
         "twit": "^2.2.11",
