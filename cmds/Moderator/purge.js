@@ -9,55 +9,59 @@ exports.data = {
 	anywhere: false
 };
 
-exports.func = async (msg,args) => {
+exports.func = async (msg, args) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Purge');
-	try{
+	try {
 		var deletedCount = 0;
 		var msgArray = [];
-		if(args[0].toLowerCase() == 'own'){
-			const searchAmount = parseInt(args[1], 10);
-			await msg.delete();
-			if(!searchAmount || searchAmount < 2 || searchAmount > 100){
-				return msg.reply('Please provide a number between 2 and 100');
-			}
-			const fetched = await msg.channel.fetchMessages({limit: searchAmount});
-			await fetched.forEach(element => {
-				if(element.author.id == msg.client.user.id){
-					msgArray.push(element);
-					deletedCount++;
+		if (args[0]) {
+			if (args[0].toLowerCase() == 'own') {
+				const searchAmount = parseInt(args[1], 10);
+				await msg.delete();
+				if (!searchAmount || searchAmount < 2 || searchAmount > 100) {
+					return msg.reply('Please provide a number between 2 and 100');
 				}
-			});
-			msg.channel.bulkDelete(msgArray);
-			msg.reply(`purged ${deletedCount} messages. `);
-			log.info(`${msg.author.tag} deleted ${deletedCount} messages. `);
-		} else if (args[0].toLowerCase() == 'mine'){
-			const searchAmount = parseInt(args[1], 10);
-			await msg.delete();
-			if(!searchAmount || searchAmount < 2 || searchAmount > 100){
-				return msg.reply('Please provide a number between 2 and 100');
-			}
-			const fetched = await msg.channel.fetchMessages({limit: searchAmount});
-			await fetched.forEach(element => {
-				if(element.author.id == msg.author.id){
-					msgArray.push(element);
-					deletedCount++;
+				const fetched = await msg.channel.fetchMessages({ limit: searchAmount });
+				await fetched.forEach(element => {
+					if (element.author.id == msg.client.user.id) {
+						msgArray.push(element);
+						deletedCount++;
+					}
+				});
+				msg.channel.bulkDelete(msgArray);
+				msg.reply(`purged ${deletedCount} messages. `);
+				log.info(`${msg.author.tag} deleted ${deletedCount} messages. `);
+			} else if (args[0].toLowerCase() == 'mine') {
+				const searchAmount = parseInt(args[1], 10);
+				await msg.delete();
+				if (!searchAmount || searchAmount < 2 || searchAmount > 100) {
+					return msg.reply('Please provide a number between 2 and 100');
 				}
-			});
-			msg.channel.bulkDelete(msgArray);
-			msg.reply(`deleted ${deletedCount} messages. `);
-			log.info(`${msg.author.tag} purged ${deletedCount} messages. `);
+				const fetched = await msg.channel.fetchMessages({ limit: searchAmount });
+				await fetched.forEach(element => {
+					if (element.author.id == msg.author.id) {
+						msgArray.push(element);
+						deletedCount++;
+					}
+				});
+				msg.channel.bulkDelete(msgArray);
+				msg.reply(`deleted ${deletedCount} messages. `);
+				log.info(`${msg.author.tag} purged ${deletedCount} messages. `);
+			} else {
+				//Get the delete count, as an actual number.
+				const deleteCount = parseInt(args[0], 10);
+				await msg.delete();
+				if (!deleteCount || deleteCount < 2 || deleteCount > 100) {
+					return msg.reply('Please provide a number between 2 and 100');
+				}
+				// So we get our messages, and delete them. Simple enough, right?
+				const fetched = await msg.channel.fetchMessages({ limit: deleteCount });
+				await msg.channel.bulkDelete(fetched);
+				msg.reply(`deleted ${deleteCount} messages. `);
+				log.info(`${msg.author.tag} purged ${deleteCount} messages. `);
+			}
 		} else {
-			//Get the delete count, as an actual number.
-			const deleteCount = parseInt(args[0], 10);
-			await msg.delete();
-			if(!deleteCount || deleteCount < 2 || deleteCount > 100){
-				return msg.reply('Please provide a number between 2 and 100');
-			}
-			// So we get our messages, and delete them. Simple enough, right?
-			const fetched = await msg.channel.fetchMessages({limit: deleteCount});
-			await msg.channel.bulkDelete(fetched);
-			msg.reply(`deleted ${deleteCount} messages. `);
-			log.info(`${msg.author.tag} purged ${deleteCount} messages. `);
+			msg.reply('No arguments specified.');
 		}
 	} catch (err) {
 		msg.reply(`${err.toString()}`);

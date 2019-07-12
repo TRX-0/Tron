@@ -150,7 +150,7 @@ bot.on('message', msg => {
 				// Fetch the command's prototype
 				cmd = bot.commands.get(command); 
 			} else {
-				//return msg.reply('Command does not exist.');
+				return msg.reply('Command does not exist.');
 			}
 			//Check if command is registered in the database.
 			bot.CMDModel.findOne({
