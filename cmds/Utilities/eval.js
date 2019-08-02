@@ -33,7 +33,7 @@ exports.func = async (msg, args) => {
 				//if(!body.body.key) {
 				//	return msg.reply('Sorry, but I didn\'t receive a key from Hastebin.');
 				//}
-				var result = r.body.text();
+				var result = r.text();
 				return msg.reply(`Sorry, but your request was so big that I had to upload it: ${result}`);
 			}).catch(err => msg.reply(`Sorry, but an error happened with Pastebin: ${err}`));
 		} else {
