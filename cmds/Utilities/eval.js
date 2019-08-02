@@ -33,7 +33,8 @@ exports.func = async (msg, args) => {
 				//if(!body.body.key) {
 				//	return msg.reply('Sorry, but I didn\'t receive a key from Hastebin.');
 				//}
-				return msg.reply(`Sorry, but your request was so big that I had to upload it: ${r.body.text}`);
+				var result = r.body.text();
+				return msg.reply(`Sorry, but your request was so big that I had to upload it: ${result}`);
 			}).catch(err => msg.reply(`Sorry, but an error happened with Pastebin: ${err}`));
 		} else {
 			await msg.channel.send('```xl\n' + clean(evaled) + '\n```',{split: {maxLength: 1950, char: 's'}}).catch(err => log.error(err));
