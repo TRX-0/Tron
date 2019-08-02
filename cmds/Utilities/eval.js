@@ -8,7 +8,7 @@ exports.data = {
 	permissions: 4
 };
 
-const snekfetch = require('snekfetch');
+const fetch = require('node-fetch');
 
 const clean = text => {
 	if (typeof text === 'string') {
@@ -27,8 +27,9 @@ exports.func = async (msg, args) => {
 		if (typeof evaled !== 'string') {
 			evaled = require('util').inspect(evaled);
 		}
+		const params = {api_dev_key:key, api_option:'paste', api_paste_code:evaled, api_paste_private:0 , api_paste_name:'Eval', api_paste_format:'JavaScript', api_paste_expire_date:'10M'};
 		if(evaled.length >= 2000) {
-			snekfetch.post('https://pastebin.com/api/api_post.php').send({api_dev_key:key, api_option:'paste', api_paste_code:evaled, api_paste_private:0 , api_paste_name:'Eval', api_paste_format:'JavaScript', api_paste_expire_date:'10M'}).then(r => {
+			fetch('https://pastebin.com/api/api_post.php' , { method: 'POST', body: params}).then(r => {
 				//if(!body.body.key) {
 				//	return msg.reply('Sorry, but I didn\'t receive a key from Hastebin.');
 				//}
