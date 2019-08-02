@@ -28,11 +28,11 @@ exports.func = async (msg, args) => {
 			evaled = require('util').inspect(evaled);
 		}
 		if(evaled.length >= 2000) {
-			snekfetch.post('https://pastebin.com/api/api_post.php').send({api_dev_key:key, api_option:"paste", api_paste_code:evaled, api_paste_private:0 , api_paste_name:"Eval", api_paste_format:"JavaScript", api_paste_expire_date:"10M"}).then(body => {
+			snekfetch.post('https://pastebin.com/api/api_post.php').send({api_dev_key:key, api_option:'paste', api_paste_code:evaled, api_paste_private:0 , api_paste_name:'Eval', api_paste_format:'JavaScript', api_paste_expire_date:'10M'}).then(r => {
 				//if(!body.body.key) {
 				//	return msg.reply('Sorry, but I didn\'t receive a key from Hastebin.');
 				//}
-				return msg.reply(`Sorry, but your request was so big that I had to upload it: ${body.body}`);
+				return msg.reply(`Sorry, but your request was so big that I had to upload it: ${r.body}`);
 			}).catch(() => msg.reply('Sorry, but an error happened with Hastebin!'));
 		} else {
 			await msg.channel.send('```xl\n' + clean(evaled) + '\n```',{split: {maxLength: 1950, char: 's'}}).catch(err => log.error(err));
