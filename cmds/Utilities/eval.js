@@ -32,7 +32,7 @@ exports.func = async (msg, args) => {
 				//if(!body.body.key) {
 				//	return msg.reply('Sorry, but I didn\'t receive a key from Hastebin.');
 				//}
-				return msg.reply(`Sorry, but your request was so big that I had to upload it: ${body}`);
+				return msg.reply(`Sorry, but your request was so big that I had to upload it: ${body.body}`);
 			}).catch(() => msg.reply('Sorry, but an error happened with Hastebin!'));
 		} else {
 			await msg.channel.send('```xl\n' + clean(evaled) + '\n```',{split: {maxLength: 1950, char: 's'}}).catch(err => log.error(err));
