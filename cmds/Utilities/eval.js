@@ -28,7 +28,7 @@ exports.func = async (msg, args) => {
 			evaled = require('util').inspect(evaled);
 		}
 		if(evaled.length >= 2000) {
-			snekfetch.post('https://pastebin.com/api/api_post.php').send({api_dev_key: key, api_option: "paste", api_paste_code: evaled, api_paste_private: 0 , api_paste_name: "Eval", api_paste_format: "JavaScript", api_paste_expire_date: "10M"}).then(body => {
+			snekfetch.post('https://pastebin.com/api/api_post.php').send({api_dev_key:key, api_option:"paste", api_paste_code:evaled, api_paste_private:0 , api_paste_name:"Eval", api_paste_format:"JavaScript", api_paste_expire_date:"10M"}).then(body => {
 				//if(!body.body.key) {
 				//	return msg.reply('Sorry, but I didn\'t receive a key from Hastebin.');
 				//}
