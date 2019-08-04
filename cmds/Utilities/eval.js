@@ -38,10 +38,10 @@ exports.func = async (msg, args) => {
 		}
 		const data = `api_dev_key=${key}&api_option=paste&api_paste_code=testeronios`;
 		if(evaled.length >= 2000) {
-			fetch('https://pastebin.com/api/api_post.php' , {method: 'POST', body: data}).then(async r => {
+			fetch('https://pastebin.com/api/api_post.php' , {method: 'POST', headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'}), body: data}).then(async r => {
 				var response = await r.text();
 				if(response.includes("Bad API request")) {
-					return msg.reply(`Sorry, but there was an error with the Pastebin Api: ${response}.`);
+					return msg.reply(`Sorry, but there was an error with the Pastebin API: ${response}.`);
 				}
 				return msg.reply(`Sorry, but your request was so big that I had to upload it: ${response}`);
 			}).catch(err => msg.reply(`Sorry, but an error happened with Pastebin: ${err}`));
