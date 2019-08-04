@@ -38,7 +38,7 @@ exports.func = async (msg, args) => {
 		}
 		const data = `api_dev_key=${key}&api_option=paste&api_paste_code=testeronios`;
 		if(evaled.length >= 2000) {
-			fetch('https://pastebin.com/api/api_post.php' , {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: data}).then(async r => {
+			fetch('https://pastebin.com/api/api_post.php' , {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: params}).then(async r => {
 				var response = await r.text();
 				if(response.includes("Bad API request")) {
 					return msg.reply(`Sorry, but there was an error with the Pastebin API: ${response}.`);
