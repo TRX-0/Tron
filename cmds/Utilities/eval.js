@@ -36,7 +36,7 @@ exports.func = async (msg, args) => {
 			"api_paste_format": "JavaScript",
 			"api_paste_expire_date": "10M"
 		}
-		const data = `api_dev_key=${key}&api_option=paste&api_paste_code=${evaled}`;
+		const data = `api_dev_key=${key}&api_option=paste&api_paste_code=testeronios`;
 		if(evaled.length >= 2000) {
 			fetch('https://pastebin.com/api/api_post.php' , {method: 'POST', body: data}).then(async r => {
 				var response = await r.text();
