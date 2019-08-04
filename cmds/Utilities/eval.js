@@ -34,14 +34,15 @@ exports.func = async (msg, args) => {
 			"api_paste_private": 0,
 			"api_paste_name": "Eval",
 			"api_paste_format": "JavaScript",
-			"api_paste_expire_date":"10M"
+			"api_paste_expire_date": "10M"
 		}
 		if(evaled.length >= 2000) {
-			fetch('https://pastebin.com/api/api_post.php' , { method: 'POST', body: params}).then(async r => {
-				//if(!body.body.key) {
-				//	return msg.reply('Sorry, but I didn\'t receive a key from Hastebin.');
-				//}
-				return msg.reply(`Sorry, but your request was so big that I had to upload it: ${await r.text()}`);
+			fetch('https://pastebin.com/api/api_post.php' , {method: 'POST', body: `api_dev_key=${key}&api_option=paste&api_paste_code=${evaled}`}).then(async r => {
+				var response = await r.text();
+				if(response.includes("Bad API request")) {
+					return msg.reply(`Sorry, but there was an error with the Pastebin Api: ${response}.`);
+				}
+				return msg.reply(`Sorry, but your request was so big that I had to upload it: ${response}`);
 			}).catch(err => msg.reply(`Sorry, but an error happened with Pastebin: ${err}`));
 		} else {
 			await msg.channel.send('```xl\n' + clean(evaled) + '\n```',{split: {maxLength: 1950, char: 's'}}).catch(err => log.error(err));
