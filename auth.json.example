@@ -1,0 +1,28 @@
+{
+	"token": "",
+	"ownerID": "",
+	"DB":{
+		"Database": "",
+		"User": "",
+		"Host": "postgresql",
+		"Password": ""
+	},
+	"Email": {
+		"Username":"",
+		"Password": "",
+		"Host": ""
+	},
+	"Github" : {
+		"Username": "",
+		"Password": ""
+	},
+	"twitter": {
+	    "consumer_key": "",
+	    "consumer_secret": "",
+	    "access_token": "",
+	    "access_token_secret": ""
+	},
+	"pastebin": {
+		"key": ""
+	}
+}
