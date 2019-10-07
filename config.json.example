@@ -1,0 +1,30 @@
+{
+	"prefix": "tron",
+	"debugServer": "",
+	"twitch_clientid": "",
+	"youtubeKey": "",
+	"steamKey": "",
+	"gdrive_service_account": {
+	    "type": "",
+	    "project_id": "",
+	    "private_key_id": "",
+	    "private_key": "",
+	    "client_email": "",
+	    "client_id": "",
+	    "auth_uri": "",
+	    "token_uri": "",
+	    "auth_provider_x509_cert_url": "",
+	    "client_x509_cert_url": ""
+	},
+	"folders": {
+		"home": "/home/bot/Tron/",
+		"logs": "/home/bot/Tron/logs",
+		"lib": "/home/bot/Tron/lib",
+		"models": "/home/bot/Tron/lib/models",
+		"commands": "/home/bot/Tron/cmds",
+		"watchers": "/home/bot/Tron/watchers",
+		"events": "/home/bot/Tron/lib/events",
+		"functions": "/home/bot/Tron/lib/functions"
+	},
+	"pm2": "false"
+} 
