@@ -14,7 +14,7 @@ const loadWatchers = require(`${bot.config.folders.lib}/loadWatchers.js`);
 const exec = require('util').promisify(require('child_process').exec);
 
 // Event Handlers
-bot.message = require(`${bot.config.folders.event}/message.js`);
+bot.message = require(`${bot.config.folders.events}/message.js`);
 
 
 // Database modules
