@@ -12,9 +12,10 @@ const Discord = require('discord.js');
 
 exports.func = async (msg, args, bot) => {
 	const log = require(`${bot.config.folders.lib}/log.js`)('Help');
+	const elevation = require(`${bot.config.folders.functions}/elevation.js`);
 	try{
 		const server = await bot.Server.findOne({where: {guildId: msg.guild.id}});
-		const elevation = await bot.elevation.func(bot,msg);
+		const level = await elevation.func(bot,msg);
 		//Get all enabled commands for specific server
 		const CommandsList = await bot.CMDModel.findAll({
 			where: {
@@ -43,7 +44,7 @@ exports.func = async (msg, args, bot) => {
 				//Check if command is enabled
 				if(EnabledCommands.includes(CommandData.command)){
 					//Check if user has permissions
-					if (elevation >= CommandData.permissions){
+					if (level >= CommandData.permissions){
 						help.setTitle(`__Command: **${CommandData.name}**__`);
 						help.addField('Description', CommandData.description, true);
 						help.addField('Group', `${CommandData.group}`, true);
@@ -75,7 +76,7 @@ exports.func = async (msg, args, bot) => {
 				let fieldValue = '';
 				const fieldName = `**${group}**`;
 				fieldValue = groups[group].reduce((accumulator, cmd) => {
-					if (EnabledCommands.includes(cmd.data.command) && (elevation >= cmd.data.permissions)) {
+					if (EnabledCommands.includes(cmd.data.command) && (level >= cmd.data.permissions)) {
 						accumulator.push(cmd.data.command);
 					}
 					return accumulator;
