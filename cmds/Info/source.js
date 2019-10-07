@@ -11,7 +11,7 @@ exports.data = {
 exports.func = async (msg) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Ping');
 	try {
-		msg.channel.send('https://github.com/pamehabai6/Tron');
+		msg.channel.send('https://github.com/A-G-Angelopoulos/Tron');
 	} catch (err){
 		msg.reply('Something went wrong.');
 		log.error(`Something went wrong: ${err}`);
