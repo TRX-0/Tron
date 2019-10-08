@@ -18,7 +18,6 @@ bot.ready = require(`${bot.config.folders.events}/ready.js`);
 const Database = require(`${bot.config.folders.lib}/db.js`);
 bot.Server = require(`${bot.config.folders.models}/server.js`);
 bot.CMDModel = require(`${bot.config.folders.models}/commands.js`);
-const Profiles = require(`${bot.config.folders.models}/profiles.js`);
 bot.db = Database.start(); // Start the database and connect
 
 // ==== Event Handlers ==== //
@@ -100,33 +99,6 @@ function emoji(msg){
 	return;
 }
 
-// ====On message event functions ====
-async function updateUser (msg){
-	//Check if user exists in db
-	const userExists = await Profiles.findOne({
-		where: {
-			guildId: msg.guild.id,
-			username: msg.author.username
-		}
-	});
-	//If user exists
-	if (userExists){
-		//Get message count and add one more
-		var UserCount = userExists.msgcount + 1;
-		await userExists.update({
-			msgcount: UserCount
-		});
-	} else {
-		//Else create user entry in db
-		await Profiles.create({
-			guildId: msg.guild.id,
-			username: msg.author.username,
-			discordid: msg.author.id
-		});
-		log.info(`Created db entry for user ${msg.author.username}.`);
-	}
-	return;
-}
 // =====================================================
 //Function that stops bot
 bot.stop = (msg) => {
