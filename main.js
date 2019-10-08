@@ -1,5 +1,5 @@
 // Initialize Discord Bot
-var Discord = require('discord.js');
+const Discord = require('discord.js');
 const bot = new Discord.Client();
 bot.config = require('./config.json');
 bot.auth = require('./auth.json');
@@ -9,68 +9,32 @@ bot.watchers = new Discord.Collection();
 const log = require(`${bot.config.folders.lib}/log.js`)('Core');
 bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
 const chalk = require('chalk');
-const loadCmds = require(`${bot.config.folders.lib}/loadCommands.js`);
-const loadWatchers = require(`${bot.config.folders.lib}/loadWatchers.js`);
+
 const exec = require('util').promisify(require('child_process').exec);
 
 // Event Handlers
-bot.message = require(`${bot.config.folders.lib}/events/message.js`);
-
+bot.message = require(`${bot.config.folders.events}/message.js`);
+bot.ready = require(`${bot.config.folders.events}/ready.js`);
 
 // Database modules
 const Database = require(`${bot.config.folders.lib}/db.js`);
 bot.Server = require(`${bot.config.folders.models}/server.js`);
 bot.CMDModel = require(`${bot.config.folders.models}/commands.js`);
 const Profiles = require(`${bot.config.folders.models}/profiles.js`);
-const OTS = require(`${bot.config.folders.models}/mute.js`);
 bot.db = Database.start(); // Start the database and connect
 
 // ==== Event Handlers ==== //
 
 // On bot connection to Discord
 bot.on('ready', async () => {
-	try {
-		log.info(chalk.green(`Connected to Discord gateway & ${bot.guilds.size} guilds.`));
-		[bot.commands, bot.watchers] = await Promise.all([loadCmds.func(Discord, bot, log), loadWatchers.func(Discord, bot, log)]); // Load commands and watchers in parallel
-		bot.guilds.keyArray().forEach(async id => { // Loop through connected guilds
-			const guild = bot.guilds.get(id); // Get guild object
-			await bot.Server.sync(); // Create server table if it does not exist
-			const server = await bot.Server.findOne({ // Attempt to find server with ID
-				where: {
-					guildId: id
-				}
-			});
-			if (!server) { // If server is not known
-				const server = await bot.Server.create({ // Create a server object (this is required for basic bot operation)
-					guildId: id,
-					name: guild.name,
-					permitChan: [],
-					perm3: [],
-					perm2: [],
-					perm1: []
-				});
-				// Emit a warning
-				log.warn(`${server.name} has not been set up properly. Make sure it is set up correctly to enable all functionality.`);
-			}
-			const OTSroles = await OTS.findOne({
-				where: {
-					guildId: id
-				}
-			});
-			if (!OTSroles){
-				//Creates OTS entry
-				/*await OTS.create({
-					guildId: id,
-					roleId: []
-				});*/
-				log.warn(`${server.name} OTS roles have not been set up properly. Make sure to set them up to enable all functionality.`);
-			}
-			await bot.createCommands(guild, id);
-		});
-	} catch (err) {
-		log.error(`Error in bot initialisation: ${err}`);
-	}
+	bot.ready.func(bot);
 });
+
+// When message is received
+bot.on('message', msg => {
+	bot.message.func(bot, msg);
+});
+
 // On member join
 bot.on('guildMemberAdd', member => {
     //member.guild.channels.get('channelID').send("Welcome"); 
@@ -116,10 +80,7 @@ bot.on('guildCreate', async guild => {
 	}
 });
 
-// When message is received
-bot.on('message', msg => {
-	bot.message.func(bot, msg);
-});
+
 
 // Officially start the bot
 bot.login(bot.auth.token);
