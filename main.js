@@ -26,7 +26,7 @@ bot.db = Database.start(); // Start the database and connect
 // ==== Event Handlers ==== //
 
 // On bot connection to Discord
-bot.on('ready', async () => {
+bot.on('ready', () => {
 	bot.ready.func(bot);
 });
 
