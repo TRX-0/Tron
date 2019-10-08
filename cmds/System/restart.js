@@ -8,7 +8,7 @@ exports.data = {
 	permissions: 4
 };
 
-exports.func = async (msg, args, bot) => {
+exports.func = (msg, args, bot) => {
 	const log = require(`${bot.config.folders.lib}/log.js`)('Restart');
 	const exec = require('util').promisify(require('child_process').exec);
 	try {
