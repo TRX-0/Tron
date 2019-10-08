@@ -6,7 +6,7 @@ bot.auth = require('./auth.json');
 bot.watchers = new Discord.Collection();
 
 // Basic Function Modules
-const logger = require(`${bot.config.folders.lib}/log.js`);
+const logger = require(`${bot.config.folders.lib}/log.js`)('Core');
 bot.log = require(`${bot.config.folders.lib}/log.js`);
 bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
 
