@@ -20,7 +20,7 @@ bot.db = Database.start(); // Start the database and connect
 bot.CommandModel = require(`${bot.config.folders.models}/commands.js`);
 bot.ServerModel = require(`${bot.config.folders.models}/server.js`);
 bot.MuteModel = require(`${bot.config.folders.models}/mute.js`);
-bot.ProfilesModel = require(`${msg.client.config.folders.models}/profiles.js`);
+bot.ProfilesModel = require(`${bot.config.folders.models}/profiles.js`);
 
 
 // =====Event Handlers=====
