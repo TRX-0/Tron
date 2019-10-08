@@ -6,8 +6,7 @@ bot.auth = require('./auth.json');
 bot.watchers = new Discord.Collection();
 
 // Basic Function Modules
-const logger = require(`${bot.config.folders.lib}/log.js`)('Core');
-bot.log = require(`${bot.config.folders.lib}/log.js`);
+const log = require(`${bot.config.folders.lib}/log.js`)('Core');
 bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
 
 // Event Handlers
@@ -49,11 +48,11 @@ bot.on('guildCreate', async guild => {
 
 // Start the bot
 bot.login(bot.auth.token);
-bot.on('error', logger.error); // If there's an error, emit an error to the logger
-bot.on('warn', logger.warn); // If there's a warning, emit a warning to the logger
+bot.on('error', log.error); // If there's an error, emit an error to the logger
+bot.on('warn', log.warn); // If there's a warning, emit a warning to the logger
 
 process.on('unhandledRejection', err => { // If I've forgotten to catch a promise somewhere, emit an error
-	logger.error(`Uncaught Promise Error: \n${err.stack}`);
+	log.error(`Uncaught Promise Error: \n${err.stack}`);
 });
 
 
@@ -75,7 +74,7 @@ bot.watcherEnable = (watcher, watcherData) => {
 			await watcherData.update({globalEnable: true}); // Set watcher to enabled in database
 			resolve();
 		} catch (err) {
-			bot.log.error(`Error when enabling a watcher: ${err}`);
+			log.error(`Error when enabling a watcher: ${err}`);
 			reject(err);
 		}
 	});
@@ -97,7 +96,7 @@ bot.watcherDisable = (watcher, watcherData) => {
 			bot.watchers.delete(watcher); // Delete from bot's collection of watchers
 			resolve();
 		} catch (err) {
-			bot.log.error(`Error when disabling a watcher: ${err}`);
+			log.error(`Error when disabling a watcher: ${err}`);
 			reject(err);
 		}
 	});
@@ -120,7 +119,7 @@ bot.watcherReload = watcher => {
 			bot.watchers.get(watcher).watcher(bot); // Initialise watcher
 			resolve();
 		} catch (err) {
-			bot.log.error(`Error when reloading a watcher: ${err}`);
+			log.error(`Error when reloading a watcher: ${err}`);
 			reject(err);
 		}
 	});
