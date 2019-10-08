@@ -7,10 +7,8 @@ bot.watchers = new Discord.Collection();
 
 // Basic Function Modules
 const log = require(`${bot.config.folders.lib}/log.js`)('Core');
-bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
-const chalk = require('chalk');
-
 const exec = require('util').promisify(require('child_process').exec);
+bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
 
 // Event Handlers
 bot.message = require(`${bot.config.folders.events}/message.js`);
