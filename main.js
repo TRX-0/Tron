@@ -12,14 +12,12 @@ bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
 // Event Handlers
 bot.message = require(`${bot.config.folders.events}/message.js`);
 bot.ready = require(`${bot.config.folders.events}/ready.js`);
+bot.guildCreate = require(`${bot.config.folders.events}/guildCreate.js`);
 
 // Database modules
 const Database = require(`${bot.config.folders.lib}/db.js`);
-bot.Server = require(`${bot.config.folders.models}/server.js`);
-bot.CMDModel = require(`${bot.config.folders.models}/commands.js`);
 bot.db = Database.start(); // Start the database and connect
 
-// ==== Event Handlers ==== //
 
 // On bot connection to Discord
 bot.on('ready', () => {
@@ -38,42 +36,7 @@ bot.on('guildMemberAdd', member => {
 
 // On the bot joining a server
 bot.on('guildCreate', async guild => {
-	try{
-		log.info(`Joined ${guild.name}.`);
-		const server = await bot.Server.findOne({ // Attempt to find server with ID
-			where: {
-				guildId: guild.id
-			}
-		});
-		if (!server) { // If server is not known
-			const server = await bot.Server.create({ // Create a server object (this is required for basic bot operation)
-				guildId: guild.id,
-				name: guild.name,
-				permitChan: [],
-				perm3: [],
-				perm2: [],
-				perm1: []
-			});
-			// Emit a warning
-			log.warn(`${server.name} has not been set up properly. Make sure it is set up correctly to enable all functionality.`);
-			const OTSroles = await OTS.findOne({
-				where: {
-					guildId: guild.id
-				}
-			});
-			if (!OTSroles){
-				//Creates OTS entry
-				/*await OTS.create({
-					guildId: id,
-					roleId: []
-				});*/
-				log.warn(`${server.name} OTS roles have not been set up properly. Make sure to set them up to enable all functionality.`);
-			}
-			await bot.createCommands(guild, guild.id);
-		}
-	} catch (err) {
-		log.error(`Error on joining a new server: ${err}`);
-	}
+	bot.guildCreate.func(bot, guild);
 });
 
 
@@ -88,26 +51,6 @@ process.on('unhandledRejection', err => { // If I've forgotten to catch a promis
 
 
 
-
-//Function that creates commands in the db.
-bot.createCommands = (guild, id) => {
-	bot.commands.forEach(async command => {
-		const cmdExists = await bot.CMDModel.findOne({
-			where:{
-				guildId: id,
-				name: command.data.command
-			}
-		});
-		if (!cmdExists){
-			await bot.CMDModel.create({
-				guildId: id,
-				name: command.data.command,
-				enabled: true
-			});
-			log.info(`Created db command entry for: ${command.data.command} in ${guild.name}`);
-		}
-	});
-};
 
 /**
  * Enables a specified watcher
