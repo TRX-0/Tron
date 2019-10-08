@@ -7,7 +7,7 @@ bot.watchers = new Discord.Collection();
 
 // Basic Function Modules
 const log = require(`${bot.config.folders.lib}/log.js`)('Core');
-bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
+bot.createCommands = require(`${bot.config.folders.functions}/createCommands.js`);
 
 // Event Handlers
 bot.onMessage = require(`${bot.config.folders.events}/message.js`);
@@ -21,7 +21,7 @@ bot.CommandModel = require(`${bot.config.folders.models}/commands.js`);
 bot.ServerModel = require(`${bot.config.folders.models}/server.js`);
 bot.MuteModel = require(`${bot.config.folders.models}/mute.js`);
 bot.ProfilesModel = require(`${bot.config.folders.models}/profiles.js`);
-
+bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
 
 // =====Event Handlers=====
 
