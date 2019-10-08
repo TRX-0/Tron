@@ -49,8 +49,8 @@ bot.on('guildCreate', async guild => {
 
 // Start the bot
 bot.login(bot.auth.token);
-bot.on('error', logger); // If there's an error, emit an error to the logger
-bot.on('warn', logger); // If there's a warning, emit a warning to the logger
+bot.on('error', logger.error); // If there's an error, emit an error to the logger
+bot.on('warn', logger.warn); // If there's a warning, emit a warning to the logger
 
 process.on('unhandledRejection', err => { // If I've forgotten to catch a promise somewhere, emit an error
 	logger.error(`Uncaught Promise Error: \n${err.stack}`);
