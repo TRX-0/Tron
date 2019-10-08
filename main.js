@@ -7,7 +7,6 @@ bot.watchers = new Discord.Collection();
 
 // Basic Function Modules
 const log = require(`${bot.config.folders.lib}/log.js`)('Core');
-const exec = require('util').promisify(require('child_process').exec);
 bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
 
 // Event Handlers
@@ -78,7 +77,6 @@ bot.on('guildCreate', async guild => {
 });
 
 
-
 // Officially start the bot
 bot.login(bot.auth.token);
 bot.on('error', log.error); // If there's an error, emit an error to the logger
@@ -88,38 +86,8 @@ process.on('unhandledRejection', err => { // If I've forgotten to catch a promis
 	log.error(`Uncaught Promise Error: \n${err.stack}`);
 });
 
-//==== Global Helper Functions ====
 
-function emoji(msg){
-	if (msg.content == ':yerts:'){
-		msg.channel.send('Damn it Yerts...', {file:'https://i.imgur.com/1XpZHPe.gif'});
-		log.info(`${msg.author.tag} used the Yerts emoji!`);
-		msg.delete();
-	}
-	return;
-}
 
-// =====================================================
-//Function that stops bot
-bot.stop = (msg) => {
-	return new Promise((resolve, reject) => {
-		try {
-			if(bot.config.pm2 == 'true'){
-				msg.channel.send('Stopping all processes and exiting!');
-				exec('pm2 stop Tron');
-			} else if (bot.config.pm2 == 'false') {
-				msg.channel.send('Stopping all processes and exiting!');
-				bot.destroy();
-				process.exit();
-			} else {
-				msg.reply('Incorect configuration. Value PM2 not set correctly!');
-			}
-		} catch (err) {
-			log.error(`Error on bot quit: ${err}`);
-			reject(err);
-		}
-	});
-};
 
 //Function that creates commands in the db.
 bot.createCommands = (guild, id) => {
@@ -141,27 +109,6 @@ bot.createCommands = (guild, id) => {
 	});
 };
 
-//Function that restarts bot
-bot.restart = (msg) => {
-	return new Promise((resolve, reject) => {
-		try {
-			if(bot.config.pm2 == 'true'){
-				msg.channel.send('Restarting all processes!');
-				exec('pm2 restart Tron');
-			} else if (bot.config.pm2 == 'false') {
-				msg.channel.send('Restarting all processes!');
-				exec(`cd ${bot.config.folders.home} && node main.js`);
-				bot.destroy();
-				process.exit();
-			} else {
-				msg.reply('Incorect configuration. Value PM2 not set correctly!');
-			}
-		} catch (err) {
-			log.error(`Error on bot quit: ${err}`);
-			reject(err);
-		}
-	});
-};
 /**
  * Enables a specified watcher
  *
