@@ -6,27 +6,33 @@ bot.auth = require('./auth.json');
 bot.watchers = new Discord.Collection();
 
 // Basic Function Modules
-const log = require(`${bot.config.folders.lib}/log.js`)('Core');
+bot.log = require(`${bot.config.folders.lib}/log.js`);
 bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
 
 // Event Handlers
-bot.message = require(`${bot.config.folders.events}/message.js`);
-bot.ready = require(`${bot.config.folders.events}/ready.js`);
-bot.guildCreate = require(`${bot.config.folders.events}/guildCreate.js`);
+bot.onMessage = require(`${bot.config.folders.events}/message.js`);
+bot.onReady = require(`${bot.config.folders.events}/ready.js`);
+bot.onGuildCreate = require(`${bot.config.folders.events}/guildCreate.js`);
 
 // Database modules
 const Database = require(`${bot.config.folders.lib}/db.js`);
 bot.db = Database.start(); // Start the database and connect
+bot.CommandModel = require(`${bot.config.folders.models}/commands.js`);
+bot.ServerModel = require(`${bot.config.folders.models}/server.js`);
+bot.MuteModel = require(`${bot.config.folders.models}/mute.js`);
+bot.ProfilesModel = require(`${msg.client.config.folders.models}/profiles.js`);
 
+
+// =====Event Handlers=====
 
 // On bot connection to Discord
 bot.on('ready', () => {
-	bot.ready.func(bot);
+	bot.onReady.func(bot);
 });
 
 // When message is received
 bot.on('message', msg => {
-	bot.message.func(bot, msg);
+	bot.onMessage.func(bot, msg);
 });
 
 // On member join
@@ -36,17 +42,17 @@ bot.on('guildMemberAdd', member => {
 
 // On the bot joining a server
 bot.on('guildCreate', async guild => {
-	bot.guildCreate.func(bot, guild);
+	bot.onGuildCreate.func(bot, guild);
 });
 
 
-// Officially start the bot
+// Start the bot
 bot.login(bot.auth.token);
-bot.on('error', log.error); // If there's an error, emit an error to the logger
-bot.on('warn', log.warn); // If there's a warning, emit a warning to the logger
+bot.on('error', bot.log.error); // If there's an error, emit an error to the logger
+bot.on('warn', bot.log.warn); // If there's a warning, emit a warning to the logger
 
 process.on('unhandledRejection', err => { // If I've forgotten to catch a promise somewhere, emit an error
-	log.error(`Uncaught Promise Error: \n${err.stack}`);
+	bot.log.error(`Uncaught Promise Error: \n${err.stack}`);
 });
 
 
@@ -68,7 +74,7 @@ bot.watcherEnable = (watcher, watcherData) => {
 			await watcherData.update({globalEnable: true}); // Set watcher to enabled in database
 			resolve();
 		} catch (err) {
-			log.error(`Error when enabling a watcher: ${err}`);
+			bot.log.error(`Error when enabling a watcher: ${err}`);
 			reject(err);
 		}
 	});
@@ -90,7 +96,7 @@ bot.watcherDisable = (watcher, watcherData) => {
 			bot.watchers.delete(watcher); // Delete from bot's collection of watchers
 			resolve();
 		} catch (err) {
-			log.error(`Error when disabling a watcher: ${err}`);
+			bot.log.error(`Error when disabling a watcher: ${err}`);
 			reject(err);
 		}
 	});
@@ -113,7 +119,7 @@ bot.watcherReload = watcher => {
 			bot.watchers.get(watcher).watcher(bot); // Initialise watcher
 			resolve();
 		} catch (err) {
-			log.error(`Error when reloading a watcher: ${err}`);
+			bot.log.error(`Error when reloading a watcher: ${err}`);
 			reject(err);
 		}
 	});
