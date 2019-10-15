@@ -14,10 +14,10 @@ exports.func = async (msg, args, bot) => {
 	const log = require(`${bot.config.folders.lib}/log.js`)('Help');
 	const elevation = require(`${bot.config.folders.functions}/elevation.js`);
 	try{
-		const server = await bot.Server.findOne({where: {guildId: msg.guild.id}});
-		const level = await elevation.func(bot,msg);
+		const server = await bot.ServerModel.findOne({where: {guildId: msg.guild.id}});
+		const level = await elevation.func(bot, msg);
 		//Get all enabled commands for specific server
-		const CommandsList = await bot.CMDModel.findAll({
+		const CommandsList = await bot.CommandModel.findAll({
 			where: {
 				guildId: msg.guild.id,
 				enabled: true
