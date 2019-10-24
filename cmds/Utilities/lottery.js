@@ -18,7 +18,9 @@ exports.func = async (msg, args, bot) => {
 	try {
 		//var Tweets = await T.get('statuses/retweeters/ids',{id: id,count:100,cursor:-1});
 		//msg.channel.send(Tweets);
-		T.get('statuses/retweeters/ids', { id:'1187120788568248334', count: 100, cursor:-1 }, function(err, data, response) {
+		console.log(id);
+		console.log(number);
+		T.get('statuses/retweeters/ids', { id: id, count: 100, cursor:-1 }, function(err, data, response) {
 			console.log(data)
 		})
 	} catch (err) {
