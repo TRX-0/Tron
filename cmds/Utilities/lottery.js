@@ -21,11 +21,10 @@ exports.func = async (msg, args, bot) => {
 		let next = -1;
 		do {
 			let data = T.get('statuses/retweeters/ids', { id: id, count: 100, cursor: next }, function(err, data, response) {
-				return data;
+				console.log("WHAAAAT" + data.next_cursor);
+				next = data.next_cursor;
 			});
-			console.log("WHAAAAT" + data.next_cursor);
-			next = data.next_cursor;
-		} while (data.next_cursor > 0);
+		} while (next > 0);
 	} catch (err) {
 		msg.reply('Something went wrong.');
 		log.error(`Error in the watcher function: ${err}`);
