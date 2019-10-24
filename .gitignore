@@ -7,3 +7,5 @@ config.json
 start.json
 watcherData
 .eslintrc
+
+.DS_Store
