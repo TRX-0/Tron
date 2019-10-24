@@ -21,6 +21,8 @@ exports.func = async (msg, args, bot) => {
 				let next = -1;
 				do {
 					T.get('statuses/retweeters/ids', { id: id, count: 100, cursor: next }, function(err, data, response) {
+						console.log(next);
+						console.log("==============");
 						console.log(data.ids);
 						next = data.next_cursor;
 					});
