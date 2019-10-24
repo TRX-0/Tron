@@ -24,7 +24,6 @@ exports.func = async (msg, args, bot) => {
 						console.log(next);
 						console.log("==============");
 						console.log(data);
-						console.log(response);
 						next = data.next_cursor;
 					});
 				} while (next > 0);
