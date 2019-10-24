@@ -16,8 +16,11 @@ exports.func = async (msg, args, bot) => {
 	const id = args[1];
 	const number = args[2];
 	try {
-		var Tweets = await T.get('statuses/retweeters/ids',{id: id,count:100,cursor:-1});
-		msg.channel.send(Tweets);
+		//var Tweets = await T.get('statuses/retweeters/ids',{id: id,count:100,cursor:-1});
+		//msg.channel.send(Tweets);
+		T.get('search/tweets', { q: 'banana since:2011-07-11', count: 100 }, function(err, data, response) {
+			console.log(data)
+		})
 	} catch (err) {
 		msg.reply('Something went wrong.');
 		log.error(`Error in the watcher function: ${err}`);
