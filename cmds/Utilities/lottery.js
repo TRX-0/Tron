@@ -27,7 +27,7 @@ exports.func = async (msg, args, bot) => {
 						console.log(response);
 						next = data.next_cursor;
 					});
-				} while (next != 0 && next != '0');
+				} while (next > 0);
 			} catch (err) {
 				msg.reply('Something went wrong.');
 				log.error(`Error in the lottery function: ${err}`);
