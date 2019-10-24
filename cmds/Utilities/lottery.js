@@ -20,8 +20,8 @@ exports.func = async (msg, args, bot) => {
 		//msg.channel.send(Tweets);
 		let next = -1;
 		do {
-			T.get('statuses/retweeters/ids', { id: id, count: 100, cursor: next }, function(err, data, response) {
-				console.log(data);
+			let data = T.get('statuses/retweeters/ids', { id: id, count: 100, cursor: next }, function(err, data, response) {
+				return data;
 			});
 			console.log("WHAAAAT" + data.next_cursor);
 			next = data.next_cursor;
