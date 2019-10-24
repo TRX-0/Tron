@@ -13,8 +13,8 @@ exports.func = async (msg, args, bot) => {
 	const auth = require ('../../auth.json');
 	const Twit = require('twit');
 	const T = new Twit(auth.twitter);
-	const id = args[1];
-	const number = args[2];
+	const id = args[0];
+	const number = args[1];
 	try {
 		//var Tweets = await T.get('statuses/retweeters/ids',{id: id,count:100,cursor:-1});
 		//msg.channel.send(Tweets);
