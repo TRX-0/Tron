@@ -20,7 +20,7 @@ exports.func = async (msg, args, bot) => {
             let first = true;
             do {
                 if (first == true) {
-                    T.get('tweets/search/30day/Contest', {
+                    await T.get('tweets/search/30day/Contest', {
                         query: '200K HTB',
                         maxResults: 100
                     }, function (err, data, response) {
@@ -34,7 +34,7 @@ exports.func = async (msg, args, bot) => {
                     first = false;
                 } else {
                 	console.log("Got here");
-                    T.get('tweets/search/30day/Contest', {
+                    await T.get('tweets/search/30day/Contest', {
                         query: '200K HTB',
                         maxResults: 100,
                         next: nextPage
@@ -49,7 +49,6 @@ exports.func = async (msg, args, bot) => {
 						console.log(data.results.length);
                     });
                 }
-                console.log(nextPage != "null");
             } while (nextPage !== "null");
         } catch (err) {
             msg.reply('Something went wrong.');
