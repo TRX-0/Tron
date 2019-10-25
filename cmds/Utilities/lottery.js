@@ -20,7 +20,7 @@ exports.func = async (msg, args, bot) => {
             let first = true;
             do {
                 if (first == true) {
-                    T.post('tweets/search/30day/Contest', {
+                    T.get('tweets/search/30day/Contest', {
                         query: '200K HTB',
                         maxResults: 100
                     }, function (err, data, response) {
@@ -34,7 +34,7 @@ exports.func = async (msg, args, bot) => {
                     first = false;
                 } else {
                 	console.log("Got here");
-                    T.post('tweets/search/30day/Contest', {
+                    T.get('tweets/search/30day/Contest', {
                         query: '200K HTB',
                         maxResults: 100,
                         next: nextPage
