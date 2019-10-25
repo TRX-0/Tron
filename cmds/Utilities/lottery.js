@@ -19,7 +19,7 @@ exports.func = async (msg, args, bot) => {
 			const amount = args[1];
 			try {
 				let next = -1;
-				do {
+				//do {
 					T.get('statuses/retweeters/ids', { id: id, count: 100, cursor: next }, function(err, data, response) {
 						console.log(next);
 						console.log("==============");
