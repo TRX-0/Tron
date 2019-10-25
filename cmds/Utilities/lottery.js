@@ -18,6 +18,7 @@ exports.func = async (msg, args, bot) => {
         try {
             let nextPage = "";
             //let first = true;
+			let data;
             do {
                 /*if (first == true) {
                     await T.get('tweets/search/30day/Contest', {
@@ -34,20 +35,22 @@ exports.func = async (msg, args, bot) => {
                     first = false;
                 } else {*/
                 	//console.log("Got here");
-                    await T.get('tweets/search/30day/Contest', {
+                    data = await T.get('tweets/search/30day/Contest', {
                         query: '200K HTB',
                         maxResults: 100,
                         next: nextPage
-                    }, async function (err, data, response) {
+                    }, function (err, data, response) {
 						if (data.next) {
-							nextPage = await data.next;
+							nextPage = data.next;
 						} else {
 							nextPage = "";
 						}
 						console.log(nextPage);
 						console.log("==============================");
 						console.log(data.results.length);
+						return data;
                     });
+                    console.log(data.result.length);
                 //}
             } while (nextPage !== "");
         } catch (err) {
