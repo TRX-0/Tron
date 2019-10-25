@@ -16,11 +16,10 @@ exports.func = async (msg, args, bot) => {
     if (args.length == 1) {
         const q = args[0];
         try {
-            let nextPage = "null";
-            let first = true;
-            let data;
+            let nextPage = "";
+            //let first = true;
             do {
-                if (first == true) {
+                /*if (first == true) {
                     await T.get('tweets/search/30day/Contest', {
                         query: '200K HTB',
                         maxResults: 100
@@ -33,8 +32,8 @@ exports.func = async (msg, args, bot) => {
 						console.log(data.results.length);
                     });
                     first = false;
-                } else {
-                	console.log("Got here");
+                } else {*/
+                	//console.log("Got here");
                     await T.get('tweets/search/30day/Contest', {
                         query: '200K HTB',
                         maxResults: 100,
@@ -43,14 +42,14 @@ exports.func = async (msg, args, bot) => {
 						if (data.next) {
 							nextPage = await data.next;
 						} else {
-							nextPage = "null";
+							nextPage = "";
 						}
 						console.log(nextPage);
 						console.log("==============================");
 						console.log(data.results.length);
                     });
-                }
-            } while (nextPage !== "null");
+                //}
+            } while (nextPage !== "");
         } catch (err) {
             msg.reply('Something went wrong.');
             log.error(`Error in the lottery function: ${err}`);
