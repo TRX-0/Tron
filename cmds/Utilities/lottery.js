@@ -18,7 +18,7 @@ exports.func = async (msg, args, bot) => {
         try {
             let nextPage = "";
             //let first = true;
-			let data;
+            let data;
             do {
                 /*if (first == true) {
                     await T.get('tweets/search/30day/Contest', {
@@ -34,23 +34,40 @@ exports.func = async (msg, args, bot) => {
                     });
                     first = false;
                 } else {*/
-                	//console.log("Got here");
-                    data = await T.get('tweets/search/30day/Contest', {
-                        query: '200K HTB',
-                        maxResults: 100,
-                        next: nextPage
-                    }, function (err, data, response) {
-						if (data.next) {
-							nextPage = data.next;
-						} else {
-							nextPage = "";
-						}
-						console.log(nextPage);
-						console.log("==============================");
-						console.log(data.results.length);
-						return data;
-                    });
-                    console.log(data.result.length);
+                //console.log("Got here");
+                data = T.get('tweets/search/30day/Contest', {
+                    query: '200K HTB',
+                    maxResults: 100,
+                    next: nextPage
+                }).catch(function (err) {
+                    console.log('caught error', err.stack)
+                }).then(function (result) {
+                    // `result` is an Object with keys "data" and "resp".
+                    // `data` and `resp` are the same objects as the ones passed
+                    // to the callback.
+                    // See https://github.com/ttezel/twit#tgetpath-params-callback
+                    // for details.
+
+                    //console.log('data', result.data);
+                    return result.data;
+                })
+                /*
+                data = await T.get('tweets/search/30day/Contest', {
+                    query: '200K HTB',
+                    maxResults: 100,
+                    next: nextPage
+                }, function (err, data, response) {
+                    if (data.next) {
+                        nextPage = data.next;
+                    } else {
+                        nextPage = "";
+                    }
+                    console.log(nextPage);
+                    console.log("==============================");
+                    console.log(data.results.length);
+                    return data;
+                }); */
+                console.log(data.result.length);
                 //}
             } while (nextPage !== "");
         } catch (err) {
