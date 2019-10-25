@@ -21,36 +21,34 @@ exports.func = async (msg, args, bot) => {
             let data;
             do {
                 if (first == true) {
-                    data = await T.get('tweets/search/30day/Contest', {
+                    await T.get('tweets/search/30day/Contest', {
                         query: '200K HTB',
                         maxResults: 100
-                    }, function (err, data, response) {
-						return data;
+                    }, async function (err, data, response) {
+						if (data.next) {
+							nextPage = await data.next;
+						}
+						console.log(nextPage);
+						console.log("==============================");
+						console.log(data.results.length);
                     });
-					if (data.next) {
-						nextPage = data.next;
-					}
-					console.log(nextPage);
-					console.log("==============================");
-					console.log(data.results.length);
                     first = false;
                 } else {
                 	console.log("Got here");
-                    data = await T.get('tweets/search/30day/Contest', {
+                    await T.get('tweets/search/30day/Contest', {
                         query: '200K HTB',
                         maxResults: 100,
                         next: nextPage
-                    }, function (err, data, response) {
-						return data;
+                    }, async function (err, data, response) {
+						if (data.next) {
+							nextPage = await data.next;
+						} else {
+							nextPage = "null";
+						}
+						console.log(nextPage);
+						console.log("==============================");
+						console.log(data.results.length);
                     });
-					if (data.next) {
-						nextPage = data.next;
-					} else {
-						nextPage = "null";
-					}
-					console.log(nextPage);
-					console.log("==============================");
-					console.log(data.results.length);
                 }
             } while (nextPage !== "null");
         } catch (err) {
