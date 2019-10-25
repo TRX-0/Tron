@@ -35,7 +35,7 @@ exports.func = async (msg, args, bot) => {
                     first = false;
                 } else {*/
                 //console.log("Got here");
-                data = T.get('tweets/search/30day/Contest', {
+                T.get('tweets/search/30day/Contest', {
                     query: '200K HTB',
                     maxResults: 100,
                     next: nextPage
@@ -47,9 +47,14 @@ exports.func = async (msg, args, bot) => {
                     // to the callback.
                     // See https://github.com/ttezel/twit#tgetpath-params-callback
                     // for details.
-
-                    //console.log('data', result.data);
-                    return result.data;
+                    if (result.data.next) {
+                        nextPage = result.data.next;
+                    } else {
+                        nextPage = "";
+                    }
+                    console.log(nextPage);
+                    console.log("==============================");
+                    console.log(result.data.results.length);
                 })
                 /*
                 data = await T.get('tweets/search/30day/Contest', {
@@ -67,7 +72,6 @@ exports.func = async (msg, args, bot) => {
                     console.log(data.results.length);
                     return data;
                 }); */
-                console.log(data.result.length);
                 //}
             } while (nextPage !== "");
         } catch (err) {
