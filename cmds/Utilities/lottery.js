@@ -49,8 +49,8 @@ exports.func = async (msg, args, bot) => {
 						console.log(data.results.length);
                     });
                 }
-
-            } while (nextPage != "null");
+                console.log(nextPage != "null");
+            } while (nextPage !== "null");
         } catch (err) {
             msg.reply('Something went wrong.');
             log.error(`Error in the lottery function: ${err}`);
