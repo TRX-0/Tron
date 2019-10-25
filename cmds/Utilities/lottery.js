@@ -24,12 +24,12 @@ exports.func = async (msg, args, bot) => {
                         query: '200K HTB',
                         maxResults: 100
                     }, function (err, data, response) {
-                        console.log(data.next);
-                        console.log("==============================");
-                        console.log(data.results.user);
                         if (data.next) {
                             nextPage = data.next;
                         }
+						console.log(nextPage);
+						console.log("==============================");
+						console.log(data.results.length);
                     });
                     first = false;
                 } else {
@@ -38,14 +38,14 @@ exports.func = async (msg, args, bot) => {
                         maxResults: 100,
                         next: nextPage
                     }, function (err, data, response) {
-                        console.log(data.next);
-                        console.log("==============");
-                        console.log(data);
                         if (data.next) {
                             nextPage = data.next;
                         } else {
                             nextPage = "null";
                         }
+						console.log(nextPage);
+						console.log("==============================");
+						console.log(data.results.length);
                     });
                 }
 
