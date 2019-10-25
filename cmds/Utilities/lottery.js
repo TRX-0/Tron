@@ -23,9 +23,9 @@ exports.func = async (msg, args, bot) => {
 				do {
 					if (first == true) {
 						T.get('tweets/search/30day/Contest', { query: '200K HTB', maxResults: 100}, function(err, data, response) {
-							console.log(next);
-							console.log("==============");
-							console.log(data);
+							console.log(data.next);
+							console.log("==============================");
+							console.log(data.user);
 							if (data.next) {
 								next = data.next;
 							} else {
