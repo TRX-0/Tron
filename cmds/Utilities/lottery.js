@@ -19,14 +19,14 @@ exports.func = async (msg, args, bot) => {
 			const amount = args[1];
 			try {
 				let next = -1;
-				do {
-					T.get('statuses/retweeters/ids', { id: id, count: 100, cursor: next }, function(err, data, response) {
+				//do {
+					T.get('tweets/search/30day/Contest', { q: '200K HTB', count: 500, cursor: next }, function(err, data, response) {
 						console.log(next);
 						console.log("==============");
 						console.log(data);
 						next = data.next_cursor;
 					});
-				} while (next > 0);
+				//} while (next > 0);
 			} catch (err) {
 				msg.reply('Something went wrong.');
 				log.error(`Error in the lottery function: ${err}`);
