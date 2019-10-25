@@ -18,15 +18,35 @@ exports.func = async (msg, args, bot) => {
 			const id = args[0];
 			const amount = args[1];
 			try {
-				let next = -1;
-				//do {
-					T.get('tweets/search/30day/Contest', { query: '200K HTB', maxResults: 100}, function(err, data, response) {
-						//console.log(next);
-						console.log("==============");
-						console.log(data);
-						//next = data.next_cursor;
-					});
-				//} while (next > 0);
+				let next = "";
+				let first = true;
+				do {
+					if (first == true) {
+						T.get('tweets/search/30day/Contest', { query: '200K HTB', maxResults: 500}, function(err, data, response) {
+							console.log(next);
+							console.log("==============");
+							console.log(data);
+							if (data.next) {
+								next = data.next;
+							} else {
+								next = "";
+							}
+						});
+						first = false;
+					} else {
+						T.get('tweets/search/30day/Contest', { query: '200K HTB', maxResults: 500, next: next}, function(err, data, response) {
+							console.log(next);
+							console.log("==============");
+							console.log(data);
+							if (data.next) {
+								next = data.next;
+							} else {
+								next = "";
+							}
+						});
+					}
+
+				} while (next != "");
 			} catch (err) {
 				msg.reply('Something went wrong.');
 				log.error(`Error in the lottery function: ${err}`);
