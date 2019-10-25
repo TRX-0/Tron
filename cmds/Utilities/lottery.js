@@ -20,7 +20,7 @@ exports.func = async (msg, args, bot) => {
 			try {
 				let next = -1;
 				//do {
-					T.get('statuses/retweeters/ids', { query: '200K HTB', maxResults: 100, cursor: next }, function(err, data, response) {
+					T.get('tweets/search/30day/Contest', { query: '200K HTB', maxResults: 100, cursor: next }, function(err, data, response) {
 						console.log(next);
 						console.log("==============");
 						console.log(data);
