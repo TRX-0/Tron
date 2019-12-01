@@ -3,7 +3,7 @@ exports.data = {
 	command: 'setup',
 	description: 'Setup specific server options. Without arguments will return role ids.',
 	group: 'System',
-	syntax: 'setup (ots [Muted Role] [Mute Appeal Channel] [Botspam Channel]) || ([perm3] [perm2] [perm1])',
+	syntax: 'setup (ots [Muted Role] [Mute Appeal Channel] [Botspam Channel]) || ([High1,High2] [Medium1,Medium2] [Lowest])',
 	author: 'Aris A.',
 	permissions: 4
 };
