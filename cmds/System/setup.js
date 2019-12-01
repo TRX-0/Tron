@@ -24,7 +24,7 @@ exports.func = async (msg,args) => {
 			if (Wrong == true){
 				return msg.reply('The IDs given are incorrect.');
 			}
-			const server = await msg.client.Server.findOne({
+			const server = await msg.client.ServerModel.findOne({
 				where: {
 					guildId: msg.guild.id
 				}
