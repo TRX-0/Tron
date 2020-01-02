@@ -3,7 +3,7 @@ exports.data = {
 	command: 'glyph',
 	description: 'Translate glyphs from and to hex.',
 	group: 'Utilities',
-	syntax: 'glyph [encrypt/decrypt] [hex/glyph emojis]',
+	syntax: 'glyph [encode/decode] [hex/glyph emojis]',
 	author: 'Aris A.',
 	permissions: 2
 };
