@@ -82,7 +82,7 @@ exports.func = async (msg,args) => {
 					altPrefix: args[1]
 				});
 				msg.delete();
-				msg.reply('Server has been set up.');
+				msg.reply('Prefix has been set up.');
 				log.verbose(`${msg.author.tag} has changed the prefix of ${msg.guild.name}.`);
 			} else {
 				msg.reply('Could not find server in db.');
