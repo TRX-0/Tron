@@ -71,7 +71,7 @@ exports.func = async (msg,args) => {
 			msg.delete();
 			msg.reply('OTS role has been successfully setup');
 			log.info(`${msg.author.tag} has finished setting up OTS role in ${msg.guild.name}`);
-		} else if (args.length == 1 && args[0] == 'prefix') {
+		} else if (args.length == 2 && args[0] == 'prefix') {
 			const server = await msg.client.ServerModel.findOne({
 				where: {
 					guildId: msg.guild.id
