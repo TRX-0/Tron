@@ -34,6 +34,7 @@ async function execute(message, args) {
 		}
 
 		const songInfo = await ytdl.getInfo(args[1]);
+		console.log(songInfo);
 		const song = {
 			title: songInfo.title,
 			url: songInfo.video_url
