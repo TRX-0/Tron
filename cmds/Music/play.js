@@ -20,7 +20,7 @@ async function execute(message, args) {
 		const queue = message.client.queue;
 		const serverQueue = message.client.queue.get(message.guild.id);
 
-		const voiceChannel = message.member.voice.channel;
+		const voiceChannel = message.member.voiceChannel;
 
 		if (!voiceChannel)
 			return message.channel.send(
