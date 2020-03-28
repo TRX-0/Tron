@@ -9,11 +9,11 @@ exports.data = {
 };
 
 exports.func = async (msg, args) => {
-	execute(msg, args);
+	const log = require(`${message.client.config.folders.lib}/log.js`)('Play');
+	execute(msg, args, log);
 };
 
-async function execute(message, args) {
-	const log = require(`${message.client.config.folders.lib}/log.js`)('Play');
+async function execute(message, args, log) {
 	const ytdl = require("ytdl-core");
 
 	try {
@@ -34,7 +34,7 @@ async function execute(message, args) {
 		}
 
 		const songInfo = await ytdl.getInfo(args[1]);
-		log.info(songInfo);
+		log.info(songInfo.video_url);
 		const song = {
 			title: songInfo.title,
 			url: songInfo.video_url
@@ -69,7 +69,7 @@ async function execute(message, args) {
 			);
 		}
 	} catch (error) {
-		console.log(error);
+		log.error(error);
 		message.channel.send(error.message);
 	}
 }
