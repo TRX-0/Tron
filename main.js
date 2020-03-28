@@ -1,6 +1,7 @@
 // Initialize Discord Bot
 const Discord = require('discord.js');
 const bot = new Discord.Client();
+const ytdl = require("ytdl-core");
 bot.config = require('./config.json');
 bot.auth = require('./auth.json');
 bot.watchers = new Discord.Collection();
@@ -22,6 +23,9 @@ bot.ServerModel = require(`${bot.config.folders.models}/server.js`);
 bot.MuteModel = require(`${bot.config.folders.models}/mute.js`);
 bot.ProfilesModel = require(`${bot.config.folders.models}/profiles.js`);
 bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
+
+// Music modules
+bot.queue = new Map();
 
 // =====Event Handlers=====
 
