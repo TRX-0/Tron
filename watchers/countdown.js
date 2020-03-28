@@ -7,13 +7,12 @@ exports.data = {
 const moment = require('moment');
 const humanizeDuration = require('humanize-duration');
 const chalk = require('chalk');
-const Countdown = require('../lib/models/countdown.js');
-const log = require('../lib/log.js')(exports.data.name);
 
 let countdown;
 
 exports.start = async (msg, bot, args) => {
 	try {
+		const log = require(`${bot.config.folders.lib}/log.js`)('Countdowns: Start');
 		let timeDiff;
 		if (!args[0]) {
 			return msg.reply('You must supply a valid unix timestamp.');
@@ -28,9 +27,8 @@ exports.start = async (msg, bot, args) => {
 		}
 
 		if (timeDiff > 0) {
-			await Countdown.sync();
 			const m = await msg.channel.send(`**Time until ${args.slice(1).join(' ')}:** ${humanizeDuration(timeDiff, {round: true})}`);
-			Countdown.create({
+			bot.CountdownModel.create({
 				unixTime: moment.unix(args[0]),
 				messageID: m.id,
 				channelID: m.channel.id,
@@ -48,9 +46,10 @@ exports.start = async (msg, bot, args) => {
 };
 
 exports.list = async (msg, bot, args) => {
+	const log = require(`${bot.config.folders.lib}/log.js`)('Countdowns: List');
 	const channelID = args[0] && bot.channels.has(args[0]) ? args[0] : msg.channel.id;
 	const channel = bot.channels.get(args[0]) || msg.channel;
-	const fields = (await Countdown.findAll({
+	const fields = (await bot.CountdownModel.findAll({
 		where: {channelID},
 		order: [['unixTime', 'ASC']]
 	})).map((watch, i) => {
@@ -75,12 +74,13 @@ exports.list = async (msg, bot, args) => {
 
 exports.stop = async (msg, bot, args) => {
 	try {
+		const log = require(`${bot.config.folders.lib}/log.js`)('Countdowns: Stop');
 		const channelID = args[1] && bot.channels.has(args[1]) ? args[1] : msg.channel.id;
 		const channel = bot.channels.get(args[1]) || msg.channel;
 		if (args[0] ? args[0] <= 0 : false) {
 			return msg.reply('Please provide a valid countdown ID. Check `watcher list countdown` for a list of countdowns and their IDs.');
 		}
-		const countdowns = await Countdown.findAll({
+		const countdowns = await bot.CountdownModel.findAll({
 			where: {
 				channelID
 			},
@@ -106,12 +106,13 @@ exports.disable = () => {
 };
 
 exports.watcher = async bot => {
+	const log = require(`${bot.config.folders.lib}/log.js`)('Countdowns: Watcher');
 	this.disable();
 	log.verbose(chalk.green(`${exports.data.name} has initialised successfully.`));
 	countdown = setInterval(async () => {
 		try {
-			if (await Countdown.count() > 0) {
-				(await Countdown.all()).forEach(async countdown => {
+			if (await bot.CountdownModel.count() > 0) {
+				(await bot.CountdownModel.all()).forEach(async countdown => {
 					try {
 						const timeDiff = moment(countdown.unixTime).diff();
 						const channel = bot.channels.get(countdown.channelID);

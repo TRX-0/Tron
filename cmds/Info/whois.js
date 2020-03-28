@@ -12,7 +12,7 @@ exports.data = {
 const Discord = require('discord.js');
 
 exports.func = async (msg,args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Whois');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		if (args[0]){
 			let User;

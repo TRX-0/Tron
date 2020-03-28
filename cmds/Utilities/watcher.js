@@ -1,5 +1,5 @@
 exports.data = {
-	name: 'Watchers',
+	name: 'Watcher',
 	command: 'watcher',
 	description: 'Watcher functions',
 	group: 'Utilities',
@@ -11,7 +11,7 @@ exports.data = {
 const jetpack = require('fs-jetpack');
 
 exports.func = async (msg, args, bot) => {
-	const log = require(`${bot.config.folders.lib}/log.js`)('Watcher');
+	const log = require(`${bot.config.folders.lib}/log.js`)(exports.data.name);
 	await bot.Watcher.sync();
 	let watcher = await bot.Watcher.findOne({
 		where: {

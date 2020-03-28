@@ -12,7 +12,7 @@ exports.data = {
 const Discord = require('discord.js');
 
 exports.func = (msg) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('FlipCoin');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		const random = Math.random();
 		switch (true) {

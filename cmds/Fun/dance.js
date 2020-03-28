@@ -21,7 +21,7 @@ function sleep(ms) {
 }
   
 exports.func = async (msg) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Dance');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		const random = Math.floor(Math.random() * this.danceList.length);
 		const sent = await msg.channel.send(this.danceList[random][0]);

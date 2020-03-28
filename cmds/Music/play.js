@@ -9,7 +9,7 @@ exports.data = {
 };
 
 exports.func = async (msg, args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Play');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	execute(msg, args, log);
 };
 

@@ -10,7 +10,7 @@ exports.data = {
 
 exports.func = async (msg, args) => {
 	const OTS = require(`${msg.client.config.folders.models}/mute.js`);
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Unmute');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		if (args[0]){
 			let Member;

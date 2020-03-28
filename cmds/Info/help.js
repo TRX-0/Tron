@@ -11,7 +11,7 @@ exports.data = {
 const Discord = require('discord.js');
 
 exports.func = async (msg, args, bot) => {
-	const log = require(`${bot.config.folders.lib}/log.js`)('Help');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	const elevation = require(`${bot.config.folders.functions}/elevation.js`);
 	try{
 		const server = await bot.ServerModel.findOne({where: {guildId: msg.guild.id}});

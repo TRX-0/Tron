@@ -10,7 +10,7 @@ exports.data = {
 };
 
 exports.func = async (msg, args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('AddRole');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
 		if (args[0] == undefined) return msg.reply('You did not provide a name.');
 		if (args[1] == undefined) return msg.reply('You did not provide a Role.');

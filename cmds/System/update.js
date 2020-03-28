@@ -10,7 +10,7 @@ exports.data = {
 const exec = require('util').promisify(require('child_process').exec);
 
 exports.func = async (msg) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Update');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
 		const sent = await msg.channel.send('Updating code...');
 		//const response = await exec(`cd ${msg.client.config.folders.home} && git pull https://${msg.client.auth.Github.Username}:${msg.client.auth.Github.Password}@github.com/TRX-0/Tron.git`);

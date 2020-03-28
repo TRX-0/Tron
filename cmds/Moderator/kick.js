@@ -10,7 +10,7 @@ exports.data = {
 };
 
 exports.func = async (msg, args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Kick');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		if (args[0]){
 			if (args[0].includes('@')){

@@ -9,7 +9,7 @@ exports.data = {
 };
 
 exports.func = async (msg, args, bot) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Status');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		switch (args[0]) {
 		case 'game': {

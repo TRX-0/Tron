@@ -11,7 +11,7 @@ exports.data = {
 const Discord = require('discord.js');
 
 exports.func = (msg,args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('List');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
 		if (args[0]){
 			switch (args[0]){

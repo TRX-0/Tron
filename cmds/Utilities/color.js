@@ -65,7 +65,7 @@ function ConvertNMS(givenColor){
 }
 
 exports.func = (msg, args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Color');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		if((args.length == 1) && args[0]){
 			if((args[0].match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/))|| (args[0].match(/^([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/))){

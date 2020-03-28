@@ -12,7 +12,7 @@ exports.data = {
 const http = require ('http');
 
 exports.func = async (msg) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Joke');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		http.get('http://api.icndb.com/jokes/random', (res) => {
 			const { statusCode } = res;

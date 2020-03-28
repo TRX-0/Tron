@@ -22,7 +22,7 @@ exports.data = {
 	}
 }*/
 exports.func = async (msg, args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Glyph');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		const ValidHex = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
 		var i=0;

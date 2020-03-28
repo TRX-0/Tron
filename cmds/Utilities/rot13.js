@@ -1,5 +1,5 @@
 exports.data = {
-	name: 'Rotate 13',
+	name: 'Rot13',
 	command: 'rot13',
 	description: 'Encrypt and Decrypt in rot13.',
 	group: 'Utilities',
@@ -9,7 +9,7 @@ exports.data = {
 };
 
 exports.func = async (msg, args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Rotate 13');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		if (args[0]){
 			await msg.channel.send('', {embed: {

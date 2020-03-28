@@ -19,10 +19,14 @@ bot.onGuildCreate = require(`${bot.config.folders.events}/guildCreate.js`);
 const Database = require(`${bot.config.folders.lib}/db.js`);
 bot.db = Database.start(); // Start the database and connect
 bot.CommandModel = require(`${bot.config.folders.models}/commands.js`);
-bot.ServerModel = require(`${bot.config.folders.models}/server.js`);
+bot.CountdownModel = require(`${bot.config.folders.models}/countdown.js`);
 bot.MuteModel = require(`${bot.config.folders.models}/mute.js`);
 bot.ProfilesModel = require(`${bot.config.folders.models}/profiles.js`);
-bot.Watcher = require(`${bot.config.folders.models}/watcher.js`);
+bot.ServerModel = require(`${bot.config.folders.models}/server.js`);
+bot.TwitterWatchModel = require(`${bot.config.folders.models}/twitterwatch.js`);
+bot.WatcherModel = require(`${bot.config.folders.models}/watcher.js`);
+// Synchronize Databases (Create tables)
+synchronize();
 
 // Music modules
 bot.queue = new Map();
@@ -138,3 +142,13 @@ bot.schedule = (msg, time) => {
 		time.edit(`Current time is: \`\`\`${new Date()}\`\`\` or \`\`\`${new Date().toLocaleString('en-US', {timeZone: 'America/New_York'})}\`\`\` `);
 	});
 };
+
+async function synchronize() {
+	await bot.CommandModel.sync();
+	await bot.CountdownModel.sync();
+	await bot.MuteModel.sync();
+	await bot.ProfilesModel.sync();
+	await bot.ServerModel.sync();
+	await bot.TwitterWatchModel.sync();
+	await bot.WatcherModel.sync();
+}

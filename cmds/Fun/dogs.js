@@ -12,7 +12,7 @@ const snekfetch = require('snekfetch');
 const Discord = require('discord.js');
 
 exports.func = async (msg) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Dogs');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		const Message = await msg.channel.send('Getting pictures of cute puppies...');
 		const { body } = await snekfetch.get('https://dog.ceo/api/breeds/image/random');

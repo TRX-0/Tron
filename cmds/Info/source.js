@@ -9,7 +9,7 @@ exports.data = {
 };
 
 exports.func = async (msg) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Ping');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
 		msg.channel.send('https://github.com/A-G-Angelopoulos/Tron');
 	} catch (err){

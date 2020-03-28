@@ -9,7 +9,7 @@ exports.data = {
 };
 
 exports.func = async (msg) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Say');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		msg.reply('Here is the latest Mbin Compiler: https://github.com/monkeyman192/MBINCompiler/releases');
 	} catch (err) {

@@ -9,7 +9,7 @@ exports.data = {
 };
 
 exports.func = async (msg,args,bot) => {
-	const log = require(`${bot.config.folders.lib}/log.js`)('Admin');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	const ProfilesDB = require(`${bot.config.folders.models}/profiles.js`);
 	try {
 		if(args.length == 2){

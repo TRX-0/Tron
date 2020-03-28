@@ -11,7 +11,7 @@ const ping = require('ping');
 const moment = require('moment');
 
 exports.func = async (msg,args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Ping');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
 		if (args[0]){
 			ping.sys.probe(args[0], function(isAlive){

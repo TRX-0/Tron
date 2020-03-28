@@ -18,7 +18,7 @@ const clean = text => {
 };
 
 exports.func = async (msg, args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)('Eval');
+	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	const key = msg.client.auth.pastebin.key;
 	log.info(`(${msg.author.tag}) has used eval in #${msg.channel.name} on ${msg.guild.name}.`);
 	const code = args.join(' ');
