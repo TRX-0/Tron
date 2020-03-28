@@ -1,11 +1,12 @@
 {
     "name": "tron",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "I fight for the users!",
     "main": "main.js",
-    "author": "Aris",
-    "repository": "https://github.com/pamehabai6/Tron",
+    "author": "TRX",
+    "repository": "https://github.com/TRX-0/Tron",
     "dependencies": {
+        "@discordjs/opus": "^0.1.0",
         "atob": "^2.1.2",
         "btoa": "^1.2.1",
         "chalk": "^2.4.2",
