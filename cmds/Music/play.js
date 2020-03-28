@@ -15,6 +15,8 @@ exports.func = async (msg, args) => {
 };
 
 async function execute(message, args) {
+	const ytdl = require("ytdl-core");
+
 	try {
 		const queue = message.client.queue;
 		const serverQueue = message.client.queue.get(message.guild.id);
