@@ -9,7 +9,6 @@ exports.data = {
 };
 
 exports.func = async (msg, args) => {
-	const OTS = require(`${msg.client.config.folders.models}/play.js`);
 	const log = require(`${msg.client.config.folders.lib}/log.js`)('Play');
 	execute(msg, args);
 };
