@@ -1,7 +1,6 @@
 // Initialize Discord client
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const ytdl = require("ytdl-core");
 client.config = require('./config.json');
 client.auth = require('./auth.json');
 client.watchers = new Discord.Collection();

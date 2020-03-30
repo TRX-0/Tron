@@ -31,7 +31,7 @@ const getFollowList = watchers => {
 
 const startStream = async bot => {
 	await TwitterWatch.sync();
-	let watchers = await TwitterWatch.all();
+	let watchers = await TwitterWatch.findAll();
 	try {
 		botStream.stop();
 	} catch (err) {

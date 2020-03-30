@@ -30,9 +30,8 @@ exports.func = async (message, args) => {
 		} else {
 			message.reply('I cannot ban this user! Do they have a higher role? Do I have ban permissions?');
 		}
-	}
 	} catch (err) {
-	message.reply('Something went wrong.');
-	log.error(`Sorry ${message.author} I couldn't ban because of : ${err}`);
-}
+		message.reply('Something went wrong.');
+		log.error(`Sorry ${message.author} I couldn't ban because of : ${err}`);
+	}
 };
