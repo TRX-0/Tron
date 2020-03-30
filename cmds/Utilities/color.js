@@ -4,7 +4,7 @@ exports.data = {
 	description: 'Convert color values to and from Hex,NMS,RGB.',
 	group: 'Utilities',
 	syntax: 'color [NMS/RGB/HEX]',
-	author: 'Aris A.',
+	author: 'TRX',
 	permissions: 2
 };
 
@@ -64,8 +64,8 @@ function ConvertNMS(givenColor){
 	return [HEX,RGB];
 }
 
-exports.func = (msg, args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = (message, args) => {
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		if((args.length == 1) && args[0]){
 			if((args[0].match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/))|| (args[0].match(/^([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/))){
@@ -76,7 +76,7 @@ exports.func = (msg, args) => {
 					HEX = args[0];
 				}
 				const Converted = ConvertHex(HEX);
-				msg.channel.send({
+				message.channel.send({
 					embed:{
 						color: parseInt(HEX, 16),
 						title: `__Conversion of:  ${HEX.toUpperCase()}__`,
@@ -99,24 +99,24 @@ exports.func = (msg, args) => {
 					}
 				});
 			} else {
-				msg.reply('Wrong HEX code.');
+				message.reply('Wrong HEX code.');
 			}
 		} else if (args && (args.length == 3)){
 			if (args[0].length <= 3 && args[1].length <= 3 && args[2].length <= 3){
 				for (var rgb in args){
 					if (rgb.match('/[a-zA-Z.]/')){
-						return msg.reply('RGB value contains illegal characters.');
+						return message.reply('RGB value contains illegal characters.');
 					}
 				}
 				const R = parseInt(args[0], 10);
 				const G = parseInt(args[1], 10);
 				const B = parseInt(args[2], 10);
 				if (R > 255 || R < 0 || G > 255 || G < 0 || B > 255 || B < 0 ){
-					return msg.reply('RGB values are too big or too small.');
+					return message.reply('RGB values are too big or too small.');
 				}
 				const Converted = ConvertRGB([R,G,B]);
 				const HEX = Converted[0][0] + Converted[0][1] + Converted[0][2];
-				msg.channel.send({
+				message.channel.send({
 					embed:{
 						color: parseInt(HEX, 16),
 						title: `__Conversion of:  ${R}, ${G}, ${B}__`,
@@ -141,15 +141,15 @@ exports.func = (msg, args) => {
 			} else if (args[0].length == 8 && args[1].length == 8 && args[2].length == 8){
 				for (var i=0; i < args.length; i++){
 					if (args[i].match(/[a-zA-Z]/)){
-						return msg.reply('NMS value contains illegal characters.');
+						return message.reply('NMS value contains illegal characters.');
 					}
 					if (!(args[i].match(/([0][.]){1}[0-9]{6}/) || args[i] == 1)){
-						return msg.reply('NMS color values are incorrect.');
+						return message.reply('NMS color values are incorrect.');
 					}
 				}
 				const Converted = ConvertNMS([args[0],args[1],args[2]]);
 				const HEX = Converted[0][0] + Converted[0][1] + Converted[0][1];
-				msg.channel.send({
+				message.channel.send({
 					embed:{
 						color: parseInt(HEX, 16),
 						title: `__Conversion of:  ${args[0]}, ${args[1]}, ${args[2]}__`,
@@ -172,13 +172,13 @@ exports.func = (msg, args) => {
 					}
 				});
 			} else {
-				msg.reply('Color values are incorrect.');
+				message.reply('Color values are incorrect.');
 			}
 		} else {
-			msg.reply('You did not provide any arguments.');
+			message.reply('You did not provide any arguments.');
 		}
 	} catch (err){
-		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.tag} unable to convert colors due to ${err}`);
+		message.reply('Something went wrong.');
+		log.error(`Sorry ${message.author.tag} unable to convert colors due to ${err}`);
 	}
 };

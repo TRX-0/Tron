@@ -10,32 +10,32 @@ exports.data = {
 
 const jetpack = require('fs-jetpack');
 
-exports.func = async (msg, args, bot) => {
-	const log = require(`${bot.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message, args, client) => {
+	const log = require(`${client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
 		//Check that user has provided arguments
 		if (args[0]){ 
 			//Check if provided argument corresponds to an existing command
-			if (bot.commands.has(args[0])) {
-				const m = await msg.channel.send(`Reloading: ${args[0]}`);
+			if (client.commands.has(args[0])) {
+				const m = await message.channel.send(`Reloading: ${args[0]}`);
 				//List contents of the cmds folder
-				const folderList = jetpack.list(`${bot.config.folders.commands}`); 
+				const folderList = jetpack.list(`${client.config.folders.commands}`); 
 				//Loop through the folders
 				folderList.forEach(folder => {
 					try {
 						//List files
-						const cmdList = jetpack.list(`${bot.config.folders.commands}/${folder}/`);
+						const cmdList = jetpack.list(`${client.config.folders.commands}/${folder}/`);
 						//Loop through the files
 						cmdList.forEach(file => {
 							if (`${file}` == `${args[0]}.js`){
 								//Delete command from cache
-								delete require.cache[require.resolve(`${bot.config.folders.commands}/${folder}/${args[0]}.js`)]; 
+								delete require.cache[require.resolve(`${client.config.folders.commands}/${folder}/${args[0]}.js`)]; 
 								//Load command
-								const cmd = require(`${bot.config.folders.commands}/${folder}/${args[0]}.js`);
+								const cmd = require(`${client.config.folders.commands}/${folder}/${args[0]}.js`);
 								//Delete command from collection
-								bot.commands.delete(args[0]);
+								client.commands.delete(args[0]);
 								//Re-add to the bot's collection of commands
-								bot.commands.set(args[0], cmd); 
+								client.commands.set(args[0], cmd); 
 							}
 						});	
 					} catch (err) {
@@ -43,12 +43,12 @@ exports.func = async (msg, args, bot) => {
 					}
 				});
 				await m.edit(`Successfully reloaded: ${args[0]}`);
-				log.info(`${msg.author.tag} has reloaded ${args[0]} on ${msg.guild.name}.`);
+				log.info(`${message.author.tag} has reloaded ${args[0]} on ${message.guild.name}.`);
 			} else {
-				msg.reply('Specified command does not exist.');
+				message.reply('Specified command does not exist.');
 			}
 		} else {
-			msg.reply('You did not provide any arguments.');
+			message.reply('You did not provide any arguments.');
 		}
 	} catch (err) {
 		log.error(`Something went wrong: ${err}`);

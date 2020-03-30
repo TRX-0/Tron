@@ -4,7 +4,7 @@ exports.data = {
 	description: 'Translate glyphs from and to hex.',
 	group: 'Utilities',
 	syntax: 'glyph [encode/decode] [hex/glyph emojis]',
-	author: 'Aris A.',
+	author: 'TRX',
 	permissions: 2
 };
 
@@ -21,8 +21,8 @@ exports.data = {
 		
 	}
 }*/
-exports.func = async (msg, args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message, args) => {
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		const ValidHex = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
 		var i=0;
@@ -34,15 +34,15 @@ exports.func = async (msg, args) => {
 				var GivenHex = args[1].split('');
 				for (i=0; i < args[1].length; i++){
 					if (!(ValidHex.includes(GivenHex[i]))){
-						msg.reply('Wrong portal address.');
+						message.reply('Wrong portal address.');
 						return;
 					}
 				}
 				var Encoded = '';
 				for (i=0; i < args[1].length; i++){
-					Encoded = Encoded + msg.guild.emojis.get(ValidGlyphs[ValidHex.indexOf(GivenHex[i])]);
+					Encoded = Encoded + message.guild.emojis.get(ValidGlyphs[ValidHex.indexOf(GivenHex[i])]);
 				}
-				msg.channel.send({
+				message.channel.send({
 					embed:{
 						fields:[
 							{
@@ -53,7 +53,7 @@ exports.func = async (msg, args) => {
 					}
 				});
 			} else {
-				msg.reply('Wrong address length.');
+				message.reply('Wrong address length.');
 			}
 			break;
 		}
@@ -65,7 +65,7 @@ exports.func = async (msg, args) => {
 			if (args[1].length == 24){
 				for (i=1; i <= 12; i++){
 					if (!(ValidGlyphs.includes(args[i]))){
-						msg.reply('Wrong portal address.');
+						message.reply('Wrong portal address.');
 						return;
 					}
 				}
@@ -73,7 +73,7 @@ exports.func = async (msg, args) => {
 				for (i=1; i <= 12; i++){
 					Decoded = Decoded + ValidHex[ValidGlyphs.indexOf(args[i])];
 				}
-				msg.channel.send({
+				message.channel.send({
 					embed:{
 						fields:[
 							{
@@ -90,14 +90,14 @@ exports.func = async (msg, args) => {
 				for (i=0; i <= 11; i++){
 					GivenGlyphs[i] = GivenGlyphs[i] + '>';
 					if (!(ValidGlyphs.includes(GivenGlyphs[i]))){
-						msg.reply('Wrong portal address.');
+						message.reply('Wrong portal address.');
 						return;
 					}
 				}
 				for (i=0; i <= 11; i++){
 					Decoded = Decoded + ValidHex[ValidGlyphs.indexOf(GivenGlyphs[i])];
 				}
-				msg.channel.send({
+				message.channel.send({
 					embed:{
 						fields:[
 							{
@@ -109,18 +109,18 @@ exports.func = async (msg, args) => {
 				});
 
 			} else {
-				msg.reply('Wrong address length.');
+				message.reply('Wrong address length.');
 			}
 			break;
 		}
 		default:
 		{
-			msg.reply('Invalid arguments.');
+			message.reply('Invalid arguments.');
 			break;
 		}
 		}
 	} catch (err){
-		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.tag} unable to translate portals due to ${err}`);
+		message.reply('Something went wrong.');
+		log.error(`Sorry ${message.author.tag} unable to translate portals due to ${err}`);
 	}
 };

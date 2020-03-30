@@ -6,12 +6,11 @@ exports.data = {
 	syntax: 'load [command]',
 	author: 'TRX',
 	permissions: 4,
-	anywhere: true
 };
 
 const jetpack = require('fs-jetpack');
 
-exports.func = async (msg, args, client) => {
+exports.func = async (message, args, client) => {
 	const log = require(`${client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
 		//Check that user has provided arguments
@@ -31,7 +30,7 @@ exports.func = async (msg, args, client) => {
 							exists = true;
 							//If the command is not already laoded
 							if (!client.commands.has(args[0])){
-								const m = await msg.channel.send(`Loading: ${args[0]}`);
+								const m = await message.channel.send(`Loading: ${args[0]}`);
 								// Load command
 								const cmd = require(`${client.config.folders.commands}/${folder}/${args[0]}.js`);
 								//Add to the bot's collection of commands; 
@@ -54,9 +53,9 @@ exports.func = async (msg, args, client) => {
 									}
 								});
 								await m.edit(`Successfully loaded: ${args[0]}`);
-								log.info(`${msg.author.tag} has loaded ${args[0]} in #${msg.channel.name} on ${msg.guild.name}.`);
+								log.info(`${message.author.tag} has loaded ${args[0]} in #${message.channel.name} on ${message.guild.name}.`);
 							} else {
-								msg.reply('Command is already loaded.');
+								message.reply('Command is already loaded.');
 							}
 						}
 					});	
@@ -65,10 +64,10 @@ exports.func = async (msg, args, client) => {
 				}
 			});
 			if (!exists){
-				msg.reply('Specified command does not exist.');
+				message.reply('Specified command does not exist.');
 			}
 		} else {
-			msg.reply('You did not provide any arguments.');
+			message.reply('You did not provide any arguments.');
 		}
 	} catch (err) {
 		log.error(`Something went wrong in load.js: ${err}`);

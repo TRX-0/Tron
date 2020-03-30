@@ -4,49 +4,35 @@ exports.data = {
 	group: 'Moderator',
 	command: 'unmute',
 	syntax: 'unmute [@name]',
-	author: 'Aris A.',
+	author: 'TRX',
 	permissions: 3,
 };
 
-exports.func = async (msg, args) => {
-	const OTS = require(`${msg.client.config.folders.models}/mute.js`);
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message, args) => {
+	const OTS = require(`${message.client.config.folders.models}/mute.js`);
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		if (args[0] == undefined) {
-			return msg.reply('You did not provide a name.');
+			return message.reply('You did not provide a name.');
 		}
-
-		let Member;
-		if (msg.mentions.users.first() != undefined) {
-			Member = msg.mentions.members.first();
+		const Member = await message.client.findUser.func(args[0], message);
+		if (Member == null) {
+			return message.reply('User does not exist.');
 		}
-		else {
-			const GuildMembers = await msg.guild.members.cache;
-			await GuildMembers.forEach(guildMember => {
-				if ((guildMember.user.username.toLowerCase() == args[0].toLowerCase()) || (guildMember.nickname && (guildMember.nickname.toLowerCase() == args[0].toLowerCase()))) {
-					Member = guildMember;
-				}
-			});
-			if (Member == undefined) {
-				return msg.reply('User does not exist.');
-			}
-		}
-
 		const OTSSettings = await OTS.findOne({
 			where: {
-				guildId: msg.channel.guild.id
+				guildId: message.channel.guild.id
 			}
 		});
 		if (!OTSSettings) {
-			return msg.reply(`OTS Role has not been set up in ${msg.guild.name}.`);
+			return message.reply(`OTS Role has not been set up in ${message.guild.name}.`);
 		}
 		if (!Member.roles.cache.has(OTSSettings.roleId)) {
-			return msg.reply('User is not muted!');
+			return message.reply('User is not muted!');
 		}
-		let reason = args.slice(1).join(' ');
 		let botspam;
 		Member.roles.remove(OTSSettings.roleId);
-		await msg.guild.channels.cache.forEach(async channel => {
+		await message.guild.channels.cache.forEach(async channel => {
 			if (channel.id != OTSSettings.botspamChannelId) {
 				if (channel.type == 'text') {
 
@@ -60,10 +46,10 @@ exports.func = async (msg, args) => {
 				botspam = channel;
 			}
 		});
-		msg.reply(`${Member.user.tag} has been unmuted.`);
-		botspam.send(`${Member} You have been unmuted by ${msg.author.tag}.`);
+		message.reply(`${Member.user.tag} has been unmuted.`);
+		botspam.send(`${Member} You have been unmuted by ${message.author.tag}.`);
 	} catch (err) {
-		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.tag} I could not remove the mute because of : ${err}`);
+		message.reply('Something went wrong.');
+		log.error(`Sorry ${message.author.tag} I could not remove the mute because of : ${err}`);
 	}
 };

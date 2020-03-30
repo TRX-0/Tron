@@ -4,15 +4,14 @@ exports.data = {
 	group: 'Fun',
 	command: 'joke',
 	syntax: 'joke',
-	author: 'Aris A.',
-	permissions: 2,
-	anywhere: false
+	author: 'TRX',
+	permissions: 1,
 };
 
 const http = require ('http');
 
-exports.func = async (msg) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message) => {
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		http.get('http://api.icndb.com/jokes/random', (res) => {
 			const { statusCode } = res;
@@ -28,7 +27,7 @@ exports.func = async (msg) => {
 
 			//Output Errors
 			if (error) {
-				log.error(`Sorry ${msg.author.tag} error on joke retrieval: ${error}`);
+				log.error(`Sorry ${message.author.tag} error on joke retrieval: ${error}`);
 				// consume response data to free up memory
 				res.resume();
 				return;
@@ -39,7 +38,7 @@ exports.func = async (msg) => {
 			res.on('data', (chunk) => { rawData += chunk; });
 			res.on('end', () => {
 				const parsedData = JSON.parse(rawData);
-				msg.channel.send('', {embed: {
+				message.channel.send('', {embed: {
 					fields: [{
 						name: 'Here is your Joke!',
 						value: parsedData.value.joke
@@ -47,11 +46,11 @@ exports.func = async (msg) => {
 					],
 					color: 0x0048C3
 				}});
-				log.info(`${msg.author.username}#${msg.author.discriminator} just joked around in ${msg.channel.name}`);
+				log.info(`${message.author.username}#${message.author.discriminator} just joked around in ${message.channel.name}`);
 			});
 		});
 	} catch (err) {
-		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.tag} i could not find any jokes due to ${err}`);
+		message.reply('Something went wrong.');
+		log.error(`Sorry ${message.author.tag} i could not find any jokes due to ${err}`);
 	}
 };

@@ -5,25 +5,25 @@ exports.data = {
 	group: 'Info',
 	syntax: 'ping',
 	author: 'TRX',
-	permissions: 2
+	permissions: 1
 };
 const ping = require('ping');
 const moment = require('moment');
 
-exports.func = async (msg,args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message,args) => {
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
 		if (args[0]){
 			ping.sys.probe(args[0], function(isAlive){
-				msg.channel.send(isAlive ? 'Host ' + args[0] + ' is alive' : 'Host ' + args[0] + ' is dead');
+				message.channel.send(isAlive ? 'Host ' + args[0] + ' is alive' : 'Host ' + args[0] + ' is dead');
 			});
-			log.verbose(`${msg.author.tag} has pinged $args[0] in #${msg.channel.name} on ${msg.guild.name}.`);
+			log.verbose(`${message.author.tag} has pinged $args[0] in #${message.channel.name} on ${message.guild.name}.`);
 		} else {
-			msg.channel.send('Pls wait.').then(m => m.edit(`🏓 Took ${moment().diff(m.createdAt)} ms.`));
-			log.verbose(`${msg.author.tag} has pinged the bot in #${msg.channel.name} on ${msg.guild.name}.`);
+			message.channel.send('Pls wait.').then(m => m.edit(`🏓 Took ${moment().diff(m.createdAt)} ms.`));
+			log.verbose(`${message.author.tag} has pinged the bot in #${message.channel.name} on ${message.guild.name}.`);
 		}
 	} catch (err){
-		msg.reply('Something went wrong.');
+		message.reply('Something went wrong.');
 		log.error(`Something went wrong: ${err}`);
 	}
 };
