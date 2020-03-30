@@ -8,11 +8,11 @@ exports.data = {
 	permissions: 4
 };
 
-exports.func = async (message, args, bot) => {
-	const log = require(`${bot.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message, args, client) => {
+	const log = require(`${client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
 		await message.channel.send('Stopping all processes and exiting!');
-		bot.destroy();
+		client.destroy();
 		process.exit();
 	} catch (err) {
 		message.reply('Something went wrong.');

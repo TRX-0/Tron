@@ -8,53 +8,53 @@ exports.data = {
 	permissions: 4
 };
 
-exports.func = async (msg,args) => {
-	const OTS = require(`${msg.client.config.folders.models}/mute.js`);
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message, args) => {
+	const OTS = require(`${message.client.config.folders.models}/mute.js`);
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
 		if(args.length == 3){
 			var Array = [];
 			args.forEach(arg => Array = Array.concat(arg.split(',')));
 			let Wrong = false;
 			await Array.forEach(element => {
-				if (!msg.guild.roles.cache.has(element)){
+				if (!message.guild.roles.cache.has(element)){
 					Wrong = true;
 				}
 			});
 			if (Wrong == true){
-				return msg.reply('The IDs given are incorrect.');
+				return message.reply('The IDs given are incorrect.');
 			}
-			const server = await msg.client.ServerModel.findOne({
+			const server = await message.client.ServerModel.findOne({
 				where: {
-					guildId: msg.guild.id
+					guildId: message.guild.id
 				}
 			});
 			if (server){
-				log.verbose(`${msg.author.tag} has started to setup a server in #${msg.channel.name} on ${msg.guild.name}.`);
+				log.verbose(`${message.author.tag} has started to setup a server in #${message.channel.name} on ${message.guild.name}.`);
 				await server.update({
 					perm3: args[0].split(','),
 					perm2: args[1].split(','),
 					perm1: args[2].split(',')
 				});
-				msg.delete();
-				msg.reply('Server has been set up.');
-				log.verbose(`${msg.author.tag} has finished setting up ${msg.guild.name}.`);
+				message.delete();
+				message.reply('Server has been set up.');
+				log.verbose(`${message.author.tag} has finished setting up ${message.guild.name}.`);
 			} else {
-				msg.reply('Could not find server in db.');
+				message.reply('Could not find server in db.');
 			}
 
 
 
 		} else if (args.length == 4 && args[0] == 'ots') {
-			if (!msg.guild.roles.cache.has(args[1])) {
-				return msg.reply('The role ID given is incorrect.');
+			if (!message.guild.roles.cache.has(args[1])) {
+				return message.reply('The role ID given is incorrect.');
 			}
-			if (!msg.guild.channels.cache.has(args[2]) || !msg.guild.channels.cache.has(args[3])) {
-				return msg.reply('The channel IDs given are incorrect.');
+			if (!message.guild.channels.cache.has(args[2]) || !message.guild.channels.cache.has(args[3])) {
+				return message.reply('The channel IDs given are incorrect.');
 			}
 			const OTSdb = await OTS.findOne({
 				where: {
-					guildId: msg.guild.id
+					guildId: message.guild.id
 				}
 			});
 			if (OTSdb) {
@@ -65,42 +65,42 @@ exports.func = async (msg,args) => {
 				});
 			} else {
 				await OTS.create({
-					guildId: msg.guild.id,
+					guildId: message.guild.id,
 					roleId: args[1],
 					mutedChannelId: args[2],
 					botspamChannelId: args[3]
 				});
 			}
-			msg.delete();
-			msg.reply('OTS role has been successfully setup');
-			log.info(`${msg.author.tag} has finished setting up OTS role in ${msg.guild.name}`);
+			message.delete();
+			message.reply('OTS role has been successfully setup');
+			log.info(`${message.author.tag} has finished setting up OTS role in ${message.guild.name}`);
 		} else if (args.length == 2 && args[0] == 'prefix') {
-			const server = await msg.client.ServerModel.findOne({
+			const server = await message.client.ServerModel.findOne({
 				where: {
-					guildId: msg.guild.id
+					guildId: message.guild.id
 				}
 			});
 			if (server){
 				await server.update({
 					altPrefix: args[1]
 				});
-				msg.delete();
-				msg.reply('Prefix has been set up.');
-				log.verbose(`${msg.author.tag} has changed the prefix of ${msg.guild.name}.`);
+				message.delete();
+				message.reply('Prefix has been set up.');
+				log.verbose(`${message.author.tag} has changed the prefix of ${message.guild.name}.`);
 			} else {
-				msg.reply('Could not find server in db.');
+				message.reply('Could not find server in db.');
 			}
 		} else if (!args[0]){
-			msg.delete();
+			message.delete();
 			let roleList = '';
-			msg.guild.roles.cache.forEach(key => roleList += `${msg.guild.roles.resolve(key).name}: ${key.id}\n`);
-			const dm = await msg.author.createDM();
+			message.guild.roles.cache.forEach(key => roleList += `${message.guild.roles.resolve(key).name}: ${key.id}\n`);
+			const dm = await message.author.createDM();
 			dm.send(`\`\`\`${roleList}\`\`\``);
 		} else {
-			msg.reply('Wrong arguments!');
+			message.reply('Wrong arguments!');
 		}
 	} catch (err) {
-		msg.reply('Something went wrong!');
+		message.reply('Something went wrong!');
 		log.error(`Something went wrong: ${err}`);
 	}
 };

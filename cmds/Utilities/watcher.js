@@ -10,55 +10,55 @@ exports.data = {
 
 const jetpack = require('fs-jetpack');
 
-exports.func = async (msg, args, bot) => {
-	const log = require(`${bot.config.folders.lib}/log.js`)(exports.data.name);
-	let watcher = await bot.WatcherModel.findOne({
+exports.func = async (message, args, client) => {
+	const log = require(`${client.config.folders.lib}/log.js`)(exports.data.name);
+	let watcher = await client.WatcherModel.findOne({
 		where: {
 			watcherName: args[1]
 		}
 	});
 	try {
 		if (!args[0]) {
-			return msg.reply(`You haven't provided enough arguments. The proper syntax for "${this.data.name}" is \`${this.data.syntax}\`.`);
+			return message.reply(`You haven't provided enough arguments. The proper syntax for "${this.data.name}" is \`${this.data.syntax}\`.`);
 		}
 		switch (args[0]) {
 		case 'start':
 		{
 			if (watcher) {
-				bot.watchers.get(args[1]).start(msg, bot, args.slice(2));
+				client.watchers.get(args[1]).start(message, client, args.slice(2));
 			} else {
-				msg.reply('Selected watcher does not exist.');
+				message.reply('Selected watcher does not exist.');
 			}
 			break;
 		}
 		case 'stop':
 		{
 			if (watcher) {
-				bot.watchers.get(args[1]).stop(msg, bot, args.slice(2));
+				client.watchers.get(args[1]).stop(message, client, args.slice(2));
 			} else {
-				msg.reply('Selected watcher does not exist.');
+				message.reply('Selected watcher does not exist.');
 			}
 			break;
 		}
 		case 'enable':
 		{
-			if (watcher || jetpack.list(`${bot.config.folders.watchers}`).includes(`${args[1]}.js`)) {
+			if (watcher || jetpack.list(`${client.config.folders.watchers}`).includes(`${args[1]}.js`)) {
 				if (!watcher) {
-					watcher = await bot.WatcherModel.create({
+					watcher = await client.WatcherModel.create({
 						watcherName: args[1],
 						globalEnable: true,
 						disabledGuilds: []
 					});
 				}
 				if (watcher.globalEnable) {
-					msg.reply('Enable failed: watcher already enabled.');
+					message.reply('Enable failed: watcher already enabled.');
 				} else {
-					bot.watcherEnable(args[1], watcher);
-					msg.reply('Enable successful.');
-					log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has enabled ${watcher.watcherName}.`);
+					client.watcherEnable(args[1], watcher);
+					message.reply('Enable successful.');
+					log.info(`${message.member.displayName} (${message.author.username}#${message.author.discriminator}) has enabled ${watcher.watcherName}.`);
 				}
 			} else {
-				msg.reply('Selected watcher does not exist.');
+				message.reply('Selected watcher does not exist.');
 			}
 			break;
 		}
@@ -66,14 +66,14 @@ exports.func = async (msg, args, bot) => {
 		{
 			if (watcher) {
 				if (watcher.globalEnable) {
-					bot.watcherDisable(args[1], watcher);
-					msg.reply('Disable successful.');
-					log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has disabled ${watcher.watcherName}.`);
+					client.watcherDisable(args[1], watcher);
+					message.reply('Disable successful.');
+					log.info(`${message.member.displayName} (${message.author.username}#${message.author.discriminator}) has disabled ${watcher.watcherName}.`);
 				} else {
-					msg.reply('Disable failed: watcher already disabled.');
+					message.reply('Disable failed: watcher already disabled.');
 				}
 			} else {
-				msg.reply('Selected watcher does not exist.');
+				message.reply('Selected watcher does not exist.');
 			}
 			break;
 		}
@@ -81,40 +81,40 @@ exports.func = async (msg, args, bot) => {
 		{
 			if (watcher) {
 				if (watcher.globalEnable) {
-					bot.watcherReload(args[1]);
-					msg.reply('Reload successful.');
-					log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has reloaded ${watcher.watcherName}.`);
+					client.watcherReload(args[1]);
+					message.reply('Reload successful.');
+					log.info(`${message.member.displayName} (${message.author.username}#${message.author.discriminator}) has reloaded ${watcher.watcherName}.`);
 				} else {
-					msg.reply('Reload failed: watcher already disabled.');
+					message.reply('Reload failed: watcher already disabled.');
 				}
 			} else {
-				msg.reply('Selected watcher does not exist.');
+				message.reply('Selected watcher does not exist.');
 			}
 			break;
 		}
 		case 'list':
 		{
 			if (watcher) {
-				bot.watchers.get(args[1]).list(msg, bot, args.slice(2));
+				client.watchers.get(args[1]).list(message, client, args.slice(2));
 			} else if (args[1]) {
-				msg.reply('Selected watcher does not exist.');
+				message.reply('Selected watcher does not exist.');
 			} else {
-				const watcherList = (await bot.WatcherModel.findAll()).map(w => {
+				const watcherList = (await client.WatcherModel.findAll()).map(w => {
 					return w.watcherName;
 				}).join(', ');
-				msg.reply(`Available watchers are \`${watcherList}\`.`);
-				log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) has listed the available watchers in #${msg.channel.name} on ${msg.guild.name}.`);
+				message.reply(`Available watchers are \`${watcherList}\`.`);
+				log.info(`${message.member.displayName} (${message.author.username}#${message.author.discriminator}) has listed the available watchers in #${message.channel.name} on ${message.guild.name}.`);
 			}
 			break;
 		}
 		default:
 		{
-			msg.reply('Invalid watcher command.');
+			message.reply('Invalid watcher command.');
 			break;
 		}
 		}
 	} catch (err) {
-		msg.reply('Something went wrong.');
+		message.reply('Something went wrong.');
 		log.error(`Error in the watcher function: ${err}`);
 	}
 };

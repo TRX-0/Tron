@@ -4,16 +4,16 @@ exports.data = {
 	group: 'Utilities',
 	command: 'mbin',
 	syntax: 'mbin',
-	author: 'Aris A.',
+	author: 'TRX',
 	permissions: 1,
 };
 
-exports.func = async (msg) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message) => {
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
-		msg.reply('Here is the latest Mbin Compiler: https://github.com/monkeyman192/MBINCompiler/releases');
+		message.reply('Here is the latest Mbin Compiler: https://github.com/monkeyman192/MBINCompiler/releases');
 	} catch (err) {
-		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.tag}, i could not provide a link to mbin due to: ${err}`);
+		message.reply('Something went wrong.');
+		log.error(`Sorry ${message.author.tag}, i could not provide a link to mbin due to: ${err}`);
 	}
 };

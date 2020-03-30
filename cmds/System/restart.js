@@ -4,20 +4,20 @@ exports.data = {
 	description: 'Restarts Bot.',
 	group: 'System',
 	syntax: 'restart',
-	author: 'Aris A.',
+	author: 'TRX',
 	permissions: 4
 };
 
-exports.func = async (msg, args, bot) => {
-	const log = require(`${bot.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message, args, client) => {
+	const log = require(`${client.config.folders.lib}/log.js`)(exports.data.name);
 	const exec = require('util').promisify(require('child_process').exec);
 	try {
-		await msg.channel.send('Restarting all processes!');
-		await exec(`cd ${bot.config.folders.home} && node main.js`);
-		await bot.destroy();
+		await message.channel.send('Restarting all processes!');
+		await exec(`cd ${client.config.folders.home} && node main.js`);
+		await client.destroy();
 		await process.exit();
 	} catch (err) {
-		msg.reply('Something went wrong.');
+		message.reply('Something went wrong.');
 		log.error(`Error on bot restart: ${err}`);
 	}
 };

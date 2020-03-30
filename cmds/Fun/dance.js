@@ -4,7 +4,7 @@ exports.data = {
 	group: 'Fun',
 	command: 'dance',
 	syntax: 'dance',
-	author: 'Aris A.',
+	author: 'TRX',
 	permissions: 1,
 };
 
@@ -20,18 +20,18 @@ function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
   
-exports.func = async (msg) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message) => {
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		const random = Math.floor(Math.random() * this.danceList.length);
-		const sent = await msg.channel.send(this.danceList[random][0]);
+		const sent = await message.channel.send(this.danceList[random][0]);
 		await sleep(1000);
 		for(var i = 1; i < this.danceList[random].length; i++) {
 			await sent.edit(this.danceList[random][i]);
 			await sleep(1000);
 		}
 	} catch (err) {
-		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.tag}, someting went wrong: ${err}`);
+		message.reply('Something went wrong.');
+		log.error(`Sorry ${message.author.tag}, someting went wrong: ${err}`);
 	}
 };

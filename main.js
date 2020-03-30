@@ -1,63 +1,64 @@
-// Initialize Discord Bot
+// Initialize Discord client
 const Discord = require('discord.js');
-const bot = new Discord.Client();
+const client = new Discord.Client();
 const ytdl = require("ytdl-core");
-bot.config = require('./config.json');
-bot.auth = require('./auth.json');
-bot.watchers = new Discord.Collection();
+client.config = require('./config.json');
+client.auth = require('./auth.json');
+client.watchers = new Discord.Collection();
 
 // Basic Function Modules
-const log = require(`${bot.config.folders.lib}/log.js`)('Core');
-bot.createCommands = require(`${bot.config.folders.functions}/createCommands.js`);
+const log = require(`${client.config.folders.lib}/log.js`)('Core');
+client.createCommands = require(`${client.config.folders.functions}/createCommands.js`);
+client.findUser = require(`${client.config.folders.functions}/findUser.js`);
 
 // Event Handlers
-bot.onMessage = require(`${bot.config.folders.events}/message.js`);
-bot.onReady = require(`${bot.config.folders.events}/ready.js`);
-bot.onGuildCreate = require(`${bot.config.folders.events}/guildCreate.js`);
+client.onMessage = require(`${client.config.folders.events}/message.js`);
+client.onReady = require(`${client.config.folders.events}/ready.js`);
+client.onGuildCreate = require(`${client.config.folders.events}/guildCreate.js`);
 
 // Database modules
-const Database = require(`${bot.config.folders.lib}/db.js`);
-bot.db = Database.start(); // Start the database and connect
-bot.CommandModel = require(`${bot.config.folders.models}/commands.js`);
-bot.CountdownModel = require(`${bot.config.folders.models}/countdown.js`);
-bot.MuteModel = require(`${bot.config.folders.models}/mute.js`);
-bot.ProfilesModel = require(`${bot.config.folders.models}/profiles.js`);
-bot.ServerModel = require(`${bot.config.folders.models}/server.js`);
-bot.TwitterWatchModel = require(`${bot.config.folders.models}/twitterwatch.js`);
-bot.WatcherModel = require(`${bot.config.folders.models}/watcher.js`);
+const Database = require(`${client.config.folders.lib}/db.js`);
+client.db = Database.start(); // Start the database and connect
+client.CommandModel = require(`${client.config.folders.models}/commands.js`);
+client.CountdownModel = require(`${client.config.folders.models}/countdown.js`);
+client.MuteModel = require(`${client.config.folders.models}/mute.js`);
+client.ProfilesModel = require(`${client.config.folders.models}/profiles.js`);
+client.ServerModel = require(`${client.config.folders.models}/server.js`);
+client.TwitterWatchModel = require(`${client.config.folders.models}/twitterwatch.js`);
+client.WatcherModel = require(`${client.config.folders.models}/watcher.js`);
 // Synchronize Databases (Create tables)
 synchronize();
 
 // Music modules
-bot.queue = new Map();
+client.queue = new Map();
 
 // =====Event Handlers=====
 
-// On bot connection to Discord
-bot.on('ready', () => {
-	bot.onReady.func(bot);
+// On client connection to Discord
+client.on('ready', () => {
+	client.onReady.func(client);
 });
 
 // When message is received
-bot.on('message', msg => {
-	bot.onMessage.func(bot, msg);
+client.on('message', message => {
+	client.onMessage.func(client, message);
 });
 
 // On member join
-bot.on('guildMemberAdd', member => {
+client.on('guildMemberAdd', member => {
     //member.guild.channels.get('channelID').send("Welcome"); 
 });
 
-// On the bot joining a server
-bot.on('guildCreate', async guild => {
-	bot.onGuildCreate.func(bot, guild);
+// On the client joining a server
+client.on('guildCreate', async guild => {
+	client.onGuildCreate.func(client, guild);
 });
 
 
-// Start the bot
-bot.login(bot.auth.token);
-bot.on('error', log.error); // If there's an error, emit an error to the logger
-bot.on('warn', log.warn); // If there's a warning, emit a warning to the logger
+// Start the client
+client.login(client.auth.token);
+client.on('error', log.error); // If there's an error, emit an error to the logger
+client.on('warn', log.warn); // If there's a warning, emit a warning to the logger
 
 process.on('unhandledRejection', err => { // If I've forgotten to catch a promise somewhere, emit an error
 	log.error(`Uncaught Promise Error: \n${err.stack}`);
@@ -71,12 +72,12 @@ process.on('unhandledRejection', err => { // If I've forgotten to catch a promis
  * @param {Watcher} watcherData - Watcher's instance in database
  * @returns {Promise} Resolves with nothing, rejects with Error object
  */
-bot.watcherEnable = (watcher, watcherData) => {
+client.watcherEnable = (watcher, watcherData) => {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const watchProps = require(`${bot.config.folders.watchers}/${watcher}.js`); // Loads watcher
-			bot.watchers.set(watcher, watchProps); // Add to bot's collection of watchers
-			bot.watchers.get(watcher).watcher(bot); // Initialise watcher
+			const watchProps = require(`${client.config.folders.watchers}/${watcher}.js`); // Loads watcher
+			client.watchers.set(watcher, watchProps); // Add to client's collection of watchers
+			client.watchers.get(watcher).watcher(client); // Initialise watcher
 			await watcherData.update({globalEnable: true}); // Set watcher to enabled in database
 			resolve();
 		} catch (err) {
@@ -93,13 +94,13 @@ bot.watcherEnable = (watcher, watcherData) => {
  * @param {Watcher} watcherData - Watcher's instance in database
  * @returns {Promise} Resolves with nothing, rejects with Error object
  */
-bot.watcherDisable = (watcher, watcherData) => {
+client.watcherDisable = (watcher, watcherData) => {
 	return new Promise(async (resolve, reject) => {
 		try {
-			bot.watchers.get(watcher).disable(); // Disable watcher's function
+			client.watchers.get(watcher).disable(); // Disable watcher's function
 			await watcherData.update({globalEnable: false}); // Set watcher to disabled in database
-			delete require.cache[require.resolve(`${bot.config.folders.watchers}/${watcher}.js`)]; // Delete watcher from cache
-			bot.watchers.delete(watcher); // Delete from bot's collection of watchers
+			delete require.cache[require.resolve(`${client.config.folders.watchers}/${watcher}.js`)]; // Delete watcher from cache
+			client.watchers.delete(watcher); // Delete from client's collection of watchers
 			resolve();
 		} catch (err) {
 			log.error(`Error when disabling a watcher: ${err}`);
@@ -114,15 +115,15 @@ bot.watcherDisable = (watcher, watcherData) => {
  * @param {string} watcher - Name of the watcher to be reloaded
  * @returns {Promise} Resolves with nothing, rejects with Error object
  */
-bot.watcherReload = watcher => {
+client.watcherReload = watcher => {
 	return new Promise((resolve, reject) => {
 		try {
-			bot.watchers.get(watcher).disable(); // Disable watcher's function
-			delete require.cache[require.resolve(`${bot.config.folders.watchers}/${watcher}.js`)]; // Delete watcher from cache
-			bot.watchers.delete(watcher); // Delete from bot's collection of watchers
-			const watchProps = require(`${bot.config.folders.watchers}/${watcher}.js`); // Loads watcher
-			bot.watchers.set(watcher, watchProps); // Add to bot's collection of watchers
-			bot.watchers.get(watcher).watcher(bot); // Initialise watcher
+			client.watchers.get(watcher).disable(); // Disable watcher's function
+			delete require.cache[require.resolve(`${client.config.folders.watchers}/${watcher}.js`)]; // Delete watcher from cache
+			client.watchers.delete(watcher); // Delete from client's collection of watchers
+			const watchProps = require(`${client.config.folders.watchers}/${watcher}.js`); // Loads watcher
+			client.watchers.set(watcher, watchProps); // Add to client's collection of watchers
+			client.watchers.get(watcher).watcher(client); // Initialise watcher
 			resolve();
 		} catch (err) {
 			log.error(`Error when reloading a watcher: ${err}`);
@@ -131,22 +132,22 @@ bot.watcherReload = watcher => {
 	});
 };
 
-bot.schedule = (msg, time) => {
+client.schedule = (message, time) => {
 	var schedule = require('node-schedule');
 	schedule.scheduleJob(time, function(/*fireDate*/){
 		const time = new Discord.Collection();
-		//msg.channel.send('This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
-		time.set(msg);
+		//message.channel.send('This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
+		time.set(message);
 		time.edit(`Current time is: \`\`\`${new Date()}\`\`\` or \`\`\`${new Date().toLocaleString('en-US', {timeZone: 'America/New_York'})}\`\`\` `);
 	});
 };
 
 async function synchronize() {
-	await bot.CommandModel.sync();
-	await bot.CountdownModel.sync();
-	await bot.MuteModel.sync();
-	await bot.ProfilesModel.sync();
-	await bot.ServerModel.sync();
-	await bot.TwitterWatchModel.sync();
-	await bot.WatcherModel.sync();
+	await client.CommandModel.sync();
+	await client.CountdownModel.sync();
+	await client.MuteModel.sync();
+	await client.ProfilesModel.sync();
+	await client.ServerModel.sync();
+	await client.TwitterWatchModel.sync();
+	await client.WatcherModel.sync();
 }

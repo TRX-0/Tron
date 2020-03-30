@@ -4,8 +4,8 @@ exports.data = {
 	description: 'Sends an eval',
 	group: 'Utilities',
 	syntax: 'eval [script]',
-	author: 'Aris A.',
-	permissions: 4
+	author: 'TRX',
+	permissions: 5
 };
 
 const fetch = require('node-fetch');
@@ -17,10 +17,10 @@ const clean = text => {
 	return text;
 };
 
-exports.func = async (msg, args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
-	const key = msg.client.auth.pastebin.key;
-	log.info(`(${msg.author.tag}) has used eval in #${msg.channel.name} on ${msg.guild.name}.`);
+exports.func = async (message, args) => {
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
+	const key = message.client.auth.pastebin.key;
+	log.info(`(${message.author.tag}) has used eval in #${message.channel.name} on ${message.guild.name}.`);
 	const code = args.join(' ');
 	try {
 		let evaled = eval(code); // eslint-disable-line no-eval
@@ -33,14 +33,14 @@ exports.func = async (msg, args) => {
 			fetch('https://pastebin.com/api/api_post.php' , {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: params}).then(async r => {
 				var response = await r.text();
 				if(response.includes("Bad API request")) {
-					return msg.reply(`Sorry, but there was an error with the Pastebin API: ${response}.`);
+					return message.reply(`Sorry, but there was an error with the Pastebin API: ${response}.`);
 				}
-				return msg.reply(`Sorry, but your request was so big that I had to upload it: ${response}`);
-			}).catch(err => msg.reply(`Sorry, but an error happened with Pastebin: ${err}`));
+				return message.reply(`Sorry, but your request was so big that I had to upload it: ${response}`);
+			}).catch(err => message.reply(`Sorry, but an error happened with Pastebin: ${err}`));
 		} else {
-			await msg.channel.send('```xl\n' + clean(evaled) + '\n```',{split: {maxLength: 1950, char: 's'}}).catch(err => log.error(err));
+			await message.channel.send('```xl\n' + clean(evaled) + '\n```',{split: {maxLength: 1950, char: 's'}}).catch(err => log.error(err));
 		}
 	} catch (err) {
-		await msg.channel.send('`ERROR` ```xl\n' + clean(err) + '\n```').catch(err => log.error(err));
+		await message.channel.send('`ERROR` ```xl\n' + clean(err) + '\n```').catch(err => log.error(err));
 	}
 };

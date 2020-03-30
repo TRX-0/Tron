@@ -4,26 +4,25 @@ exports.data = {
 	group: 'Utilities',
 	command: 'say',
 	syntax: 'say [message]',
-	author: 'Aris A.',
+	author: 'TRX',
 	permissions: 3,
-	anywhere: false
 };
 
-exports.func = async (msg,args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message,args) => {
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		if (args[0]){
 			const sayMessage = args.join(' ');
 			//We delete the command message (sneaky, right?).
-			msg.delete(); 
+			message.delete(); 
 			// And we get the bot to say the thing: 
-			msg.channel.send(sayMessage);
-			log.info(`${msg.member.displayName} (${msg.author.username}#${msg.author.discriminator}) made Tron talk. `);
+			message.channel.send(sayMessage);
+			log.info(`${message.member.displayName} (${message.author.username}#${message.author.discriminator}) made Tron talk. `);
 		} else {
-			msg.reply('You did not provide any arguments.');
+			message.reply('You did not provide any arguments.');
 		}
 	} catch (err) {
-		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.username}#${msg.author.discriminator}, i could not speak due to: ${err}`);
+		message.reply('Something went wrong.');
+		log.error(`Sorry ${message.author.username}#${message.author.discriminator}, i could not speak due to: ${err}`);
 	}
 };

@@ -5,15 +5,15 @@ exports.data = {
 	group: 'Info',
 	syntax: 'source',
 	author: 'TRX',
-	permissions: 1
+	permissions: 0
 };
 
-exports.func = async (msg) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message) => {
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
-		msg.channel.send('https://github.com/TRX-0/Tron');
+		message.channel.send('https://github.com/TRX-0/Tron');
 	} catch (err){
-		msg.reply('Something went wrong.');
+		message.reply('Something went wrong.');
 		log.error(`Something went wrong: ${err}`);
 	}
 };

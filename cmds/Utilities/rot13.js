@@ -4,15 +4,15 @@ exports.data = {
 	description: 'Encrypt and Decrypt in rot13.',
 	group: 'Utilities',
 	syntax: 'rot13 [text]',
-	author: 'Aris A.',
+	author: 'TRX',
 	permissions: 2
 };
 
-exports.func = async (msg, args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message, args) => {
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		if (args[0]){
-			await msg.channel.send('', {embed: {
+			await message.channel.send('', {embed: {
 				fields: [{
 					name: 'Rotated Text',
 					value: (args.slice(0).join(' ').replace(/[A-Za-z]/g, function (c) {
@@ -22,10 +22,10 @@ exports.func = async (msg, args) => {
 				color: 0x0048C3
 			}});
 		} else {
-			msg.reply('You did not provide any arguments you idiot!');
+			message.reply('You did not provide any arguments you idiot!');
 		}
 	} catch (err){
-		msg.reply('Something went wrong.');
+		message.reply('Something went wrong.');
 		log.error(`Error on rot13 function due to: ${err}`);
 	}
 };

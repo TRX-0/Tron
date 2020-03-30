@@ -18,23 +18,10 @@ exports.func = async (message, args) => {
 		if (args[1] == undefined) {
 			return message.reply('You did not provide a Role.');
 		} 
-		let Member;
-		if (message.mentions.users.first() != undefined) {
-			Member = message.mentions.members.first();
+		const Member = await message.client.findUser.func(args[0], message);
+		if (Member == null) {
+			return message.reply('User does not exist.');
 		}
-		else {
-			const GuildMembers = await message.guild.members.cache;
-			await GuildMembers.forEach(guildMember => {
-				if ((guildMember.user.username.toLowerCase() == args[0].toLowerCase()) || (guildMember.nickname && (guildMember.nickname.toLowerCase() == args[0].toLowerCase()))) {
-					Member = guildMember;
-				}
-			});
-			//Member = await message.guild.members.fetch((member) => member.user.username.toLowerCase() == args[0].toLowerCase() || (member.nickname && (member.nickname.toLowerCase() == args[0].toLowerCase())));
-			if (Member == undefined) {
-				return message.reply('User does not exist.');
-			}
-		}
-
 		var RoleName = args.slice(1).join(' ');
 		let Role = message.guild.roles.cache.find(element => element.name.toLowerCase() == RoleName.toLowerCase());
 		if (Role == undefined) {
