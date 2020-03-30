@@ -4,7 +4,7 @@ exports.data = {
 	description: 'Reloads a command.',
 	group: 'System',
 	syntax: 'reload [command]',
-	author: 'Aris A.',
+	author: 'TRX',
 	permissions: 4
 };
 

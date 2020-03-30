@@ -16,7 +16,7 @@ exports.func = async (msg) => {
 	try{
 		const Message = await msg.channel.send('Getting pictures of cute puppies...');
 		const { body } = await snekfetch.get('https://dog.ceo/api/breeds/image/random');
-		const embed = new Discord.RichEmbed()
+		const embed = new Discord.MessageEmbed()
 			.setTitle('Here is your dog image!')
 			.setImage(body.message)
 			.setColor('ORANGE');

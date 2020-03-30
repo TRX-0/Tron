@@ -4,23 +4,19 @@ exports.data = {
 	group: 'Music',
 	command: 'play',
 	syntax: 'play [song]',
-	author: 'Aris A.',
+	author: 'TRX',
 	permissions: 2,
 };
 
-exports.func = async (msg, args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
-	execute(msg, args, log);
-};
-
-async function execute(message, args, log) {
+exports.func = async (message, args) => {
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	const ytdl = require("ytdl-core");
 
 	try {
 		const queue = message.client.queue;
 		const serverQueue = message.client.queue.get(message.guild.id);
 
-		const voiceChannel = message.member.voiceChannel;
+		const voiceChannel = message.member.voice.channel;
 
 		if (!voiceChannel)
 			return message.channel.send(
@@ -33,11 +29,12 @@ async function execute(message, args, log) {
 			);
 		}
 
-		const songInfo = await ytdl.getInfo(args[1]);
-		log.info(songInfo.video_url);
+		const songInfo = await ytdl.getInfo(args[0]);
 		const song = {
+			thumbnail: songInfo.thumbnail,
 			title: songInfo.title,
-			url: songInfo.video_url
+			url: songInfo.video_url,
+			duration: songInfo.duration
 		};
 
 		if (!serverQueue) {
@@ -46,7 +43,7 @@ async function execute(message, args, log) {
 				voiceChannel: voiceChannel,
 				connection: null,
 				songs: [],
-				volume: 5,
+				volume: 50,
 				playing: true
 			};
 
@@ -56,7 +53,7 @@ async function execute(message, args, log) {
 			try {
 				var connection = await voiceChannel.join();
 				queueContruct.connection = connection;
-				play(message, queueContruct.songs[0]);
+				play(message, queueContruct.songs[0], log);
 			} catch (err) {
 				console.log(err);
 				queue.delete(message.guild.id);
@@ -65,19 +62,21 @@ async function execute(message, args, log) {
 		} else {
 			serverQueue.songs.push(song);
 			return message.channel.send(
-				`${song.title} has been added to the queue!`
+				`**${song.title}** has been added to the queue!`
 			);
 		}
 	} catch (error) {
 		log.error(error);
 		message.channel.send(error.message);
 	}
-}
+};
 
-function play(message, song) {
+function play(message, song, log) {
+	const Discord = require('discord.js');
+	const ytdl = require("ytdl-core");
 	const queue = message.client.queue;
 	const guild = message.guild;
-	const serverQueue = queue.get(message.guild.id);
+	const serverQueue = queue.get(guild.id);
 
 	if (!song) {
 		serverQueue.voiceChannel.leave();
@@ -85,13 +84,27 @@ function play(message, song) {
 		return;
 	}
 
-	const dispatcher = serverQueue.connection
-		.play(ytdl(song.url))
+	const dispatcher = serverQueue.connection.play(ytdl(song.url), {
+		quality: 'highestaudio',
+		highWaterMark: 1024 * 1024 * 10
+	})
+		.on("start", () => {
+			message.client.user.setActivity(serverQueue.songs[0].title, { type: 'STREAMING' });
+			//message.client.user.setPresence({ game: { name: `${serverQueue.songs[0].title}`, type: 0 } });
+		})
 		.on("finish", () => {
 			serverQueue.songs.shift();
-			play(message, serverQueue.songs[0]);
+			message.client.user.setPresence({ game: null });
+			log.info(serverQueue.songs[0].title);
+			return play(message, serverQueue.songs[0], log);
 		})
-		.on("error", error => console.error(error));
-	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-	serverQueue.textChannel.send(`Start playing: **${song.title}**`);
+		.on("error", error => {
+			serverQueue.voiceChannel.leave();
+			serverQueue.connection.dispatcher.destroy();
+			queue.delete(message.guild.id);
+			log.error(error);
+			return;
+		});
+	dispatcher.setVolume(serverQueue.volume / 100);
+	serverQueue.textChannel.send(`Now playing: **${song.title}**`);
 }

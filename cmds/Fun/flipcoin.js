@@ -17,24 +17,24 @@ exports.func = (msg) => {
 		const random = Math.random();
 		switch (true) {
 		case (random > 0.5):{
-			const embed = new Discord.RichEmbed()
+			const embed = new Discord.MessageEmbed()
 				.setColor(835718)
 				.addField('Flip Result:', 'Heads');
-			msg.channel.send(embed);
+			msg.channel.send('', { embed: embed });
 			break;
 		}
 		case (random < 0.5): {
-			const embed = new Discord.RichEmbed()
+			const embed = new Discord.MessageEmbed()
 				.setColor(835718)
 				.addField('Flip Result:', 'Tails');
-			msg.channel.send(embed);
+			msg.channel.send('', { embed: embed });
 			break;
 		}
 		default: {
-			const embed = new Discord.RichEmbed()
+			const embed = new Discord.MessageEmbed()
 				.setColor(835718)
 				.addField('Flip Result:', 'Your coin just landed straight up...');
-			msg.channel.send(embed);
+			msg.channel.send('', { embed: embed });
 			break;
 		}
 		}

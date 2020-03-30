@@ -3,8 +3,8 @@ exports.data = {
 	description: 'Gets information about a user.',
 	group: 'Info',
 	command: 'whois',
-	syntax: 'whois [user mention]',
-	author: 'Aris A.',
+	syntax: 'whois [@user/username]',
+	author: 'TRX',
 	permissions: 1,
 	anywhere: false
 };
@@ -15,30 +15,30 @@ exports.func = async (msg,args) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
 		if (args[0]){
-			let User;
+			let GuildMember;
 			if (args[0].includes('@')){
-				User = msg.mentions.members.first();
+				GuildMember = msg.mentions.members.first();
 			} else {
-				const Users = await msg.guild.members;
-				await Users.forEach(user => {
-					if ( (user.user.username.toLowerCase() == args[0].toLowerCase()) || ( user.nickname && (user.nickname.toLowerCase() == args[0].toLowerCase()))) {
-						User = user;
+				const GuildMembers = await msg.guild.members.cache;
+				await GuildMembers.forEach(guildMember => {
+					if ((guildMember.user.username.toLowerCase() == args[0].toLowerCase()) || (guildMember.nickname && (guildMember.nickname.toLowerCase() == args[0].toLowerCase()))) {
+						GuildMember = guildMember;
 					}
 				});
 			}
-			if (User != null) {
-				const embed = new Discord.RichEmbed()
-					.setAuthor(`Information about ${User.user.tag}`,User.user.avatarURL)
+			if (GuildMember != null) {
+				const embed = new Discord.MessageEmbed()
+					.setAuthor(`Information about ${GuildMember.user.tag}`, GuildMember.user.avatarURL())
 					.setColor(0xff8000)
-					.setThumbnail(User.user.avatarURL)
-					.addField('Username:', User.user.username, true)
-					.addField('Discriminator:', User.user.discriminator, true)
-					.addField('Discord ID:', User.user.id, false)
-					.addField('Status', User.user.presence.status, false)
-					.addField('Created at:', User.user.createdAt, false)
-					.addField('Joined at:', msg.guild.members.get(User.user.id).joinedAt)
-					.addField('Current roles:', msg.guild.members.get(User.user.id).roles.array().sort((a,b) => b.position - a.position).join(' – '), false);
-				msg.channel.send(embed);
+					.setThumbnail(GuildMember.user.avatarURL())
+					.addField('Username:', GuildMember.user.username, true)
+					.addField('Discriminator:', GuildMember.user.discriminator, true)
+					.addField('Discord ID:', GuildMember.user.id, false)
+					.addField('Status', GuildMember.user.presence.status, false)
+					.addField('Created at:', GuildMember.user.createdAt, false)
+					.addField('Joined at:', GuildMember.joinedAt)
+					.addField('Current roles:', GuildMember.roles.cache.map(role => role.name).sort((a,b) => b.position - a.position).join(' - '), false);
+				msg.channel.send('', { embed: embed });
 			} else {
 				msg.channel.send('User does not exist.');
 			}

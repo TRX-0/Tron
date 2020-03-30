@@ -14,8 +14,8 @@ exports.func = async (msg, args, bot) => {
 	try {
 		await msg.channel.send('Restarting all processes!');
 		await exec(`cd ${bot.config.folders.home} && node main.js`);
-		bot.destroy();
-		process.exit();
+		await bot.destroy();
+		await process.exit();
 	} catch (err) {
 		msg.reply('Something went wrong.');
 		log.error(`Error on bot restart: ${err}`);

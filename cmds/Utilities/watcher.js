@@ -12,8 +12,7 @@ const jetpack = require('fs-jetpack');
 
 exports.func = async (msg, args, bot) => {
 	const log = require(`${bot.config.folders.lib}/log.js`)(exports.data.name);
-	await bot.Watcher.sync();
-	let watcher = await bot.Watcher.findOne({
+	let watcher = await bot.WatcherModel.findOne({
 		where: {
 			watcherName: args[1]
 		}
@@ -45,7 +44,7 @@ exports.func = async (msg, args, bot) => {
 		{
 			if (watcher || jetpack.list(`${bot.config.folders.watchers}`).includes(`${args[1]}.js`)) {
 				if (!watcher) {
-					watcher = await bot.Watcher.create({
+					watcher = await bot.WatcherModel.create({
 						watcherName: args[1],
 						globalEnable: true,
 						disabledGuilds: []
@@ -100,7 +99,7 @@ exports.func = async (msg, args, bot) => {
 			} else if (args[1]) {
 				msg.reply('Selected watcher does not exist.');
 			} else {
-				const watcherList = (await bot.Watcher.all()).map(w => {
+				const watcherList = (await bot.WatcherModel.findAll()).map(w => {
 					return w.watcherName;
 				}).join(', ');
 				msg.reply(`Available watchers are \`${watcherList}\`.`);

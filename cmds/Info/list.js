@@ -4,7 +4,7 @@ exports.data = {
 	description: 'List bot permissions and roles.',
 	group: 'Info',
 	syntax: 'list [perms/roles]',
-	author: 'Aris A,',
+	author: 'TRX',
 	permissions: 4
 };
 
@@ -16,7 +16,7 @@ exports.func = (msg,args) => {
 		if (args[0]){
 			switch (args[0]){
 			case 'perms':{
-				const embed = new Discord.RichEmbed()
+				const embed = new Discord.MessageEmbed()
 					.setTitle(`__Bot Permissions in: ${msg.channel.guild}__`)
 					.setColor(10724865)
 					.addField('Administrator',msg.guild.me.hasPermission('ADMINISTRATOR'), true)
@@ -42,17 +42,17 @@ exports.func = (msg,args) => {
 					.addField('Change Nickname',msg.guild.me.hasPermission('CHANGE_NICKNAME'), true)
 					.addField('Manage Nicknames',msg.guild.me.hasPermission('MANAGE_NICKNAMES'), true)
 					.addField('Manage Roles',msg.guild.me.hasPermission('MANAGE_ROLES'), true);
-				msg.author.send(embed);
+				msg.author.send('', { embed: embed });
 				msg.delete();
 				log.info(`${msg.author.tag} has listed permissions in ${msg.channel.guild}`);
 				break;
 			}
 			case 'roles':{
-				msg.author.send({embed:{
-					title: `__Roles in: ${msg.channel.guild}__`,
-					description: msg.guild.roles.map((m) => m.name).join(', '),
-					color: '10724865'
-				}});
+				const embed = new Discord.MessageEmbed()
+					.setTitle(`__Roles in: ${msg.channel.guild}__`)
+					.setDescription(msg.guild.roles.cache.map((m) => m.name).join(', '))
+					.setColor(10724865);
+					msg.author.send('', { embed: embed });
 				break;
 			}
 			default: {

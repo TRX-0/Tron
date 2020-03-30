@@ -4,7 +4,8 @@ exports.data = {
 	description: 'Update tron code.',
 	group: 'System',
 	syntax: 'update',
-	permissions: 4
+	author: 'TRX',
+	permissions: 5
 };
 
 const exec = require('util').promisify(require('child_process').exec);

@@ -12,54 +12,56 @@ exports.func = async (msg, args) => {
 	const OTS = require(`${msg.client.config.folders.models}/mute.js`);
 	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try{
-		if (args[0]){
-			let Member;
-			if (args[0].includes('@')){
-				Member = msg.mentions.members.first();
-			} else {
-				const Users = await msg.guild.members;
-				var Found = false;
-				await Users.forEach(user => {
-					if ( (user.user.username.toLowerCase() == args[0].toLowerCase()) || ( user.nickname && (user.nickname.toLowerCase() == args[0].toLowerCase()))) {
-						Found = true;
-						Member = user;
-					}
-				});
-				if (!Found) {
-					return msg.channel.send('User does not exist.');
-				}
-			}
-			const OTSSettings = await OTS.findOne({
-				where: {
-					guildId: msg.channel.guild.id
+		if (args[0] == undefined) {
+			return msg.reply('You did not provide a name.');
+		}
+
+		let Member;
+		if (msg.mentions.users.first() != undefined) {
+			Member = msg.mentions.members.first();
+		}
+		else {
+			const GuildMembers = await msg.guild.members.cache;
+			await GuildMembers.forEach(guildMember => {
+				if ((guildMember.user.username.toLowerCase() == args[0].toLowerCase()) || (guildMember.nickname && (guildMember.nickname.toLowerCase() == args[0].toLowerCase()))) {
+					Member = guildMember;
 				}
 			});
-			if (OTSSettings) {
-				if(Member.roles.has(OTSSettings.roleId)){
-					const muteAppeal = msg.guild.channels.get(OTSSettings.mutedChannelId);
-					await Member.removeRole(OTSSettings.roleId);
-					//Loop Channels
-					await msg.guild.channels.forEach(channel => {
-						if(channel.id != muteAppeal.id){
-							if(channel.type == 'text'){
-								let MemberOverwrite = channel.permissionOverwrites.get(Member.id);
-								if(MemberOverwrite){
-									channel.permissionOverwrites.get(Member.id).delete();
-								}
-							}
+			if (Member == undefined) {
+				return msg.reply('User does not exist.');
+			}
+		}
+
+		const OTSSettings = await OTS.findOne({
+			where: {
+				guildId: msg.channel.guild.id
+			}
+		});
+		if (!OTSSettings) {
+			return msg.reply(`OTS Role has not been set up in ${msg.guild.name}.`);
+		}
+		if (!Member.roles.cache.has(OTSSettings.roleId)) {
+			return msg.reply('User is not muted!');
+		}
+		let reason = args.slice(1).join(' ');
+		let botspam;
+		Member.roles.remove(OTSSettings.roleId);
+		await msg.guild.channels.cache.forEach(async channel => {
+			if (channel.id != OTSSettings.botspamChannelId) {
+				if (channel.type == 'text') {
+
+					await channel.permissionOverwrites.forEach( overwrite => {
+						if (overwrite.id == Member.id) {
+							overwrite.delete();
 						}
 					});
-					const botspam = msg.guild.channels.get(OTSSettings.botspamChannelId);
-					await botspam.send(`${Member} You have been unmuted by ${msg.author.tag}.`);
-				} else {
-					msg.reply('User is not muted.');
 				}
 			} else {
-				msg.reply(`Muted Role has not been set in ${msg.guild.name}.`);
+				botspam = channel;
 			}
-		} else {
-			msg.reply('You did not provide a name.');
-		}
+		});
+		msg.reply(`${Member.user.tag} has been unmuted.`);
+		botspam.send(`${Member} You have been unmuted by ${msg.author.tag}.`);
 	} catch (err) {
 		msg.reply('Something went wrong.');
 		log.error(`Sorry ${msg.author.tag} I could not remove the mute because of : ${err}`);

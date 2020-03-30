@@ -57,7 +57,7 @@ const startStream = async bot => {
 			});
 			tweet.text = tweet.text.join(' ');
 			//log.info(`${tweet.entities.media}`);
-			const embed = new Discord.RichEmbed()
+			const embed = new Discord.MessageEmbed()
 				.setColor(0x00ACED)
 				.setAuthor(`${tweet.user.name} - @${tweet.user.screen_name}`,tweet.user.profile_image_url, `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`)
 				.setDescription(tweet.text)
@@ -72,7 +72,7 @@ const startStream = async bot => {
 				log.verbose(`User ${tweet.user.screen_name} has just tweeted at ${tweet.created_at}.`);
 				await Promise.all(watchers.map(watch => {
 					if (!tweet.in_reply_to_user_id || watch.replies) {
-						return bot.channels.get(watch.channelID).send('', {embed});
+						return bot.channels.cache.get(watch.channelID).send('', {embed});
 					}
 					return null;
 				}));
@@ -170,7 +170,7 @@ exports.watcher = async bot => {
 
 exports.list = async (msg, bot, args) => {
 	const channelID = args[0] && bot.channels.has(args[0]) ? args[0] : msg.channel.id;
-	const channel = bot.channels.get(args[0]) || msg.channel;
+	const channel = msg.channel;
 	const fields = (await TwitterWatch.findAll({where: {channelID}})).map(watch => {
 		return {
 			name: `@${watch.twitterName}${watch.replies ? ' (inc. replies)' : ''}`,

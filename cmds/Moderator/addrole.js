@@ -4,35 +4,59 @@ exports.data = {
 	group: 'Moderator',
 	command: 'addrole',
 	syntax: 'addrole [@name | name] [Role]',
-	author: 'Aris A.',
+	author: 'TRX',
 	revisedBy: 'Sqbika',
 	permissions: 3,
 };
 
-exports.func = async (msg, args) => {
-	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
+exports.func = async (message, args) => {
+	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
-		if (args[0] == undefined) return msg.reply('You did not provide a name.');
-		if (args[1] == undefined) return msg.reply('You did not provide a Role.');
-		let Member;
-		if  (msg.mentions.users.first() != undefined) Member = msg.mentions.members.first();
-		else {
-			Member = msg.guild.members.find((user) => user.user.username.toLowerCase() == args[0].toLowerCase() || (user.nickname && (user.nickname.toLowerCase() == args[0].toLowerCase())));
-			if (Member == undefined) return msg.reply('User does not exist.');
+		if (args[0] == undefined) {
+			return message.reply('You did not provide a name.');
 		}
+		if (args[1] == undefined) {
+			return message.reply('You did not provide a Role.');
+		} 
+		let Member;
+		if (message.mentions.users.first() != undefined) {
+			Member = message.mentions.members.first();
+		}
+		else {
+			const GuildMembers = await message.guild.members.cache;
+			await GuildMembers.forEach(guildMember => {
+				if ((guildMember.user.username.toLowerCase() == args[0].toLowerCase()) || (guildMember.nickname && (guildMember.nickname.toLowerCase() == args[0].toLowerCase()))) {
+					Member = guildMember;
+				}
+			});
+			//Member = await message.guild.members.fetch((member) => member.user.username.toLowerCase() == args[0].toLowerCase() || (member.nickname && (member.nickname.toLowerCase() == args[0].toLowerCase())));
+			if (Member == undefined) {
+				return message.reply('User does not exist.');
+			}
+		}
+
 		var RoleName = args.slice(1).join(' ');
-		let Role = msg.guild.roles.find(element => element.name.toLowerCase() == RoleName.toLowerCase());
-		if (Role == undefined) return msg.reply('Role does not exist!');
-		if (Role.comparePositionTo(msg.member.highestRole) > 0) return msg.reply(`Role \`\`${Role.name}\`\` is higher than your \`\`${msg.member.highestRole.name}\`\` role.`);
-		if (Member.roles.has(Role.id)) return msg.reply(`User already has the \`\`${Role.name}\`\` role!`);
-		await Member.addRole(Role).then(() => {
-			return msg.reply(`Added role \`\`${RoleName}\`\` to \`\`${Member.user.username}\`\``);
+		let Role = message.guild.roles.cache.find(element => element.name.toLowerCase() == RoleName.toLowerCase());
+		if (Role == undefined) {
+			return message.reply('Role does not exist!');
+		}
+
+		if (Role.comparePositionTo(message.member.roles.highest) > 0) {
+			return message.reply(`Role \`\`${Role.name}\`\` is higher than your \`\`${message.member.role.highest.name}\`\` role.`);
+		}
+
+		if (Member.roles.cache.has(Role.id)) {
+			return message.reply(`User already has the \`\`${Role.name}\`\` role!`);
+		}
+
+		await Member.roles.add(Role).then(() => {
+			return message.reply(`Added role \`\`${RoleName}\`\` to \`\`${Member.user.username}\`\``);
 		}).catch(err => {
 			log.error(err);
-			return msg.reply(`Role \`\`${Role}\`\` is higher than the Bots Role. Not enough permissions!`);
+			return message.reply(`Role \`\`${Role}\`\` is higher than the Bots Role. Not enough permissions!`);
 		});
 	} catch (err) {
-		msg.reply('Something went wrong.');
-		log.error(`Sorry ${msg.author.tag} something went wrong: ${err}`);
+		message.reply('Something went wrong.');
+		log.error(`Sorry ${message.author.tag} something went wrong: ${err}`);
 	}
 };

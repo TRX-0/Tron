@@ -4,7 +4,7 @@ exports.data = {
 	group: 'Info',
 	command: 'help',
 	syntax: 'help [optional:command]',
-	author: 'Aris A.',
+	author: 'TRX',
 	permissions: 0,
 };
 
@@ -29,7 +29,7 @@ exports.func = async (msg, args, bot) => {
 
 		//Variable initialisation
 		const specificCommand = args[0] || null;
-		const help = new Discord.RichEmbed({ color: 8418484});
+		const help = new Discord.MessageEmbed({ color: 8418484});
 		if (server.altPrefix) {
 			help.setDescription(`*The prefix can be exchanged with \`@${bot.user.tag} [command]\` or \`${server.altPrefix} [command]\`.*\n`);
 		} else {
@@ -85,7 +85,7 @@ exports.func = async (msg, args, bot) => {
 					help.addField(`${fieldName}`,`\`${fieldValue}\``);
 				}
 			});
-			msg.channel.send(help).catch(err => {
+			msg.channel.send('', { embed: help }).catch(err => {
 				log.error(`Could not output commands: ${err}.`);
 			});
 			log.verbose(`${msg.author.tag} has listed the available commands in #${msg.channel.name} on ${msg.guild.name}.`);

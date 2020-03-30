@@ -4,7 +4,7 @@ exports.data = {
 	description: 'Ping check.',
 	group: 'Info',
 	syntax: 'ping',
-	author: 'Aris A.',
+	author: 'TRX',
 	permissions: 2
 };
 const ping = require('ping');

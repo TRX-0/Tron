@@ -4,7 +4,7 @@ exports.data = {
 	description: 'Disables a command.',
 	group: 'System',
 	syntax: 'disable [command]',
-	author: 'Aris A,',
+	author: 'TRX',
 	permissions: 4,
 };
 
@@ -14,13 +14,13 @@ exports.func = async (msg, args, bot) => {
 		if (args[0]){ // Check that user has provided arguments
 			if (bot.commands.has(args[0])) { // Check if provided argument corresponds to an existing command
 				//Check if command is registered in the database.
-				const cmdExists = await bot.CMDModel.findOne({where: {
+				const cmdExists = await bot.CommandModel.findOne({where: {
 					guildId: msg.guild.id,
 					name: args[0]
 				}});
 				//If it exists check if it is enabled in this guild.
 				if (cmdExists){
-					const isEnabled = (await bot.CMDModel.findOne({where: {
+					const isEnabled = (await bot.CommandModel.findOne({where: {
 						guildId: msg.guild.id,
 						name: args[0]
 					}})).enabled;
@@ -38,7 +38,7 @@ exports.func = async (msg, args, bot) => {
 					}
 				} else {
 					//If command does not exist in db, create it.
-					await bot.CMDModel.create({
+					await bot.CommandModel.create({
 						guildId: msg.guild.id,
 						name: args[0],
 						enabled: true
@@ -52,6 +52,7 @@ exports.func = async (msg, args, bot) => {
 			msg.reply('You did not provide any arguments.');
 		}
 	} catch (err) {
+		msg.reply('Something went wrong.');
 		log.error(`Something went wrong: ${err}`);
 	}
 };

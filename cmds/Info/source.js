@@ -4,14 +4,14 @@ exports.data = {
 	description: 'Source code of the Bot.',
 	group: 'Info',
 	syntax: 'source',
-	author: 'Aris A.',
+	author: 'TRX',
 	permissions: 1
 };
 
 exports.func = async (msg) => {
 	const log = require(`${msg.client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
-		msg.channel.send('https://github.com/A-G-Angelopoulos/Tron');
+		msg.channel.send('https://github.com/TRX-0/Tron');
 	} catch (err){
 		msg.reply('Something went wrong.');
 		log.error(`Something went wrong: ${err}`);

@@ -3,8 +3,8 @@ exports.data = {
 	command: 'setup',
 	description: 'Setup specific server options. Without arguments will return role ids.',
 	group: 'System',
-	syntax: 'setup (ots [Muted Role] [Mute Appeal Channel] [Botspam Channel]) || ([High1,High2] [Medium1,Medium2] [Lowest] || prefix [prefix])',
-	author: 'Aris A.',
+	syntax: 'setup (ots [Muted Role] [Mute Appeal Channel] [Botspam Channel]) / ([High1,High2] [Medium1,Medium2] [Lowest] / (prefix [prefix]))',
+	author: 'TRX',
 	permissions: 4
 };
 
@@ -17,7 +17,7 @@ exports.func = async (msg,args) => {
 			args.forEach(arg => Array = Array.concat(arg.split(',')));
 			let Wrong = false;
 			await Array.forEach(element => {
-				if (!msg.guild.roles.has(element)){
+				if (!msg.guild.roles.cache.has(element)){
 					Wrong = true;
 				}
 			});
@@ -42,11 +42,14 @@ exports.func = async (msg,args) => {
 			} else {
 				msg.reply('Could not find server in db.');
 			}
+
+
+
 		} else if (args.length == 4 && args[0] == 'ots') {
-			if (!msg.guild.roles.has(args[1])) {
+			if (!msg.guild.roles.cache.has(args[1])) {
 				return msg.reply('The role ID given is incorrect.');
 			}
-			if (!msg.guild.channels.has(args[2]) || !msg.guild.channels.has(args[3])) {
+			if (!msg.guild.channels.cache.has(args[2]) || !msg.guild.channels.cache.has(args[3])) {
 				return msg.reply('The channel IDs given are incorrect.');
 			}
 			const OTSdb = await OTS.findOne({
@@ -90,7 +93,7 @@ exports.func = async (msg,args) => {
 		} else if (!args[0]){
 			msg.delete();
 			let roleList = '';
-			msg.guild.roles.keyArray().forEach(key => roleList += `${msg.guild.roles.get(key).name}: ${key}\n`);
+			msg.guild.roles.cache.forEach(key => roleList += `${msg.guild.roles.resolve(key).name}: ${key.id}\n`);
 			const dm = await msg.author.createDM();
 			dm.send(`\`\`\`${roleList}\`\`\``);
 		} else {

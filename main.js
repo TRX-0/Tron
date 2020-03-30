@@ -64,8 +64,6 @@ process.on('unhandledRejection', err => { // If I've forgotten to catch a promis
 });
 
 
-
-
 /**
  * Enables a specified watcher
  *

@@ -3,8 +3,8 @@ exports.data = {
 	command: 'base64',
 	description: 'Encrypt and Decrypt in Base64.',
 	group: 'Utilities',
-	syntax: 'base64 [encrypt/decrypt] [text]',
-	author: 'Aris A.',
+	syntax: 'base64 [Encode/Decode] [text]',
+	author: 'TRX',
 	permissions: 2
 };
 

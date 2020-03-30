@@ -10,7 +10,7 @@
         "atob": "^2.1.2",
         "btoa": "^1.2.1",
         "chalk": "^2.4.2",
-        "discord.js": "^11.6.3",
+        "discord.js": "^12.1.1",
         "ffmpeg": "0.0.4",
         "fluent-ffmpeg": "^2.1.2",
         "fs-jetpack": "^2.2.3",

@@ -1,7 +1,8 @@
 exports.data = {
 	name: 'Countdowns',
-	nick: 'countdown',
-	command: 'countdown'
+	command: 'countdown',
+	description: 'Counts down to a specific moment in time.',
+	syntax: '[start/stop/list/disable]',
 };
 
 const moment = require('moment');
@@ -10,46 +11,52 @@ const chalk = require('chalk');
 
 let countdown;
 
-exports.start = async (msg, bot, args) => {
+exports.start = async (message, client, args) => {
+	const log = require(`${client.config.folders.lib}/log.js`)('Countdowns: Start');
 	try {
-		const log = require(`${bot.config.folders.lib}/log.js`)('Countdowns: Start');
 		let timeDiff;
 		if (!args[0]) {
-			return msg.reply('You must supply a valid unix timestamp.');
+			return message.reply('You must supply a valid unix timestamp.');
 		} else if (args.slice(1).join(' ').length <= 0) {
-			return msg.reply('You must supply a description of the countdown.');
+			return message.reply('You must supply a description of the countdown.');
 		}
 		try {
 			timeDiff = moment.unix(args[0]).diff();
 		} catch (err) {
 			log.warn(`User provided timestamp could not be parsed: ${err.stack}`);
-			return msg.reply('The provided timestamp could not be parsed');
+			return message.reply('The provided timestamp could not be parsed');
 		}
 
 		if (timeDiff > 0) {
-			const m = await msg.channel.send(`**Time until ${args.slice(1).join(' ')}:** ${humanizeDuration(timeDiff, {round: true})}`);
-			bot.CountdownModel.create({
+			const m = await message.channel.send(`**Time until ${args.slice(1).join(' ')}:** ${humanizeDuration(timeDiff, {round: true})}`);
+			client.CountdownModel.create({
 				unixTime: moment.unix(args[0]),
 				messageID: m.id,
 				channelID: m.channel.id,
 				description: args.slice(1).join(' ')
 			});
-			if (m.channel.permissionsFor(bot.user).has('MANAGE_MESSAGES')) {
+			if (m.channel.permissionsFor(client.user).has('MANAGE_MESSAGES')) {
 				m.pin().catch(err => log.warn(`Failed to pin message: ${err.stack}`));
 			}
+			log.info(`${message.author} has created a countdown in #${channel.name} on ${channel.guild.name}.`);
 		} else {
-			await msg.reply('Provided timestamp references the past. Sadly I don\'t support time travel just yet.');
+			await message.reply('Provided timestamp references the past. Sadly I don\'t support time travel just yet.');
 		}
 	} catch (err) {
 		log.error(`Could not add new countdown: ${err.stack}`);
 	}
 };
 
-exports.list = async (msg, bot, args) => {
-	const log = require(`${bot.config.folders.lib}/log.js`)('Countdowns: List');
-	const channelID = args[0] && bot.channels.has(args[0]) ? args[0] : msg.channel.id;
-	const channel = bot.channels.get(args[0]) || msg.channel;
-	const fields = (await bot.CountdownModel.findAll({
+exports.list = async (message, client, args) => {
+	const log = require(`${client.config.folders.lib}/log.js`)('Countdowns: List');
+	let channel;
+	if (message.mentions.channels.first() != undefined) {
+		channel = message.mentions.channels.first();
+	} else {
+		channel = message.channel;
+	}
+	const channelID = channel.id;
+	const fields = (await client.CountdownModel.findAll({
 		where: {channelID},
 		order: [['unixTime', 'ASC']]
 	})).map((watch, i) => {
@@ -59,7 +66,7 @@ exports.list = async (msg, bot, args) => {
 		};
 	});
 	if (fields.length > 0) {
-		msg.reply('', {embed: {
+		message.reply('', {embed: {
 			author: {
 				name: `Countdowns running in #${channel.name} on ${channel.guild.name}`,
 				icon_url: 'https://cdn.artemisbot.uk/img/clock.png'
@@ -68,36 +75,43 @@ exports.list = async (msg, bot, args) => {
 			color: 0x993E4D,
 		}});
 	} else {
-		msg.reply(`There are no countdowns in ${args[0] && bot.channels.has(args[0]) ? `#${channel.name} on ${channel.guild.name}` : 'this channel'}.`);
+		message.reply(`There are no countdowns in ${args[0] && client.channels.cache.has(args[0]) ? `#${channel.name} on ${channel.guild.name}` : 'this channel'}.`);
 	}
 };
 
-exports.stop = async (msg, bot, args) => {
+exports.stop = async (message, client, args) => {
+	const log = require(`${client.config.folders.lib}/log.js`)('Countdowns: Stop');
 	try {
-		const log = require(`${bot.config.folders.lib}/log.js`)('Countdowns: Stop');
-		const channelID = args[1] && bot.channels.has(args[1]) ? args[1] : msg.channel.id;
-		const channel = bot.channels.get(args[1]) || msg.channel;
+		const channel = message.channel;
+		const channelID = channel.id;
 		if (args[0] ? args[0] <= 0 : false) {
-			return msg.reply('Please provide a valid countdown ID. Check `watcher list countdown` for a list of countdowns and their IDs.');
+			return message.reply('Please provide a valid countdown ID. Check `watcher list countdown` for a list of countdowns and their IDs.');
 		}
-		const countdowns = await bot.CountdownModel.findAll({
+		const countdowns = await client.CountdownModel.findAll({
 			where: {
 				channelID
 			},
 			order: [['unixTime', 'ASC']]
 		});
 		if (!countdowns[args[0] - 1]) {
-			return msg.reply('Please provide a valid countdown ID. Check `watcher list countdown` for a list of countdowns and their IDs.');
+			return message.reply('Please provide a valid countdown ID. Check `watcher list countdown` for a list of countdowns and their IDs.');
 		}
 		const selectedCountdown = countdowns[args[0] - 1];
-		const countdownMessage = await channel.fetchMessage(selectedCountdown.messageID);
-		msg.reply(`Countdown with ID ${args[0]} in ${args[1] && bot.channels.has(args[1]) ? `#${channel.name} on ${channel.guild.name}` : 'this channel'} has been cancelled.`);
-		await countdownMessage.edit('**Countdown Cancelled.**');
-		await countdownMessage.delete(5000);
+		let countdownMessage;
+		try {
+			countdownMessage = await channel.messages.fetch(selectedCountdown.messageID);
+		} catch (err) {
+			log.warn('Countdown Message has already been deleted.');
+		}
+		if (countdownMessage != undefined ) {
+			countdownMessage.delete();
+		}
 		await selectedCountdown.destroy();
+		message.reply(`Countdown with ID ${args[0]} in #${channel.name} on ${channel.guild.name} has been cancelled.`);
+		log.info(`Countdown with ID ${args[0]} in #${channel.name} on ${channel.guild.name} has been cancelled by ${message.author}.`);
 	} catch (err) {
 		log.error(`Failed to stop countdown: ${err.stack}`);
-		msg.reply('Failed to stop countdown.');
+		message.reply('Failed to stop countdown.');
 	}
 };
 
@@ -105,22 +119,35 @@ exports.disable = () => {
 	clearInterval(countdown);
 };
 
-exports.watcher = async bot => {
-	const log = require(`${bot.config.folders.lib}/log.js`)('Countdowns: Watcher');
+exports.watcher = async client => {
+	const log = require(`${client.config.folders.lib}/log.js`)('Countdowns: Watcher');
 	this.disable();
 	log.verbose(chalk.green(`${exports.data.name} has initialised successfully.`));
 	countdown = setInterval(async () => {
 		try {
-			if (await bot.CountdownModel.count() > 0) {
-				(await bot.CountdownModel.all()).forEach(async countdown => {
+			//Check if there are any countdowns
+			if (await client.CountdownModel.count() > 0) {
+				//Loop through the countdowns
+				(await client.CountdownModel.all()).forEach(async countdown => {
 					try {
+						//Get the time difference from now till the time that the countdown ends
 						const timeDiff = moment(countdown.unixTime).diff();
-						const channel = bot.channels.get(countdown.channelID);
-						const message = await channel.fetchMessage(countdown.messageID);
+						//Get the channel where the countdown is happening
+						const channel = client.channels.cache.get(countdown.channelID);
+
+						//Check if the countdown message has not been deleted by accident
+						let countdownMessage;
+						try {
+							countdownMessage = await channel.messages.fetch(countdown.messageID);
+						} catch (err) {
+							log.warn('Countdown Message has already been deleted. Deleting the countdown!');
+							channel.send('Countdown Message has been deleted. Deleting the countdown!');
+							return await countdown.destroy();
+						}
 						if (timeDiff > 0) {
-							await message.edit(`**Time until ${countdown.description}:** ${humanizeDuration(timeDiff, {round: true})}`);
+							await countdownMessage.edit(`**Time until ${countdown.description}:** ${humanizeDuration(timeDiff, {round: true})}`);
 						} else {
-							const m = await message.edit(`It's time for ${countdown.description}!`);
+							const m = await countdownMessage.edit(`It's time for ${countdown.description}!`);
 							m.delete(60000);
 							channel.send(`It's time for ${countdown.description}!`);
 							await countdown.destroy();
