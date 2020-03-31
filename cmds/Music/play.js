@@ -86,7 +86,7 @@ function play(message, song, log) {
 
 	const dispatcher = serverQueue.connection.play(ytdl(song.url), {
 		quality: 'highestaudio',
-		highWaterMark: 1024 * 1024 * 10
+		//highWaterMark: 1024 * 1024 * 10
 	})
 		.on("start", () => {
 			message.client.user.setActivity(serverQueue.songs[0].title, { type: 'STREAMING' });
