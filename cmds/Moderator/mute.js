@@ -19,6 +19,9 @@ exports.func = async (message, args) => {
 		if (Member == null) {
 			return message.reply('User does not exist.');
 		}
+		if (Member.permissions.has('ADMINISTRATOR')) {
+			return message.reply('User is an Administrator and cannot be muted.');
+		}
 		const OTSSettings = await OTS.findOne({
 			where: {
 				guildId: message.channel.guild.id
