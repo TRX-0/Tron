@@ -1,5 +1,5 @@
 exports.data = {
-	name: 'Now Playing',
+	name: 'NowPlaying',
 	description: 'Shows what song is currently playing.',
 	group: 'Music',
 	command: 'nowplaying',

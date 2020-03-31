@@ -1,5 +1,5 @@
 exports.data = {
-	name: 'Delete Role',
+	name: 'DelRole',
 	description: 'Removes a role from a specific User.',
 	group: 'Moderator',
 	command: 'delrole',
