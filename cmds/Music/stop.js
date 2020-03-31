@@ -21,5 +21,7 @@ exports.func = async (message, args) => {
 		}
 		queue.delete(message.guild.id);
 	}
-	message.client.user.setPresence({ game: null });
+	if (queue.size == 0) {
+		message.client.user.setPresence({ game: null });
+	}
 };

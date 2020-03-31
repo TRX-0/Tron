@@ -90,7 +90,6 @@ function play(message, song, log) {
 	})
 		.on("start", () => {
 			message.client.user.setActivity('music', { type: 'LISTENING' });
-			//message.client.user.setPresence({ game: { name: `${serverQueue.songs[0].title}`, type: 0 } });
 		})
 		.on("finish", () => {
 			serverQueue.songs.shift();
