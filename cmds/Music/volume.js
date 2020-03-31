@@ -11,16 +11,19 @@ exports.data = {
 exports.func = async (message, args) => {
 	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);
 	try {
-		if (args.size < 1) {
+		if (args.length < 1) {
 			return msg.reply('You did not provide any arguments.');
 		}
-		if (args[0] < '10' && args[0] > '200') {
+		const volume = parseInt(args[0]);
+		if (volume == NaN) {
+			return msg.reply('The volume must be a valid number.');
+		}
+		if (volume < '1' || volume > '200') {
 			return msg.reply('Volume must be between 10 and 200.');
 		}
 		if (!message.member.voice.channel) {
 			return message.channel.send('You have to be in a voice channel to stop the music!');
 		}
-		
 		const serverQueue = message.client.queue.get(message.guild.id);
 		if (!serverQueue) {
 			return message.channel.send('There is no song currently playing!');
