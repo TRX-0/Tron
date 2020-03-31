@@ -89,7 +89,7 @@ function play(message, song, log) {
 		//highWaterMark: 1024 * 1024 * 10
 	})
 		.on("start", () => {
-			message.client.user.setActivity(serverQueue.songs[0].title, { type: 'STREAMING' });
+			message.client.user.setActivity('music', { type: 'LISTENING' });
 			//message.client.user.setPresence({ game: { name: `${serverQueue.songs[0].title}`, type: 0 } });
 		})
 		.on("finish", () => {
