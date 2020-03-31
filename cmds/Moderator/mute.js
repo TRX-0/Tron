@@ -8,10 +8,6 @@ exports.data = {
 	permissions: 3,
 };
 
-//function ParseDate(givenTime){
-//	const Values = givenTime.match(/([1-9][smhdwMy])/g);
-//}
-
 exports.func = async (message, args) => {
 	const OTS = require(`${message.client.config.folders.models}/mute.js`);
 	const log = require(`${message.client.config.folders.lib}/log.js`)(exports.data.name);

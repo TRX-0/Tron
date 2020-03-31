@@ -42,9 +42,6 @@ exports.func = async (message, args) => {
 			} else {
 				message.reply('Could not find server in db.');
 			}
-
-
-
 		} else if (args.length == 4 && args[0] == 'ots') {
 			if (!message.guild.roles.cache.has(args[1])) {
 				return message.reply('The role ID given is incorrect.');
@@ -72,7 +69,7 @@ exports.func = async (message, args) => {
 				});
 			}
 			message.delete();
-			message.reply('OTS role has been successfully setup');
+			message.reply('OTS has been set up');
 			log.info(`${message.author.tag} has finished setting up OTS role in ${message.guild.name}`);
 		} else if (args.length == 2 && args[0] == 'prefix') {
 			const server = await message.client.ServerModel.findOne({

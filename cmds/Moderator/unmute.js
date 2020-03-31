@@ -33,16 +33,14 @@ exports.func = async (message, args) => {
 		let botspam;
 		Member.roles.remove(OTSSettings.roleId);
 		await message.guild.channels.cache.forEach(async channel => {
-			if (channel.id != OTSSettings.botspamChannelId) {
-				if (channel.type == 'text') {
-
-					await channel.permissionOverwrites.forEach( overwrite => {
-						if (overwrite.id == Member.id) {
-							overwrite.delete();
-						}
-					});
-				}
-			} else {
+			if (channel.type == 'text') {
+				await channel.permissionOverwrites.forEach(overwrite => {
+					if (overwrite.id == Member.id) {
+						overwrite.delete();
+					}
+				});
+			}
+			if (channel.id == OTSSettings.botspamChannelId) {
 				botspam = channel;
 			}
 		});
