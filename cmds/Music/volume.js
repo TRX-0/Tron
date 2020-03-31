@@ -29,7 +29,7 @@ exports.func = async (message, args) => {
 			return message.channel.send('There is no song currently playing!');
 		}
 		serverQueue.volume = args[0];
-		const volume = args[0] / 100;
+		volume = args[0] / 100;
 		serverQueue.connection.dispatcher.setVolume(volume);
 		message.channel.send(`Current volume is: ${args[0]}%`);
 	} catch (err) {
