@@ -94,7 +94,6 @@ function play(message, song, log) {
 		.on("finish", () => {
 			serverQueue.songs.shift();
 			message.client.user.setPresence({ game: null });
-			log.info(serverQueue.songs[0].title);
 			return play(message, serverQueue.songs[0], log);
 		})
 		.on("error", error => {
