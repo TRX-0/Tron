@@ -29,9 +29,8 @@ exports.func = async (message, args) => {
 			return message.channel.send('There is no song currently playing!');
 		}
 		serverQueue.volume = args[0];
-		volume = args[0] / 100;
-		serverQueue.connection.dispatcher.setVolume(volume);
-		message.channel.send(`Current volume is: ${args[0]}%`);
+		serverQueue.connection.dispatcher.setVolume(volume / 100);
+		message.channel.send(`Current volume is: ${volume}%`);
 	} catch (err) {
 		message.reply(`Something went wrong: ${err}`);
 	}
