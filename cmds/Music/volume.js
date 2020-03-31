@@ -1,9 +1,9 @@
 exports.data = {
-	name: 'Skip',
-	description: 'Skips the current song.',
+	name: 'Volume',
+	description: 'Changes the music volume.',
 	group: 'Music',
-	command: 'skip',
-	syntax: 'skip',
+	command: 'volume',
+	syntax: 'volume [number]',
 	author: 'TRX',
 	permissions: 2,
 };
@@ -13,7 +13,9 @@ exports.func = async (message, args) => {
 	if (args[0] == undefined) {
 		return msg.reply('You did not provide any arguments.');
 	}
-
+	if (args[0] < 10 && args[0] > 100) {
+		return msg.reply('Volume must be between 10 and 100.');
+	}
 	const serverQueue = message.client.queue.get(message.guild.id);
 	if (!message.member.voice.channel) {
 		return message.channel.send('You have to be in a voice channel to stop the music!');
