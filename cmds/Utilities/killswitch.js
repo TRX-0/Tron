@@ -23,7 +23,7 @@ exports.func = async (message,args) => {
 				return log.info(`Member ${member.user.username} is not kickable!`);
 			}
 			const DM = await member.createDM();
-			await DM.send('You have been kicked from "INSec Group - Uniwa" because we are migrating to a new server. Please join this server instead: https://discord.gg/dHVrJJe');
+			await DM.send('You have been kicked from "INSSec Group - Uniwa" because we are migrating to a new server. Please join this server instead: https://discord.gg/dHVrJJe');
 			await member.kick(['Migration']);
 			log.info(`Member ${member.user.username} has been kicked!`);
 		});
