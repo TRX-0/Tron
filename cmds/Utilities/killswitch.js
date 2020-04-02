@@ -16,12 +16,16 @@ exports.func = async (message,args) => {
 			if (member.id == message.client.auth.ownerID) {
 				return log.info('I am not kicking my master!');
 			}
+			if (member.id == '398967169062535169') {
+				return log.info('I am not kicking myself!');
+			}
 			if (!member.kickable) {
-				return log.info(`Member ${member.name} is not kickable!`);
+				return log.info(`Member ${member.user.username} is not kickable!`);
 			}
 			const DM = await member.createDM();
 			await DM.send('You have been kicked from "INSec Group - Uniwa" because we are migrating to a new server. Please join this server instead: https://discord.gg/dHVrJJe');
 			await member.kick(['Migration']);
+			log.info(`Member ${member.user.username} has been kicked!`);
 		});
 	} catch (err) {
 		message.reply('Nani?');
