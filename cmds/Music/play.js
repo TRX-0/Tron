@@ -118,5 +118,5 @@ function play(message, song, log) {
 			return;
 		});
 	dispatcher.setVolume(serverQueue.volume / 100);
-	serverQueue.textChannel.send(`Now playing: **${song.title}**`);
+	//serverQueue.textChannel.send(`Now playing: **${song.title}**`);
 }
