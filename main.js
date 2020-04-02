@@ -10,6 +10,10 @@ const log = require(`${client.config.folders.lib}/log.js`)('Core');
 client.createCommands = require(`${client.config.folders.functions}/createCommands.js`);
 client.findUser = require(`${client.config.folders.functions}/findUser.js`);
 
+// Music modules
+client.queue = new Map();
+
+
 // Event Handlers
 client.onMessage = require(`${client.config.folders.events}/message.js`);
 client.onReady = require(`${client.config.folders.events}/ready.js`);
@@ -27,9 +31,6 @@ client.TwitterWatchModel = require(`${client.config.folders.models}/twitterwatch
 client.WatcherModel = require(`${client.config.folders.models}/watcher.js`);
 // Synchronize Databases (Create tables)
 synchronize();
-
-// Music modules
-client.queue = new Map();
 
 // =====Event Handlers=====
 
@@ -49,7 +50,7 @@ client.on('guildMemberAdd', member => {
 });
 
 // On the client joining a server
-client.on('guildCreate', async guild => {
+client.on('guildCreate', guild => {
 	client.onGuildCreate.func(client, guild);
 });
 
