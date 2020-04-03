@@ -5,52 +5,10 @@ A cool Discord JS bot
 
 ## Commands
 
-### Fun
-- Dance
-- Dogs
-- Flipcoin
-- Hug
-- Joke
-
-### Info
-- Help
-- List
-- Ping
-- Source
-- Whois
-
-### Moderation
-- Addrole
-- Delrole
-- Ban
-- Kick
-- Mute
-- Unmute
-- Purge
-
-### Utilities
-- Base64
-- Color
-- Eval
-- Glyph
-- Mbin
-- Rot13
-- Say
-- Watcher
-
-### System
-- Activity / Status
-- Admin
-- Enable / Disable
-- Load / Reload
-- Restart / Quit
-- Setup
-- Update
-
-### Music 
-- NowPlaying
-- Play
-- Skip
-- Repeat
-- Stop
-- Volume
+| Fun      | Info   | Moderation        | Utilities            | System                 | Music        |
+|:-:       |:-:     |:-:                |:-:                   |:-:                     |           ---|
+| Dance    | Help   | Addrole / Delrole | Base64 / Rot13       |  Activity / Status     | NowPlaying   |
+| Dogs     | List   | Ban / Kick|       | Color / Glyph / Mbin | Admin / Setup / Update | Play / Stop  |
+| Flipcoin | Source | Mute / Unmute     | Eval                 |  Enable / Disable      | Skip         |
+| Hug      | Ping   | Purge             | Say                  |Load / Reload           | Repeat       |
+| Joke     | Whois  |                   | Watcher              |Restart / Quit          | Volume       |
