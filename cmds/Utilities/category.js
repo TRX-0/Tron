@@ -5,7 +5,7 @@ exports.data = {
 	command: 'category',
 	syntax: 'category [web/crypto/pwn/reverse/]',
 	author: 'TRX',
-	permissions: 2,
+	permissions: 1,
 };
 
 exports.func = async (message,args) => {
