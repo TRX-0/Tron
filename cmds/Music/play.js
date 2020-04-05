@@ -95,9 +95,9 @@ function play(message, song, log) {
 			message.client.user.setActivity('music', { type: 'LISTENING' });
 		})
 		.on("finish", () => {
-			if (serverQueue.replay == 2) {
+			if (serverQueue.replay == 1) {
 				return play(message, serverQueue.songs[serverQueue.currentSong], log);
-			} else if (serverQueue.replay == 1) {
+			} else if (serverQueue.replay == 2) {
 				serverQueue.currentSong++;
 				if (serverQueue.songs[serverQueue.currentSong] == undefined) {
 					serverQueue.currentSong = 0;

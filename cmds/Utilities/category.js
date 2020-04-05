@@ -63,6 +63,7 @@ exports.func = async (message,args) => {
 			default:
 				return message.reply('The role you specified is incorrect. Select from the following list: Web, Pwn, Crypto, Reverse, Forensic, Stego.')
 		}
+		message.reply('Role changes have been applied!');
 	} catch (err) {
 		message.reply('Something went wrong.');
 		log.error(`Something went wrong when choosing categories: ${err}`);

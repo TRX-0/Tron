@@ -17,8 +17,13 @@ exports.func = async (message, args) => {
 	if (!serverQueue) {
 		return message.channel.send('There is no song currently playing!');
 	}
-	if (serverQueue.replay == 2) {
-		serverQueue.currentSong++;
+	if (serverQueue.replay == 2 || serverQueue.replay == 1) {
+		if (serverQueue.songs[serverQueue.currentSong+1] == undefined) {
+			serverQueue.currentSong = 0;
+		} else {
+			serverQueue.currentSong++;
+		}
+		
 	}
 	serverQueue.connection.dispatcher.end();
 };

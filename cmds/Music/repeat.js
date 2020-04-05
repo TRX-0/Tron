@@ -27,11 +27,11 @@ exports.func = async (message, args) => {
 			break;
 		case '1':
 			serverQueue.replay = 1;
-			message.reply(':repeat:');
+			message.reply(':repeat_one:');
 			break;
 		case '2':
 			serverQueue.replay = 2;
-			message.reply(':repeat_one:');
+			message.reply(':repeat:');
 			break;
 		default:
 			message.reply('Value must be between 0 and 2.');
