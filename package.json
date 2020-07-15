@@ -16,7 +16,7 @@
         "fs-jetpack": "^2.2.3",
         "he": "^1.2.0",
         "humanize-duration": "^3.22.0",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.19",
         "mem": "^5.1.1",
         "moment": "^2.24.0",
         "node-fetch": "^2.6.0",
