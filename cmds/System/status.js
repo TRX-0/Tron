@@ -3,7 +3,7 @@ exports.data = {
 	command: 'status',
 	description: 'Change bot status.',
 	group: 'Utilities',
-	syntax: 'status [online/invisible/dnd/idle/game]',
+	syntax: 'status [online/invisible/dnd/idle]',
 	author: 'TRX',
 	permissions: 4
 };
