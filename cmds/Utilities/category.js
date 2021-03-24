@@ -3,7 +3,7 @@ exports.data = {
 	description: 'Adds a category role to you.',
 	group: 'Utilities',
 	command: 'category',
-	syntax: 'category [web/crypto/pwn/reverse/]',
+	syntax: 'category [web/crypto/pwn/reversing/hardware/blockchain/forensics]',
 	author: 'TRX',
 	permissions: 1,
 };
@@ -32,25 +32,11 @@ exports.func = async (message,args) => {
 					message.member.roles.add('647428396787171338');
 				}
 				break;
-			case 'reverse':
+			case 'reversing':
 				if (message.member.roles.cache.has('647428478735745060')) {
 					message.member.roles.remove('647428478735745060');
 				} else {
 					message.member.roles.add('647428478735745060');
-				}
-				break;
-			case 'stego':
-				if (message.member.roles.cache.has('696025659906195526')) {
-					message.member.roles.remove('696025659906195526');
-				} else {
-					message.member.roles.add('696025659906195526');
-				}
-				break;
-			case 'forensic':
-				if (message.member.roles.cache.has('647428334719991831')) {
-					message.member.roles.remove('647428334719991831');
-				} else {
-					message.member.roles.add('647428334719991831');
 				}
 				break;
 			case 'crypto':
@@ -58,6 +44,27 @@ exports.func = async (message,args) => {
 					message.member.roles.remove('647428302071398442');
 				} else {
 					message.member.roles.add('647428302071398442');
+				}
+				break;
+			case 'hardware':
+				if (message.member.roles.cache.has('780147661465452654')) {
+					message.member.roles.remove('780147661465452654');
+				} else {
+					message.member.roles.add('780147661465452654');
+				}
+				break;
+			case 'forensics':
+				if (message.member.roles.cache.has('647428334719991831')) {
+					message.member.roles.remove('647428334719991831');
+				} else {
+					message.member.roles.add('647428334719991831');
+				}
+				break;
+			case 'blockchain':
+				if (message.member.roles.cache.has('780147471249571900')) {
+					message.member.roles.remove('780147471249571900');
+				} else {
+					message.member.roles.add('780147471249571900');
 				}
 				break;
 			default:
