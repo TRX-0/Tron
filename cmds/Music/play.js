@@ -112,7 +112,8 @@ function play(message, song, log) {
 		})
 		.on("error", error => {
 			serverQueue.voiceChannel.leave();
-			serverQueue.connection.dispatcher.destroy();
+			message.client.user.setPresence({ game: null });
+			//serverQueue.connection.dispatcher.destroy();
 			queue.delete(message.guild.id);
 			log.error(error);
 			return;
