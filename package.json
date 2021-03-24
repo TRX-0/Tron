@@ -24,14 +24,14 @@
         "npm-check": "^5.9.2",
         "pg": "^7.18.2",
         "ping": "^0.2.3",
-        "pm2": "^3.5.2",
+        "pm2": "^4.5.5",
         "sequelize": "^4.44.4",
         "snekfetch": "^4.0.4",
         "strftime": "^0.10.0",
         "twit": "^2.2.11",
         "winston": "^3.3.3",
         "winston-daily-rotate-file": "^3.10.0",
-        "ytdl-core": "^2.1.7"
+        "ytdl-core": "^4.5.0"
     },
     "devDependencies": {},
     "keywords": [
