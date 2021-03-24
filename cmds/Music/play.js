@@ -29,7 +29,8 @@ exports.func = async (message, args) => {
 			);
 		}
 
-		const songInfo = await ytdl.getInfo(args[0]);
+		let url = args[0].toString();
+		const songInfo = await ytdl.getInfo(url);
 		const song = {
 			thumbnail: songInfo.thumbnail,
 			title: songInfo.title,
