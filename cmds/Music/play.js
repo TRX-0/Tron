@@ -34,7 +34,7 @@ exports.func = async (message, args) => {
 		const song = {
 			thumbnail: songInfo.thumbnail,
 			title: songInfo.title,
-			url: songInfo.video_url,
+			url: url,
 			duration: songInfo.duration
 		};
 
