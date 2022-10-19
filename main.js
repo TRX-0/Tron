@@ -1,26 +1,6 @@
 // Initialize Discord client
 const Discord = require('discord.js');
-
-//const botIntents = new IntentsBitField();
-//botIntents.add(IntentsBitField.Flags.GuildPresences, IntentsBitField.Flags.GuildMembers);
-
-const client = new Discord.Client({
-	intents: [
-		"Guilds",
-		"GuildMessages",
-		"GuildMembers",
-		"GuildBans",
-		"GuildEmojisAndStickers",
-		"GuildIntegrations",
-		"GuildWebhooks",
-		"GuildInvites",
-		"GuildVoiceStates",
-		"GuildPresences",
-		"GuildMessageReactions",
-		"GuildMessageTyping",
-		"DirectMessages"
-	]
-});
+const client = new Discord.Client();
 client.config = require('./config.json');
 client.auth = require('./auth.json');
 client.watchers = new Discord.Collection();
