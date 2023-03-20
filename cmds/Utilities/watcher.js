@@ -99,7 +99,8 @@ exports.func = async (message, args, client) => {
 		}
 		case 'list':
 		{
-			if (watcher.globalEnable == false) {
+			log.info(watcher);
+			if (watcher[globalEnable] == false) {
 				return message.reply(`Specified watcher is disabled.`);
 			}
 			if (watcher) {
