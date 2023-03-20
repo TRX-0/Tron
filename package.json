@@ -24,8 +24,7 @@
         "npm-check": "^5.9.2",
         "pg": "^7.18.2",
         "ping": "^0.2.3",
-        "pm2": "^4.5.5",
-        "sequelize": "^4.44.4",
+        "sequelize": "^6.29.3",
         "snekfetch": "^4.0.4",
         "strftime": "^0.10.0",
         "twit": "^2.2.11",
@@ -33,7 +32,6 @@
         "winston-daily-rotate-file": "^3.10.0",
         "ytdl-core": "^4.5.0"
     },
-    "devDependencies": {},
     "keywords": [
         "discord",
         "discord.js"
