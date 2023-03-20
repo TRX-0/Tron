@@ -17,11 +17,14 @@ exports.func = async (message, args, client) => {
 		if (!args[0]) {
 			return message.reply(`You haven't provided enough arguments. The proper syntax for "${this.data.name}" is ${this.data.syntax}.`);
 		}
-		let watcher = await client.WatcherModel.findOne({
-			where: {
-				watcherName: args[1]
-			}
-		});
+		if (args[1]) {
+			let watcher = await client.WatcherModel.findOne({
+				where: {
+					watcherName: args[1]
+				}
+			});
+		}
+		
 		switch (args[0]) {
 		case 'start':
 		{
