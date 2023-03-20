@@ -22,9 +22,6 @@ exports.func = async (message, args, client) => {
 				watcherName: args[1]
 			}
 		});
-		if ( watcher == null ) {
-			return message.reply(`A watcher with the name "${args[1]}"does not exist.`);
-		}
 		switch (args[0]) {
 		case 'start':
 		{
