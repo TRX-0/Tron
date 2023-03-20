@@ -12,14 +12,18 @@ const jetpack = require('fs-jetpack');
 
 exports.func = async (message, args, client) => {
 	const log = require(`${client.config.folders.lib}/log.js`)(exports.data.name);
-	let watcher = await client.WatcherModel.findOne({
-		where: {
-			watcherName: args[1]
-		}
-	});
+
 	try {
-		if (!args[0]) {
-			return message.reply(`You haven't provided enough arguments. The proper syntax for "${this.data.name}" is \`${this.data.syntax}\`.`);
+		if (!args[0] || !args[1]) {
+			return message.reply(`You haven't provided enough arguments. The proper syntax for "${this.data.name}" is ${this.data.syntax}.`);
+		}
+		let watcher = await client.WatcherModel.findOne({
+			where: {
+				watcherName: args[1]
+			}
+		});
+		if ( watcher == null ) {
+			return message.reply(`A watcher with the name "${args[1]} was not found.`);
 		}
 		switch (args[0]) {
 		case 'start':
