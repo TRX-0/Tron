@@ -22,6 +22,7 @@ exports.start = async (message, client, args) => {
 		}
 		try {
 			timeDiff = moment.unix(args[0]).diff();
+			log.warn(`Difference between current time and timestamp is: ${timeDiff}`);
 		} catch (err) {
 			log.warn(`User provided timestamp could not be parsed: ${err.stack}`);
 			return message.reply('The provided timestamp could not be parsed');
