@@ -14,7 +14,7 @@ exports.func = async (message, args, client) => {
 	const log = require(`${client.config.folders.lib}/log.js`)(exports.data.name);
 
 	try {
-		if (!args[0] || !args[1]) {
+		if (!args[0]) {
 			return message.reply(`You haven't provided enough arguments. The proper syntax for "${this.data.name}" is ${this.data.syntax}.`);
 		}
 		let watcher = await client.WatcherModel.findOne({
@@ -23,7 +23,7 @@ exports.func = async (message, args, client) => {
 			}
 		});
 		if ( watcher == null ) {
-			return message.reply(`A watcher with the name "${args[1]} was not found.`);
+			return message.reply(`A watcher with the name "${args[1]}"does not exist.`);
 		}
 		switch (args[0]) {
 		case 'start':
