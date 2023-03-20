@@ -129,7 +129,7 @@ exports.watcher = async client => {
 			//Check if there are any countdowns
 			if (await client.CountdownModel.count() > 0) {
 				//Loop through the countdowns
-				(await client.CountdownModel.all()).forEach(async countdown => {
+				(await client.CountdownModel.findAll()).forEach(async countdown => {
 					try {
 						//Get the time difference from now till the time that the countdown ends
 						const timeDiff = moment(countdown.unixTime).diff();
