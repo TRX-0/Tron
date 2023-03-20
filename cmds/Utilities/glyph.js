@@ -40,7 +40,7 @@ exports.func = async (message, args) => {
 				}
 				var Encoded = '';
 				for (i=0; i < args[1].length; i++){
-					Encoded = Encoded + message.guild.emojis.fetch(ValidGlyphs[ValidHex.indexOf(GivenHex[i])]);
+					Encoded = Encoded + message.guild.emojis.resolveID(ValidGlyphs[ValidHex.indexOf(GivenHex[i])]);
 				}
 				message.channel.send({
 					embed:{
