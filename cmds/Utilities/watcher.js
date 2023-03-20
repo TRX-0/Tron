@@ -100,10 +100,11 @@ exports.func = async (message, args, client) => {
 		case 'list':
 		{
 			log.info(watcher);
-			if (watcher[globalEnable] == false) {
-				return message.reply(`Specified watcher is disabled.`);
-			}
+
 			if (watcher) {
+				if (watcher[globalEnable] == false) {
+					return message.reply(`Specified watcher is disabled.`);
+				}
 				client.watchers.get(args[1]).list(message, client, args.slice(2));
 			} else if (args[1]) {
 				message.reply('Selected watcher does not exist.');
