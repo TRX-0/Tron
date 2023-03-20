@@ -27,7 +27,7 @@ exports.func = async (message, args) => {
 		if (typeof evaled !== 'string') {
 			evaled = require('util').inspect(evaled);
 		}
-		const params = `api_dev_key=${key}&api_option=paste&api_paste_code=${evaled}&api_paste_private=0&api_paste_name=Eval&api_paste_format=JavaScript&api_paste_expire_date=10M`;
+		const params = `api_dev_key=${key}&api_option=paste&api_paste_code=${evaled}&api_paste_private=1&api_paste_name=Eval&api_paste_format=javascript&api_paste_expire_date=10M`;
 		//const data = `api_dev_key=${key}&api_option=paste&api_paste_code=testeronios`;
 		if(evaled.length >= 2000) {
 			fetch('https://pastebin.com/api/api_post.php' , {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: params}).then(async r => {
