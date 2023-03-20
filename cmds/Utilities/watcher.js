@@ -102,7 +102,7 @@ exports.func = async (message, args, client) => {
 			log.info(watcher);
 
 			if (watcher) {
-				if (watcher[globalEnable] == false) {
+				if (watcher.globalEnable == false) {
 					return message.reply(`Specified watcher is disabled.`);
 				}
 				client.watchers.get(args[1]).list(message, client, args.slice(2));
