@@ -13,7 +13,7 @@ const jetpack = require('fs-jetpack');
 exports.func = async (message, args, client) => {
 	const log = require(`${client.config.folders.lib}/log.js`)(exports.data.name);
 	let watcher;
-	
+
 	try {
 		if (!args[0]) {
 			return message.reply(`You haven't provided enough arguments. The proper syntax for "${this.data.name}" is ${this.data.syntax}.`);
@@ -99,6 +99,9 @@ exports.func = async (message, args, client) => {
 		}
 		case 'list':
 		{
+			if (watcher.globalEnable == false) {
+				return message.reply(`Specified watcher is disabled.`);
+			}
 			if (watcher) {
 				client.watchers.get(args[1]).list(message, client, args.slice(2));
 			} else if (args[1]) {
