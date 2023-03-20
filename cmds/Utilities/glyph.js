@@ -29,7 +29,8 @@ exports.func = async (message, args) => {
 		switch(args[0]) {
 		case 'encode': 
 		{
-			const ValidGlyphs = ['401737040133226517','401737942223028244','401737944488083456','401737946799276033','401738178958065666','401738216744419328','401738245056102401','401738279684145153','401738309627281408','401738340119871498','401738367575785472','401738401323155456','401738438946062336','401738473268051968','401738516163330050','401738545808801812'];
+			//const ValidGlyphs = ['401737040133226517','401737942223028244','401737944488083456','401737946799276033','401738178958065666','401738216744419328','401738245056102401','401738279684145153','401738309627281408','401738340119871498','401738367575785472','401738401323155456','401738438946062336','401738473268051968','401738516163330050','401738545808801812'];
+			const ValidGlyphs = [':p0:',':p1:',':p2:',':p3:',':p4:',':p5:',':p6:',':p7:',':p8:',':p9:',':pA:',':pB:',':pC:',':pD:',':pE:',':pF:'];
 			if (args[1].length == 12){
 				var GivenHex = args[1].split('');
 				for (i=0; i < args[1].length; i++){
@@ -40,7 +41,8 @@ exports.func = async (message, args) => {
 				}
 				var Encoded = '';
 				for (i=0; i < args[1].length; i++){
-					Encoded = Encoded + message.guild.emojis.resolveID(ValidGlyphs[ValidHex.indexOf(GivenHex[i])]);
+					//Encoded = Encoded + message.guild.emojis.resolveID(ValidGlyphs[ValidHex.indexOf(GivenHex[i])]);
+					Encoded = Encoded + ValidGlyphs[ValidHex.indexOf(GivenHex[i])];
 				}
 				message.channel.send({
 					embed:{
